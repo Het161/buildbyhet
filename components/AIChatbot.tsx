@@ -175,7 +175,9 @@ export default function AIChatbot() {
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3 }}
           >
-            <GlassCard className="h-full flex flex-col p-0 overflow-hidden" hover={false}>
+            // ✅ REMOVE the hover prop
+<GlassCard className="h-full flex flex-col p-0 overflow-hidden">
+
               
               {/* HEADER */}
               <div className="p-4 border-b border-white/10 flex items-center justify-between bg-deep-navy/50">
