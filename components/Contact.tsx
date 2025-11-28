@@ -9,6 +9,9 @@ import { motion } from 'framer-motion';
 import GlassCard from './ui/GlassCard';
 import { Github, Linkedin, Instagram, Mail, Phone, MessageCircle } from 'lucide-react';
 
+// ========== API CONFIGURATION ==========
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 // ========== SOCIAL LINKS DATA ==========
 const socialLinks = [
   {
@@ -58,7 +61,8 @@ export default function Contact() {
     setStatus('sending');
 
     try {
-      const response = await fetch('https://formspree.io/f/manayzgr', {
+      // ✅ UPDATED: Use your own backend API
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -277,10 +281,9 @@ export default function Contact() {
                   +91 98252 47312
                 </a>
 
-                {/* ✅ WhatsApp */}
+                {/* WhatsApp */}
                 <a
-                  href="https://wa.me/919825247312?textHi Het! I came across your portfolio and would love to connect with you. Looking forward to discussing potential opportunities!
-."
+                  href="https://wa.me/919825247312?text=Hi%20Het!%20I%20came%20across%20your%20portfolio%20and%20would%20love%20to%20connect%20with%20you."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-[#25D366] hover:underline transition-colors"
