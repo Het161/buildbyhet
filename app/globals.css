@@ -1,0 +1,466 @@
+/* ============================================
+   GLOBAL STYLES & CUSTOM EFFECTS
+   ============================================
+   This file contains:
+   1. Tailwind directives
+   2. Custom utility classes
+   3. Keyframe animations
+   4. Global resets
+   5. Custom scrollbar styling
+   6. Dynamic lighting effects (NEW!)
+   7. Neon edge reflections (NEW!)
+*/
+
+/* --- TAILWIND DIRECTIVES --- */
+@tailwind base;       
+@tailwind components; 
+@tailwind utilities;  
+
+/* --- BASE LAYER CUSTOMIZATION --- */
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-deep-navy via-[#0F1229] to-[#1a0b2e];
+    @apply text-white antialiased;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ============================================
+   CUSTOM UTILITY CLASSES
+   ============================================ */
+
+/* --- GLOWING TEXT EFFECT --- */
+.glow-text {
+  text-shadow: 
+    0 0 20px rgba(0, 217, 255, 0.5),
+    0 0 40px rgba(0, 217, 255, 0.3);
+}
+
+/* --- NEON BORDER EFFECT --- */
+.neon-border {
+  box-shadow: 
+    0 0 10px rgba(0, 217, 255, 0.5),
+    inset 0 0 10px rgba(0, 217, 255, 0.2);
+}
+
+/* ============================================
+   DYNAMIC LIGHTING EFFECTS (NEW!)
+   ============================================ */
+
+/* --- DYNAMIC GLOW CARD EFFECT --- */
+/* Used for: Project cards on hover */
+.glow-card {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.6));
+  }
+}
+/* Creates pulsing glow effect around cards - breathing animation */
+
+/* --- NEON EDGE REFLECTION --- */
+/* Used for: Interactive elements with rotating border glow */
+.neon-edge {
+  position: relative;
+}
+
+.neon-edge::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    #00D9FF,
+    #7B2FFF,
+    transparent
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.neon-edge:hover::before {
+  opacity: 1;
+  animation: neon-rotate 3s linear infinite;
+}
+
+@keyframes neon-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/* Creates rotating gradient border on hover - cyberpunk effect */
+
+/* --- LIGHT REFLECTION EFFECT --- */
+/* Used for: Mouse-following glow effect */
+.light-reflection {
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 217, 255, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+/* Creates spotlight that follows mouse cursor */
+
+/* ============================================
+   ANIMATED BACKGROUNDS
+   ============================================ */
+
+/* --- ANIMATED GRADIENT BACKGROUND --- */
+.gradient-animation {
+  background: linear-gradient(
+    45deg,
+    #0A0E27,
+    #1a0b2e,
+    #0A0E27
+  );
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ============================================
+   ELEMENT ANIMATIONS
+   ============================================ */
+
+/* --- FLOATING ANIMATION --- */
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* --- PULSE GLOW ANIMATION --- */
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+/* --- FADE IN ANIMATION --- */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- SLIDE UP ANIMATION --- */
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0E27;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00D9FF, #8B5CF6);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #00D9FF, #FF006E);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00D9FF #0A0E27;
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES
+   ============================================ */
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   TEXT SELECTION STYLING
+   ============================================ */
+
+::selection {
+  background-color: rgba(0, 217, 255, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: rgba(0, 217, 255, 0.3);
+  color: #ffffff;
+}
+
+/* ============================================
+   ADVANCED HOVER EFFECTS (BONUS!)
+   ============================================ */
+
+/* --- SHIMMER EFFECT --- */
+/* Used for: Buttons, cards, attention elements */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+/* Creates light sweep effect across elements */
+
+/* --- HOVER LIFT EFFECT --- */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+}
+/* Lifts element up on hover with shadow */
+
+/* --- RIPPLE EFFECT --- */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+/* For click ripple effects on buttons */
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* GPU-accelerated animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES SUMMARY
+   ============================================
+   
+   TEXT EFFECTS:
+   .glow-text          - Glowing text shadow
+   
+   BORDERS:
+   .neon-border        - Neon glow border
+   .neon-edge          - Rotating gradient border on hover
+   
+   CARDS:
+   .glow-card          - Pulsing glow effect
+   .glass              - Glassmorphism effect
+   .glass-strong       - Stronger glass effect
+   
+   ANIMATIONS:
+   .float              - Floating up/down
+   .pulse-glow         - Pulse breathing effect
+   .fade-in            - Fade in animation
+   .slide-up           - Slide up animation
+   .shimmer            - Light sweep effect
+   .hover-lift         - Lift on hover
+   
+   BACKGROUNDS:
+   .gradient-animation - Animated gradient
+   .light-reflection   - Mouse-following spotlight
+   
+   UTILITIES:
+   .hide-scrollbar     - Hide scrollbar
+   .gpu-accelerated    - Better performance
+*/
+
+/* Text readability improvements */
+.project-title {
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.project-description {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Increase contrast on hover */
+.project-card:hover .project-title,
+.project-card:hover .project-description {
+  text-shadow: 
+    0 2px 12px rgba(0, 0, 0, 1),
+    0 4px 20px rgba(0, 0, 0, 0.8);
+}
+/* ============================================
+   TEXT READABILITY FIXES
+   ============================================ */
+
+/* Strong text shadows for all project text */
+.glass-card h3,
+.glass-card h2,
+.glass-card h1 {
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 1),
+    0 4px 16px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.glass-card p,
+.glass-card li,
+.glass-card span {
+  text-shadow: 
+    0 1px 4px rgba(0, 0, 0, 0.9),
+    0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Stronger shadows on hover */
+.glass-card:hover h3,
+.glass-card:hover h2,
+.glass-card:hover h1 {
+  text-shadow: 
+    0 2px 12px rgba(0, 0, 0, 1),
+    0 4px 20px rgba(0, 0, 0, 1),
+    0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* Increase card background darkness */
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  ) !important;
+}
+
+.glass-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  ) !important;
+}
