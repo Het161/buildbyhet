@@ -10,7 +10,7 @@ import GlassCard from './ui/GlassCard';
 import { Github, Linkedin, Instagram, Mail, Phone, MessageCircle } from 'lucide-react';
 
 // ========== API CONFIGURATION ==========
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://buildbyhet-api.onrender.com';
 
 // ========== SOCIAL LINKS DATA ==========
 const socialLinks = [
