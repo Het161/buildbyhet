@@ -657,7 +657,7 @@ export default function About() {
                     <div className="w-2 h-2 rounded-full bg-electric-blue group-hover:scale-150 transition-transform" />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-white">SIH 2024 Finalist</span>
+                        <span className="font-medium text-white">SIH 2025 </span>
                         <span className="px-2 py-0.5 bg-electric-blue/20 border border-electric-blue/40 rounded text-xs">
                           Hackathon
                         </span>
