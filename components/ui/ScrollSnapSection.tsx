@@ -21,7 +21,7 @@ export default function ScrollSnapSection({
       style={{ scrollMarginTop: '80px' }} // ✅ CRITICAL FIX - Accounts for navbar
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.1, margin: "-80px" }}
       transition={{ duration: 0.6 }}
     >
       {children}
