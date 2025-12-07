@@ -1,14 +1,16 @@
 /* ============================================
-   GLOBAL STYLES & CUSTOM EFFECTS
+   GLOBAL STYLES & LUXURY DESIGN SYSTEM
    ============================================
    This file contains:
    1. Tailwind directives
-   2. Custom utility classes
-   3. Keyframe animations
-   4. Global resets
-   5. Custom scrollbar styling
-   6. Dynamic lighting effects (NEW!)
-   7. Neon edge reflections (NEW!)
+   2. Luxury 8pt spacing grid system
+   3. Custom utility classes
+   4. Keyframe animations
+   5. Global resets
+   6. Custom scrollbar styling
+   7. Dynamic lighting effects
+   8. Neon edge reflections
+   9. Text readability enhancements
 */
 
 /* --- TAILWIND DIRECTIVES --- */
@@ -16,58 +18,185 @@
 @tailwind components; 
 @tailwind utilities;  
 
-/* --- BASE LAYER CUSTOMIZATION --- */
+/* ============================================
+   LUXURY DESIGN SYSTEM (8pt Grid)
+   ============================================ */
+
 @layer base {
+  :root {
+    /* === COLOR SYSTEM === */
+    --electric-blue: #667eea;
+    --neon-purple: #a855f7;
+    --cyber-green: #22c55e;
+    --deep-navy: #0a0e27;
+    --dark-bg: #0f1419;
+    --cyan-bright: #00D9FF;
+    --purple-bright: #7B2FFF;
+    --pink-bright: #FF006E;
+    
+    /* === 8pt SPACING SCALE === */
+    --space-1: 0.5rem;   /* 8px */
+    --space-2: 1rem;     /* 16px */
+    --space-3: 1.5rem;   /* 24px */
+    --space-4: 2rem;     /* 32px */
+    --space-5: 2.5rem;   /* 40px */
+    --space-6: 3rem;     /* 48px */
+    --space-7: 3.5rem;   /* 56px */
+    --space-8: 4rem;     /* 64px */
+    --space-10: 5rem;    /* 80px */
+    --space-12: 6rem;    /* 96px */
+    --space-16: 8rem;    /* 128px */
+    --space-20: 10rem;   /* 160px */
+  }
+
+  /* === BODY STYLES === */
   body {
     @apply bg-gradient-to-br from-deep-navy via-[#0F1229] to-[#1a0b2e];
     @apply text-white antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
   
+  /* === SMOOTH SCROLLING === */
   html {
     scroll-behavior: smooth;
   }
+
+  /* === CUSTOM SCROLLBAR === */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0A0E27;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #667eea, #a855f7);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #00D9FF, #FF006E);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #667eea #0A0E27;
+  }
 }
 
 /* ============================================
-   CUSTOM UTILITY CLASSES
+   LUXURY UTILITY CLASSES
    ============================================ */
 
-/* --- GLOWING TEXT EFFECT --- */
-.glow-text {
-  text-shadow: 
-    0 0 20px rgba(0, 217, 255, 0.5),
-    0 0 40px rgba(0, 217, 255, 0.3);
-}
+@layer utilities {
+  /* === SPACING UTILITIES (8pt Grid) === */
+  .spacing-section {
+    @apply py-20 px-4;
+  }
 
-/* --- NEON BORDER EFFECT --- */
-.neon-border {
-  box-shadow: 
-    0 0 10px rgba(0, 217, 255, 0.5),
-    inset 0 0 10px rgba(0, 217, 255, 0.2);
+  .spacing-container {
+    @apply max-w-6xl mx-auto;
+  }
+
+  .spacing-content {
+    @apply space-y-8;
+  }
+
+  .spacing-card {
+    @apply p-6;
+  }
+
+  /* === GLOW EFFECTS === */
+  .glow-text {
+    text-shadow: 
+      0 0 20px rgba(102, 126, 234, 0.5),
+      0 0 40px rgba(102, 126, 234, 0.3);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+  }
+
+  /* === NEON BORDER EFFECT === */
+  .neon-border {
+    border: 2px solid transparent;
+    background: 
+      linear-gradient(#0a0e27, #0a0e27) padding-box,
+      linear-gradient(135deg, #667eea, #a855f7) border-box;
+    box-shadow: 
+      0 0 10px rgba(102, 126, 234, 0.5),
+      inset 0 0 10px rgba(102, 126, 234, 0.2);
+  }
+
+  /* === ANIMATED GRADIENT BORDER === */
+  .animated-border {
+    position: relative;
+    background: linear-gradient(#0a0e27, #0a0e27) padding-box,
+                linear-gradient(135deg, #667eea, #a855f7) border-box;
+    border: 2px solid transparent;
+  }
+
+  .animated-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, #667eea, #a855f7, #667eea);
+    background-size: 200% 200%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: borderFlow 3s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .animated-border:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes borderFlow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* === PULSE GLOW ANIMATION === */
+  .animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
+    }
+  }
 }
 
 /* ============================================
-   DYNAMIC LIGHTING EFFECTS (NEW!)
+   DYNAMIC LIGHTING EFFECTS
    ============================================ */
 
-/* --- DYNAMIC GLOW CARD EFFECT --- */
-/* Used for: Project cards on hover */
+/* === DYNAMIC GLOW CARD EFFECT === */
 .glow-card {
   animation: glow-pulse 2s ease-in-out infinite;
 }
 
 @keyframes glow-pulse {
   0%, 100% {
-    filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.3));
+    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3));
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.6));
+    filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
   }
 }
-/* Creates pulsing glow effect around cards - breathing animation */
 
-/* --- NEON EDGE REFLECTION --- */
-/* Used for: Interactive elements with rotating border glow */
+/* === NEON EDGE REFLECTION === */
 .neon-edge {
   position: relative;
 }
@@ -81,8 +210,8 @@
   background: linear-gradient(
     45deg,
     transparent,
-    #00D9FF,
-    #7B2FFF,
+    #667eea,
+    #a855f7,
     transparent
   );
   -webkit-mask: 
@@ -106,25 +235,22 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-/* Creates rotating gradient border on hover - cyberpunk effect */
 
-/* --- LIGHT REFLECTION EFFECT --- */
-/* Used for: Mouse-following glow effect */
+/* === LIGHT REFLECTION EFFECT === */
 .light-reflection {
   background: radial-gradient(
     circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(0, 217, 255, 0.1) 0%,
+    rgba(102, 126, 234, 0.1) 0%,
     transparent 50%
   );
   pointer-events: none;
 }
-/* Creates spotlight that follows mouse cursor */
 
 /* ============================================
    ANIMATED BACKGROUNDS
    ============================================ */
 
-/* --- ANIMATED GRADIENT BACKGROUND --- */
+/* === ANIMATED GRADIENT BACKGROUND === */
 .gradient-animation {
   background: linear-gradient(
     45deg,
@@ -152,7 +278,7 @@
    ELEMENT ANIMATIONS
    ============================================ */
 
-/* --- FLOATING ANIMATION --- */
+/* === FLOATING ANIMATION === */
 .float {
   animation: float 3s ease-in-out infinite;
 }
@@ -166,7 +292,7 @@
   }
 }
 
-/* --- PULSE GLOW ANIMATION --- */
+/* === PULSE GLOW ANIMATION === */
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
@@ -182,7 +308,7 @@
   }
 }
 
-/* --- FADE IN ANIMATION --- */
+/* === FADE IN ANIMATION === */
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
@@ -196,7 +322,7 @@
   }
 }
 
-/* --- SLIDE UP ANIMATION --- */
+/* === SLIDE UP ANIMATION === */
 .slide-up {
   animation: slideUp 0.6s ease-out;
 }
@@ -210,45 +336,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0A0E27;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #00D9FF, #8B5CF6);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #00D9FF, #FF006E);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #00D9FF #0A0E27;
-}
-
-/* ============================================
-   RESPONSIVE UTILITIES
-   ============================================ */
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 /* ============================================
@@ -269,26 +356,125 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+/* === GLASS CARD WITH DARK BACKGROUND === */
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  ) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  ) !important;
+}
+
+/* ============================================
+   TEXT READABILITY ENHANCEMENTS
+   ============================================ */
+
+/* === STRONG TEXT SHADOWS === */
+.glass-card h3,
+.glass-card h2,
+.glass-card h1 {
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 1),
+    0 4px 16px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.glass-card p,
+.glass-card li,
+.glass-card span {
+  text-shadow: 
+    0 1px 4px rgba(0, 0, 0, 0.9),
+    0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* === STRONGER SHADOWS ON HOVER === */
+.glass-card:hover h3,
+.glass-card:hover h2,
+.glass-card:hover h1 {
+  text-shadow: 
+    0 2px 12px rgba(0, 0, 0, 1),
+    0 4px 20px rgba(0, 0, 0, 1),
+    0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* === PROJECT CARD TEXT === */
+.project-title {
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.project-description {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.project-card:hover .project-title,
+.project-card:hover .project-description {
+  text-shadow: 
+    0 2px 12px rgba(0, 0, 0, 1),
+    0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* ============================================
+   PROJECT CARD ENHANCEMENTS
+   ============================================ */
+
+/* === SOFTER GLOW FOR CARDS === */
+.project-card-glow {
+  box-shadow: 
+    0 0 20px rgba(102, 126, 234, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.4s ease;
+}
+
+.project-card-glow:hover {
+  box-shadow: 
+    0 0 40px rgba(102, 126, 234, 0.2),
+    0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* === SMOOTH FILTER TRANSITIONS === */
+.filter-transition {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* === GPU ACCELERATION === */
+.project-card {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /* ============================================
    TEXT SELECTION STYLING
    ============================================ */
 
 ::selection {
-  background-color: rgba(0, 217, 255, 0.3);
+  background-color: rgba(102, 126, 234, 0.3);
   color: #ffffff;
 }
 
 ::-moz-selection {
-  background-color: rgba(0, 217, 255, 0.3);
+  background-color: rgba(102, 126, 234, 0.3);
   color: #ffffff;
 }
 
 /* ============================================
-   ADVANCED HOVER EFFECTS (BONUS!)
+   ADVANCED HOVER EFFECTS
    ============================================ */
 
-/* --- SHIMMER EFFECT --- */
-/* Used for: Buttons, cards, attention elements */
+/* === SHIMMER EFFECT === */
 .shimmer {
   position: relative;
   overflow: hidden;
@@ -318,20 +504,18 @@
     left: 100%;
   }
 }
-/* Creates light sweep effect across elements */
 
-/* --- HOVER LIFT EFFECT --- */
+/* === HOVER LIFT EFFECT === */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
-/* Lifts element up on hover with shadow */
 
-/* --- RIPPLE EFFECT --- */
+/* === RIPPLE EFFECT === */
 @keyframes ripple {
   0% {
     transform: scale(0);
@@ -342,19 +526,31 @@
     opacity: 0;
   }
 }
-/* For click ripple effects on buttons */
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /* ============================================
    PERFORMANCE OPTIMIZATIONS
    ============================================ */
 
-/* GPU-accelerated animations */
+/* === GPU-ACCELERATED ANIMATIONS === */
 .gpu-accelerated {
   transform: translateZ(0);
   will-change: transform, opacity;
 }
 
-/* Reduce motion for accessibility */
+/* === REDUCE MOTION FOR ACCESSIBILITY === */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -364,103 +560,61 @@
     transition-duration: 0.01ms !important;
   }
 }
-
 /* ============================================
-   UTILITY CLASSES SUMMARY
-   ============================================
-   
-   TEXT EFFECTS:
-   .glow-text          - Glowing text shadow
-   
-   BORDERS:
-   .neon-border        - Neon glow border
-   .neon-edge          - Rotating gradient border on hover
-   
-   CARDS:
-   .glow-card          - Pulsing glow effect
-   .glass              - Glassmorphism effect
-   .glass-strong       - Stronger glass effect
-   
-   ANIMATIONS:
-   .float              - Floating up/down
-   .pulse-glow         - Pulse breathing effect
-   .fade-in            - Fade in animation
-   .slide-up           - Slide up animation
-   .shimmer            - Light sweep effect
-   .hover-lift         - Lift on hover
-   
-   BACKGROUNDS:
-   .gradient-animation - Animated gradient
-   .light-reflection   - Mouse-following spotlight
-   
-   UTILITIES:
-   .hide-scrollbar     - Hide scrollbar
-   .gpu-accelerated    - Better performance
-*/
-
-/* Text readability improvements */
-.project-title {
-  text-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.8),
-    0 4px 16px rgba(0, 0, 0, 0.6);
-}
-
-.project-description {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-}
-
-/* Increase contrast on hover */
-.project-card:hover .project-title,
-.project-card:hover .project-description {
-  text-shadow: 
-    0 2px 12px rgba(0, 0, 0, 1),
-    0 4px 20px rgba(0, 0, 0, 0.8);
-}
-/* ============================================
-   TEXT READABILITY FIXES
+   SMOOTH SCROLL SNAPPING
    ============================================ */
 
-/* Strong text shadows for all project text */
-.glass-card h3,
-.glass-card h2,
-.glass-card h1 {
-  text-shadow: 
-    0 2px 8px rgba(0, 0, 0, 1),
-    0 4px 16px rgba(0, 0, 0, 0.8),
-    0 0 20px rgba(0, 0, 0, 0.6);
+/* ========== SCROLL BEHAVIOR & SNAP CONFIGURATION ========== */
+
+/* Global smooth scrolling */
+html {
+  scroll-behavior: smooth; /* ✅ ENABLE SMOOTH SCROLLING */
+  scroll-padding-top: 80px; /* ✅ Account for fixed navbar */
 }
 
-.glass-card p,
-.glass-card li,
-.glass-card span {
-  text-shadow: 
-    0 1px 4px rgba(0, 0, 0, 0.9),
-    0 2px 8px rgba(0, 0, 0, 0.6);
+/* Scroll snap container */
+.scroll-snap-container {
+  scroll-snap-type: y proximity; /* ✅ 'proximity' allows manual scrolling */
+  scroll-behavior: smooth; /* ✅ IMPORTANT - smooth scrolling */
+  overflow-y: auto; /* ✅ Changed from 'scroll' to 'auto' */
+  height: 100vh;
+  -webkit-overflow-scrolling: touch; /* ✅ iOS momentum scrolling */
 }
 
-/* Stronger shadows on hover */
-.glass-card:hover h3,
-.glass-card:hover h2,
-.glass-card:hover h1 {
-  text-shadow: 
-    0 2px 12px rgba(0, 0, 0, 1),
-    0 4px 20px rgba(0, 0, 0, 1),
-    0 0 30px rgba(0, 0, 0, 0.8);
+/* Scroll snap sections */
+.scroll-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal; /* ✅ Allows scrolling through sections */
+  scroll-margin-top: 80px; /* ✅ CRITICAL - Accounts for fixed navbar */
+  min-height: 100vh;
 }
 
-/* Increase card background darkness */
-.glass-card {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.4) 0%,
-    rgba(0, 0, 0, 0.2) 100%
-  ) !important;
+/* ========== CUSTOM SCROLLBAR STYLING ========== */
+.scroll-snap-container::-webkit-scrollbar {
+  width: 8px;
 }
 
-.glass-card:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.4) 100%
-  ) !important;
+.scroll-snap-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-snap-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #667eea, #a855f7);
+  border-radius: 10px;
+}
+
+.scroll-snap-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #667eea, #c084fc); /* ✅ Added hover effect */
+}
+
+/* ========== MOBILE OPTIMIZATION ========== */
+/* ✅ Disable scroll-snap on mobile for better UX */
+@media (max-width: 768px) {
+  .scroll-snap-container {
+    scroll-snap-type: none; /* ✅ Disable snapping on mobile */
+  }
+  
+  .scroll-snap-section {
+    scroll-margin-top: 70px; /* ✅ Smaller offset for mobile navbar */
+  }
 }

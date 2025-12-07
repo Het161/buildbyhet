@@ -239,14 +239,14 @@ function generateResponse(msg: string): string {
   if (text.match(/(project|work|built|portfolio|sih|nasa)/)) {
     if (text.match(/sih|smart.*india|smartwork/i)) {
       const p = portfolioData.projects[0];
-      return `**${p.name}** - ${p.description}\n\n**Performance**:\n${p.metrics?.map(m => `• ${m}`).join('\n')}\n\n**Tech**: ${p.tech.join(', ')}\n\n**Features**:\n${p.features?.slice(0, 4).map(f => `• ${f}`).join('\n')}\n\nGitHub: ${p.github}`;
+      return `${p.name} - ${p.description}\n\nPerformance:\n${p.metrics?.map(m => `• ${m}`).join('\n')}\n\nTech: ${p.tech.join(', ')}\n\nFeatures:\n${p.features?.slice(0, 4).map(f => `• ${f}`).join('\n')}\n\nGitHub: ${p.github}`;
     }
     if (text.match(/nasa|space|weather/i)) {
       const p = portfolioData.projects[1];
-      return `**${p.fullName}** 🚀\n\n${p.description}\n\n**Tech**: ${p.tech.join(', ')}\n\n**Key Features**:\n${p.features?.slice(0, 4).map(f => `• ${f}`).join('\n')}\n\nGitHub: ${p.github}`;
+      return `${p.fullName} 🚀\n\n${p.description}\n\nTech: ${p.tech.join(', ')}\n\nKey Features:\n${p.features?.slice(0, 4).map(f => `• ${f}`).join('\n')}\n\nGitHub: ${p.github}`;
     }
     const list = portfolioData.projects.slice(0, 3).map(p => 
-      `• **${p.name}**: ${p.description.substring(0, 80)}...`
+      `• ${p.name}: ${p.description.substring(0, 80)}...`
     ).join('\n');
     return `Het has built impressive backend projects:\n\n${list}\n\nWhich one interests you? (Try asking about "SIH" or "NASA")`;
   }
@@ -254,39 +254,39 @@ function generateResponse(msg: string): string {
   // Skills
   if (text.match(/(skill|tech|stack|know|language|api|backend)/)) {
     if (text.match(/backend|api|fastapi|rest/i)) {
-      return `Het specializes in **backend development**! 💻\n\n**Backend Expertise**:\n${portfolioData.skills.backend.slice(0, 5).map(s => `• ${s}`).join('\n')}\n\n**Databases**: ${portfolioData.skills.databases.slice(0, 3).join(', ')}\n\n**Performance**: Optimized APIs to ~120ms median latency with 95% test coverage!`;
+      return `Het specializes in backend development! 💻\n\nBackend Expertise:\n${portfolioData.skills.backend.slice(0, 5).map(s => `• ${s}`).join('\n')}\n\nDatabases: ${portfolioData.skills.databases.slice(0, 3).join(', ')}\n\nPerformance: Optimized APIs to ~120ms median latency with 95% test coverage!`;
     }
     if (text.match(/database|postgres|sql/i)) {
-      return `Het is strong with **PostgreSQL**! 🗄️\n\n**Database Skills**:\n${portfolioData.skills.databases.map(d => `• ${d}`).join('\n')}\n\nHe optimizes queries, designs schemas, and manages migrations with Alembic.`;
+      return `Het is strong with PostgreSQL! 🗄️\n\nDatabase Skills:\n${portfolioData.skills.databases.map(d => `• ${d}`).join('\n')}\n\nHe optimizes queries, designs schemas, and manages migrations with Alembic.`;
     }
-    return `Het is a **backend specialist**:\n\n**Languages**: ${portfolioData.skills.languages.join(', ')}\n**Frameworks**: ${portfolioData.skills.frameworks.slice(0, 4).join(', ')}\n**Databases**: ${portfolioData.skills.databases.slice(0, 2).join(', ')}\n**Tools**: ${portfolioData.skills.tools.slice(0, 4).join(', ')}\n\nWhat area interests you?`;
+    return `Het is a backend specialist:\n\nLanguages: ${portfolioData.skills.languages.join(', ')}\nFrameworks: ${portfolioData.skills.frameworks.slice(0, 4).join(', ')}\nDatabases: ${portfolioData.skills.databases.slice(0, 2).join(', ')}\nTools: ${portfolioData.skills.tools.slice(0, 4).join(', ')}\n\nWhat area interests you?`;
   }
   
   // Education
   if (text.match(/(education|university|college|degree|student|studying|cgpa|gpa)/)) {
     const edu = portfolioData.education[0];
-    return `Het is studying at **${edu.institution}**! 🎓\n\n**Degree**: ${edu.degree}\n**CGPA**: ${edu.cgpa}\n**Year**: ${portfolioData.personal.year}\n\n**Also**:\n• IELTS: 6.5 Bands\n• Class 12th: 68%\n• Class 10th: 70%\n\nBalancing academics with hackathons and backend projects!`;
+    return `Het is studying at ${edu.institution}! 🎓\n\nDegree: ${edu.degree}\nCGPA: ${edu.cgpa}\nYear: ${portfolioData.personal.year}\n\nAlso:\n• IELTS: 6.5 Bands\n• Class 12th: 68%\n• Class 10th: 70%\n\nBalancing academics with hackathons and backend projects!`;
   }
   
   // Experience
   if (text.match(/(experience|work|job|intern|om.*market|business)/)) {
     const exp = portfolioData.experience[0];
-    return `**${exp.company}** - ${exp.role}\n\n${exp.responsibilities.slice(0, 4).map(r => `• ${r}`).join('\n')}\n\n**Impact**: 60% faster reconciliation, 90% fewer errors!\n\nAlso: ${portfolioData.experience.length - 1} more experience${portfolioData.experience.length > 2 ? 's' : ''}`;
+    return `${exp.company} - ${exp.role}\n\n${exp.responsibilities.slice(0, 4).map(r => `• ${r}`).join('\n')}\n\nImpact: 60% faster reconciliation, 90% fewer errors!\n\nAlso: ${portfolioData.experience.length - 1} more experience${portfolioData.experience.length > 2 ? 's' : ''}`;
   }
   
   // Availability
   if (text.match(/(available|hire|work|opportunity|intern|job|freelance)/)) {
-    return `Yes! Het is **actively seeking opportunities**! 🎯\n\n**Looking for**: ${portfolioData.availability.types.join(', ')}\n**Preferred roles**: ${portfolioData.availability.preferred_roles.join(', ')}\n**Work mode**: ${portfolioData.availability.work_mode}\n**Availability**: ${portfolioData.availability.notice_period}\n\nInterested in backend expertise? Use the contact form! 📧`;
+    return `Yes! Het is actively seeking opportunities! 🎯\n\nLooking for: ${portfolioData.availability.types.join(', ')}\nPreferred roles**: ${portfolioData.availability.preferred_roles.join(', ')}\nWork mode: ${portfolioData.availability.work_mode}\nAvailability: ${portfolioData.availability.notice_period}\n\nInterested in backend expertise? Use the contact form! 📧`;
   }
   
   // About/Bio
   if (text.match(/(about|bio|background|summary)/)) {
-    return `${portfolioData.personal.bio}\n\n**Achievements**:\n${portfolioData.achievements.slice(0, 5).join('\n')}\n\n**Currently learning**: ${portfolioData.skills.currently_learning.slice(0, 3).join(', ')}\n\nWhat else would you like to know?`;
+    return `${portfolioData.personal.bio}\n\nAchievements:\n${portfolioData.achievements.slice(0, 5).join('\n')}\n\nCurrently learning: ${portfolioData.skills.currently_learning.slice(0, 3).join(', ')}\n\nWhat else would you like to know?`;
   }
   
   // Contact
   if (text.match(/(contact|email|reach|phone|message)/)) {
-    return `Reach Het here! 📬\n\n**Email**: ${portfolioData.personal.email}\n**Phone**: ${portfolioData.personal.phone}\n**GitHub**: ${portfolioData.personal.github}\n**LinkedIn**: ${portfolioData.personal.linkedin}\n\nOr use the contact form below!`;
+    return `Reach Het here! 📬\n\nEmail: ${portfolioData.personal.email}\nPhone: ${portfolioData.personal.phone}\nGitHub: ${portfolioData.personal.github}\nLinkedIN: ${portfolioData.personal.linkedin}\n\nOr use the contact form below!`;
   }
   
   // Achievements
@@ -296,16 +296,16 @@ function generateResponse(msg: string): string {
   
   // Performance/Metrics
   if (text.match(/(performance|fast|speed|latency|optimiz)/)) {
-    return `Het builds **high-performance backends**! ⚡\n\n**SIH Backend Metrics**:\n• ~120ms median API latency\n• p95 latency under 220ms\n• 95% test coverage\n• Optimized PostgreSQL queries\n\nAll with proper indexing, caching, and query optimization!`;
+    return `Het builds high-performance backends! ⚡\n\nSIH Backend Metrics:\n• ~120ms median API latency\n• p95 latency under 220ms\n• 95% test coverage\n• Optimized PostgreSQL queries\n\nAll with proper indexing, caching, and query optimization!`;
   }
   
   // GitHub
   if (text.match(/(github|repo|code|source)/)) {
-    return `Check out Het's GitHub! 💻\n\n**Profile**: ${portfolioData.personal.github}\n\n**Key Repositories**:\n${portfolioData.projects.filter(p => p.github).slice(0, 3).map(p => `• ${p.name}: ${p.github}`).join('\n')}\n\n14 followers • Active contributor`;
+    return `Check out Het's GitHub! 💻\n\nProfile: ${portfolioData.personal.github}\n\nKey Repositories:\n${portfolioData.projects.filter(p => p.github).slice(0, 3).map(p => `• ${p.name}: ${p.github}`).join('\n')}\n\n14 followers • Active contributor`;
   }
   
   // Default
-  return `Great question! 🤔 I can help with:\n\n• Het's **projects** (SIH, NASA Space Apps)\n• His **backend skills** (FastAPI, PostgreSQL)\n• **Education** & achievements\n• **Work availability** & roles\n• How to **contact** him\n\nWhat interests you?`;
+  return `Great question! 🤔 I can help with:\n\n• Het's projects (SIH, NASA Space Apps)\n• His backend skills (FastAPI, PostgreSQL)\n• Education & achievements\n• Work availability & roles\n• How to contact him\n\nWhat interests you?`;
 }
 
 // ========== POST HANDLER ==========
