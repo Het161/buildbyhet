@@ -326,7 +326,7 @@ function generateResponse(userMessage: string): string {
   if (msg.match(/(skill|tech|technology|stack|know|language)/)) {
     // Backend specific
     if (msg.match(/backend|server|api|python|fastapi|rest/)) {
-      return `Het specializes in **backend development**! 💻\n\n**Backend Expertise**:\n${portfolioData.skills.backend.slice(0, 5).map(s => `• ${s}`).join('\n')}\n\n**Databases**: ${portfolioData.skills.databases.slice(0, 3).join(', ')}\n\n**Performance**: Optimized APIs to ~120ms median latency with 95% test coverage!`;
+      return `Het specializes in backend development! 💻\n\n**Backend Expertise**:\n${portfolioData.skills.backend.slice(0, 5).map(s => `• ${s}`).join('\n')}\n\n**Databases**: ${portfolioData.skills.databases.slice(0, 3).join(', ')}\n\n**Performance**: Optimized APIs to ~120ms median latency with 95% test coverage!`;
     }
     
     // Frontend specific
