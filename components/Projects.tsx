@@ -340,6 +340,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import GlassCard from './ui/GlassCard';
+import { catalogue } from '@react-three/fiber/dist/declarations/src/core/renderer';
 
 // ============================================
 // PROJECT DATA
@@ -403,7 +404,8 @@ const projectsData = [
     tech: ['WhatsApp Business', 'Python', 'CRM', 'Inventory Management'],
     category: 'AI / Design',
     github: null,
-    demo: 'https://wa.me/c/919825247312',
+    demo:'https://om-marketing.vercel.app/',
+    catalogue: 'https://wa.me/c/919825247312',
     image: '/projects/om-marketing.jpg',
     highlights: [
       'ISO 9001:2008 certified',
