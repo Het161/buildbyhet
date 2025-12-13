@@ -404,7 +404,7 @@ const projectsData = [
     tech: ['WhatsApp Business', 'Python', 'CRM', 'Inventory Management'],
     category: 'AI / Design',
     github: null,
-    demo:'https://om-marketing.vercel.app/',
+    demo:'https://www.ommarketing.co.in',
     catalogue: 'https://wa.me/c/919825247312',
     image: '/projects/om-marketing.jpg',
     highlights: [
