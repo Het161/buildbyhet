@@ -2,7 +2,7 @@ import {
   IconMail,
   IconLinkedin,
   IconInstagram,
-  IconTwitter,
+  IconWhatsapp,
   IconGithub,
   IconExternal,
 } from "@/components/Icons";
@@ -17,8 +17,8 @@ const Icon = ({ name }) => {
       return <IconLinkedin />;
     case "instagram":
       return <IconInstagram />;
-    case "twitter":
-      return <IconTwitter />;
+    case "whatsapp":
+      return <IconWhatsapp />;
     default:
       return <IconExternal />;
   }

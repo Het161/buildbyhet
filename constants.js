@@ -1,13 +1,13 @@
 export const METADATA = {
-  author: "Shubh Porwal",
-  title: "Portfolio | Shubh Porwal",
+  author: "Het Patel",
+  title: "Portfolio | Het Patel",
   description:
-    "Shubh Porwal is a passionate Frontend Engineer, dedicated to crafting aesthetic and modern apps that captivate and engage users.",
-  siteUrl: "https://www.shubhporwal.me/",
+    "Het Patel is a passionate Frontend Engineer, dedicated to crafting aesthetic and modern apps that captivate and engage users.",
+  siteUrl: "https://www.buildbyhet.me/",
   twitterHandle: "@shubhporwal24",
   keywords: [
-    "Shubh Porwal",
-    "Frontend Engineer",
+    "Het Patel",
+    "Full-Stack Developer",
     "React Native Engineer",
     "Software Engineer",
     "Portfolio",
@@ -52,23 +52,23 @@ export const TYPED_STRINGS = [
 export const SOCIAL_LINKS = [
   {
     name: "mail",
-    url: "mailto: shubhporwal73@gmail.com",
+    url: "mailto:hetpatelsk@gmail.com",
   },
   {
     name: "linkedin",
-    url: "https://www.linkedin.com/in/shubhporwal/",
+    url: "https://www.linkedin.com/in/hetkumar-sanjaykumar-patel-54730933b/",
   },
   {
     name: "github",
-    url: "https://github.com/shubh73",
+    url: "https://github.com/Het161",
   },
   {
     name: "instagram",
-    url: "https://www.instagram.com/shubhii73/",
+    url: "https://www.instagram.com/hetpatel0812/",
   },
   {
-    name: "twitter",
-    url: "https://x.com/shubhporwal24",
+    name: "whatsapp",
+    url: "https://wa.me/919825247312?text=Hi%20Het!%20I%20visited%20your%20portfolio%20and%20would%20love%20to%20connect%20with%20you.",
   },
 ];
 
@@ -102,92 +102,44 @@ export const SKILLS = {
 
 export const PROJECTS = [
   {
-    name: "NextBoss",
-    imageKey: "nextboss",
-    description: "Get hired through DMs not resumes 🤝",
-    gradient: ["#FF69B4", "#FFB6C1"], // hot pink to light pink (cherry blossom inspired)
-    // url: "https://nextboss.in",
-    tech: ["typescript", "react", "expo", "react-query"],
+    name: "SmartWork 360",
+    imageKey: "smartwork",
+    description: "Enterprise-grade backend architecture with JWT-based RBAC, 95% test coverage & ~120ms median API latency 🚀",
+    gradient: ["#2563EB", "#1E3A8A"],
+    url: "https://smartwork-frontend-n8nr.vercel.app",
+    tech: ["fastapi", "postgresql", "docker", "pytest", "github-actions", "jwt"],
   },
   {
-    name: "ReadyAI",
-    imageKey: "ready-ai",
-    description: "AI that gets you interview ready 🎯",
-    gradient: ["#F4D03F", "#58D68D"], // warm gold to fresh green
-    url: "https://play.google.com/store/apps/details?id=com.app.readyai",
-    tech: ["typescript", "react"],
+    name: "NASA Space Apps Challenge",
+    imageKey: "nasa",
+    description: "Weather probability forecasting engine using 20+ years of NASA POWER & MERRA-2 satellite data 🌍",
+    gradient: ["#0F172A", "#334155"],
+    url: "https://github.com/Het161/Space-APP",
+    tech: ["python", "fastapi", "pandas", "numpy", "xarray"],
   },
   {
-    name: "Grapevine Round1 AI",
-    imageKey: "round1",
-    description: "Ace your round one in 9 minutes  💼",
-    gradient: ["#5D4037", "#8D6E63"], // dark brown to medium brown
-    url: "https://play.google.com/store/apps/details?id=com.app.gvine",
-    tech: ["typescript", "react", "react-query"],
+    name: "Campus Life",
+    imageKey: "campus",
+    description: "Anonymous campus communication platform with real-time interaction & modern UI 💬",
+    gradient: ["#7C3AED", "#4C1D95"],
+    url: "https://lovable.dev/projects/62ea0abc-4005-4a58-bc1f-b59fa8cbdc54",
+    tech: ["react", "typescript", "vite", "tailwindcss"],
   },
   {
-    name: "React Native Directory",
-    imageKey: "react-native-directory",
-    description: "Search & filter React Native libraries via Raycast ⌨️",
-    gradient: ["#000000", "#1A1A1A"], // pure black to dark gray
-    url: "https://www.raycast.com/shubh_porwal/react-native-directory",
-    tech: ["typescript", "react", "expo", "raycast"],
+    name: "OM Marketing Digital System",
+    imageKey: "om-marketing",
+    description: "Digitized inventory & business workflow system reducing reconciliation time by 60% 📊",
+    gradient: ["#065F46", "#064E3B"],
+    url: "https://www.ommarketing.co.in",
+    tech: ["process-automation", "crm", "whatsapp-business", "python"],
   },
   {
-    name: "Buywow",
-    imageKey: "buywow",
-    description: "Official Wow Skin Science app 🌿",
-    gradient: ["#FFD54F", "#FFB300"], // bright golden yellow to deep orange
-    url: "https://play.google.com/store/apps/details?id=co.tapcart.app.id_99G6QNo3nu",
-    tech: ["typescript", "react", "react-query"],
-  },
-  {
-    name: "Bot9",
-    imageKey: "bot9",
-    description: "Automate support with AI 🤖",
-    gradient: ["#3F51B5", "#7986CB"], // indigo to medium blue
-    url: "https://bot9.ai/",
-    tech: ["typescript", "react", "nextjs", "tailwindcss"],
-  },
-  {
-    name: "Dukaan",
-    imageKey: "dukaan",
-    description: "Shopify for India 🛍️",
-    gradient: ["#1976D2", "#1565C0"], // material blue to deep blue
-    url: "https://play.google.com/store/apps/details?id=com.dukaan.app",
-    tech: ["typescript", "react", "firebase", "tailwindcss", "react-query"],
-  },
-  {
-    name: "Tesla",
-    imageKey: "tesla",
-    description: "Built with Expo 🏎️",
-    gradient: ["#0F172A", "#1E293B"], // midnight blue to dark slate (electric/tech feel)
-    url: "https://github.com/shubh73/tesla",
-    tech: ["javascript", "expo"],
-  },
-  {
-    name: "Airbnb",
-    imageKey: "airbnb",
-    description: "Built with NextJS + Tailwind CSS 🛏️",
-    gradient: ["#1F2937", "#6B7280"], // dark gray to medium gray
-    url: "https://shubh73-airbnb.vercel.app/",
-    tech: ["javascript", "react", "nextjs", "mapbox", "tailwindcss"],
-  },
-  {
-    name: "Medium",
-    imageKey: "medium",
-    description: "Built with NextJS + Tailwind CSS ✍🏻",
-    gradient: ["#FF9800", "#F57C00"], // warm orange to deep orange
-    url: "https://shubh73-medium.vercel.app/",
-    tech: ["typescript", "react", "nextjs", "tailwindcss", "sanity"],
-  },
-  {
-    name: "Inshorts",
-    imageKey: "inshorts",
-    description: "Voice-enabled news using Alan AI 🎙",
-    gradient: ["#6366F1", "#4F46E5"], // indigo to deep indigo
-    url: "https://shubh73-inshorts.netlify.app/",
-    tech: ["javascript", "react", "chakra-ui", "alan"],
+    name: "Build By Het",
+    imageKey: "buildbyhet",
+    description: "Personal developer portfolio showcasing backend engineering & full-stack capabilities 🌐",
+    gradient: ["#111827", "#2563EB"],
+    url: "https://www.buildbyhet.me",
+    tech: ["react", "typescript", "vite", "tailwindcss"],
   },
 ];
 

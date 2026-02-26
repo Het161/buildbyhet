@@ -53,13 +53,15 @@ const ProjectTile = ({ project, classes, isDesktop }) => {
           className="absolute w-full h-full top-0 left-0 opacity-20 rounded-3xl"
           fill
         />
-        <Image
-          src={image}
-          alt={name}
-          placeholder="blur"
-          fill
-          className={styles.projectImage}
-        />
+        {image && (
+          <Image
+            src={image}
+            alt={name}
+            placeholder="blur"
+            fill
+            className={styles.projectImage}
+          />
+        )}
         {!isDesktop && (
           <div
             className="absolute bottom-0 left-0 w-full h-20"
