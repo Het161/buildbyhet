@@ -1,7 +1,6 @@
 # Het Patel - Portfolio
 
 <a href="https://www.buildbyhet.me/">
-  <img alt="Het Patel Portfolio" src="./public/preview.png" />
 </a>
 
 <p>
