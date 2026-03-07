@@ -11,22 +11,32 @@ const Work = ({ isDesktop }) => {
   const tabItems = useMemo(
     () => [
       {
-        title: "Grapevine",
-        value: "grapevine",
+        title: "OM Marketing",
+        value: "om-marketing",
         content: (
           <StickyScroll
             isDesktop={isDesktop}
-            contentItems={WORK_CONTENTS.GRAPEVINE}
+            contentItems={WORK_CONTENTS.OM_MARKETING || []}
           />
         ),
       },
       {
-        title: "Dukaan",
-        value: "dukaan",
+        title: "OM Solutions",
+        value: "om-marketing-solutions",
         content: (
           <StickyScroll
             isDesktop={isDesktop}
-            contentItems={WORK_CONTENTS.DUKAAN}
+            contentItems={WORK_CONTENTS.OM_MARKETING_SOLUTIONS || []}
+          />
+        ),
+      },
+      {
+        title: "Hackathons",
+        value: "hackathons",
+        content: (
+          <StickyScroll
+            isDesktop={isDesktop}
+            contentItems={WORK_CONTENTS.HACKATHONS || []}
           />
         ),
       },

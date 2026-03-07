@@ -15,6 +15,10 @@ const StickyScroll = ({ contentItems }) => {
   const [activeCard, setActiveCard] = useState(0);
   const containerRef = useRef(null);
 
+  if (!contentItems || contentItems.length === 0) {
+    return null;
+  }
+
   const { scrollYProgress } = useScroll({
     container: containerRef,
     offset: ["start start", "end start"],
