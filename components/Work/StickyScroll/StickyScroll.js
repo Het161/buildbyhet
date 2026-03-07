@@ -15,18 +15,16 @@ const StickyScroll = ({ contentItems }) => {
   const [activeCard, setActiveCard] = useState(0);
   const containerRef = useRef(null);
 
-  if (!contentItems || contentItems.length === 0) {
-    return null;
-  }
-
   const { scrollYProgress } = useScroll({
     container: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const cardLength = contentItems.length;
+  const cardLength = contentItems?.length || 0;
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (!contentItems || contentItems.length === 0) return;
+
     const cardsBreakpoints = contentItems.map(
       (_, index) => index / cardLength - 0.1
     );
@@ -43,6 +41,10 @@ const StickyScroll = ({ contentItems }) => {
     );
     setActiveCard(closestBreakpointIndex);
   });
+
+  if (!contentItems || contentItems.length === 0) {
+    return null;
+  }
 
   return (
     <div className="relative">
