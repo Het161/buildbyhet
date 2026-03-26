@@ -1,40 +1,108 @@
 .projectTile {
-  height: 22rem;
-  width: 38rem;
+  height: 24rem;
+  width: 50rem;
+  display: flex;
+  overflow: hidden;
   transform-style: preserve-3d;
   transform: perspective(1000px);
 
-  @media (min-width: 768px) {
-    height: 26rem;
+  @media (max-width: 768px) {
+    height: 20rem;
+    width: 42rem;
   }
 
-  img {
-    object-fit: cover;
+  @media (max-width: 640px) {
+    height: 18rem;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.imageContainer {
+  position: relative;
+  width: 45%;
+  height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    height: 45%;
   }
 }
 
 .projectImage {
-  @apply absolute top-0 rounded-xl shadow-xl;
-
-  width: 17rem !important;
-  max-width: 17rem !important;
-  transform: rotate(-22.5deg);
-  height: unset !important;
-  min-width: unset !important;
-  max-height: unset !important;
-  object-fit: contain !important;
-  left: unset !important;
-  right: 2rem !important;
-  bottom: unset !important;
-  clip-path: inset(0);
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
   z-index: 0;
+  transition: transform 0.3s ease, filter 0.3s ease;
 
-  @media (max-width: 480px) {
-    width: clamp(12rem, 40vw, 16rem) !important;
-    right: clamp(-2rem, 2vw, 1.5rem) !important;
+  &:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
   }
 }
 
-.techIcons {
-  transform: rotate(-22.5deg) translateZ(3rem);
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+  z-index: 1;
+}
+
+.contentContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  z-index: 10;
+  position: relative;
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+  }
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.projectTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
+  letter-spacing: 0.025em;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.1rem;
+  }
+}
+
+.projectDescription {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  @media (max-width: 640px) {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
 }

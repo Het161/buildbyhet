@@ -42,64 +42,32 @@ const ProjectTile = ({ project, classes, isDesktop }) => {
     >
       <div
         ref={projectCard}
-        className={`${styles.projectTile} rounded-3xl relative p-6 flex flex-col justify-between max-w-full`}
+        className={`${styles.projectTile} rounded-3xl relative overflow-hidden max-w-full`}
         style={{
-          background: `linear-gradient(90deg, ${gradient[0]} 0%, ${gradient[1]} 100%)`,
+          background: `linear-gradient(135deg, ${gradient[0]} 0%, ${gradient[1]} 100%)`,
         }}
       >
-        <Image
-          src="/project-bg.svg"
-          alt="project"
-          className="absolute w-full h-full top-0 left-0 opacity-20 rounded-3xl"
-          fill
-        />
-        {image && (
-          <Image
-            src={image}
-            alt={name}
-            placeholder="blur"
-            fill
-            className={styles.projectImage}
-          />
-        )}
-        {!isDesktop && (
-          <div
-            className="absolute bottom-0 left-0 w-full h-20"
-            style={{
-              background: `linear-gradient(0deg, ${gradient[0]} 10%, rgba(0,0,0,0) 100%)`,
-            }}
-          />
-        )}
-        <h1
-          className="font-medium text-2xl sm:text-3xl z-10 pl-2 pt-2 transform-gpu"
-          style={{ transform: "translateZ(3rem)" }}
-        >
-          {name}
-        </h1>
-        <div
-          className={`
-            ${styles.techIcons} w-1/2 h-full absolute left-24 top-0 sm:flex items-center hidden
-          `}
-        >
-          <div className="flex flex-col pb-8">
-            {tech.map((el, i) => (
-              <Image
-                className={`${i % 2 === 0 && "ml-16"} mb-4`}
-                src={`/projects/tech/${el}.svg`}
-                alt={el}
-                height={45}
-                width={45}
-                key={el}
-              />
-            ))}
+        {/* Left side: Image */}
+        <div className={styles.imageContainer}>
+          {image && (
+            <Image
+              src={image}
+              alt={name}
+              placeholder="blur"
+              fill
+              className={styles.projectImage}
+            />
+          )}
+          <div className={styles.imageOverlay}></div>
+        </div>
+
+        {/* Right side: Content */}
+        <div className={styles.contentContainer}>
+          <div className={styles.textContent}>
+            <h1 className={styles.projectTitle}>{name}</h1>
+            <h2 className={styles.projectDescription}>{description}</h2>
           </div>
         </div>
-        <h2
-          className="text-lg z-10 tracking-wide font-medium text-white transform-gpu"
-          style={{ transform: "translateZ(0.8rem)" }}
-        >
-          {description}
-        </h2>
       </div>
     </a>
   );

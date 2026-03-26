@@ -111,9 +111,10 @@ const Projects = ({ isDesktop, clientHeight }) => {
           {PROJECTS.map((project, index) => (
             <ProjectTile
               classes={
-                index === PROJECTS.length - 1 ? "" : "mr-8 xs:mr-10 sm:mr-12"
+                index === PROJECTS.length - 1 ? "" : "mr-6 xs:mr-8 sm:mr-10"
               }
               project={project}
+              isDesktop={isDesktop}
               key={project.name}
             />
           ))}
