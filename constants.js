@@ -52,7 +52,7 @@ export const TYPED_STRINGS = [
 export const SOCIAL_LINKS = [
   {
     name: "mail",
-    url: "mailto:hetpatelsk@gmail.com",
+    url: "mailto:het@buildbyhet.me",
   },
   {
     name: "linkedin",
