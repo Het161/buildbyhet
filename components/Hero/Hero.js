@@ -96,9 +96,18 @@ const Hero = () => {
         <div className="staggered-reveal">
           <Profiles />
         </div>
-        <div className="staggered-reveal pt-4">
+        <div className="staggered-reveal pt-4 flex flex-row gap-4">
           <Button href={`#${MENULINKS[4].ref}`} classes="link" type="primary">
             Let&apos;s Talk
+          </Button>
+          <Button
+            href="/resume.pdf"
+            classes="link"
+            type="secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Resume
           </Button>
         </div>
       </div>

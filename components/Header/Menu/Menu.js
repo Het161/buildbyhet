@@ -28,6 +28,16 @@ const Menu = () => {
                 </a>
               </li>
             ))}
+            <li className="p-0 m-6 text-2xl block">
+              <a
+                className="link relative inline font-mono font-bold text-5xl duration-300 hover:no-underline"
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume
+              </a>
+            </li>
           </ul>
         </div>
       </div>
