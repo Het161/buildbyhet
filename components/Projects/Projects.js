@@ -1,12 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MENULINKS, PROJECTS } from "../../constants";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import ProjectTile from "./ProjectTile/ProjectTile";
+import ProjectModal from "./ProjectModal/ProjectModal";
 
 const Projects = ({ isDesktop, clientHeight }) => {
   const sectionRef = useRef(null);
   const sectionTitleRef = useRef(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     let projectsScrollTrigger;
@@ -80,47 +82,59 @@ const Projects = ({ isDesktop, clientHeight }) => {
   };
 
   return (
-    <section
-      ref={sectionRef}
-      id={MENULINKS[2].ref}
-      className={`${
-        isDesktop && "min-h-screen"
-      } w-full relative select-none section-container transform-gpu`}
-    >
-      <div className="flex flex-col py- justify-center h-full">
-        <div
-          className="flex flex-col inner-container transform-gpu"
-          ref={sectionTitleRef}
-        >
-          <p className="uppercase tracking-widest text-gray-light-1 staggered-reveal">
-            PROJECTS
-          </p>
-          <h1 className="text-6xl mt-2 font-medium text-gradient w-fit staggered-reveal">
-            My Projects
-          </h1>
-          <h2 className="text-[1.65rem] font-medium md:max-w-lg max-w-sm mt-2 staggered-reveal">
-            Some things I&apos;ve built with love, expertise and a pinch of
-            magical ingredients.{" "}
-          </h2>
+    <>
+      <section
+        ref={sectionRef}
+        id={MENULINKS[2].ref}
+        className={`${
+          isDesktop && "min-h-screen"
+        } w-full relative select-none section-container transform-gpu`}
+      >
+        <div className="flex flex-col py- justify-center h-full">
+          <div
+            className="flex flex-col inner-container transform-gpu"
+            ref={sectionTitleRef}
+          >
+            <p className="uppercase tracking-widest text-gray-light-1 staggered-reveal">
+              PROJECTS
+            </p>
+            <h1 className="text-6xl mt-2 font-medium text-gradient w-fit staggered-reveal">
+              My Projects
+            </h1>
+            <h2 className="text-[1.65rem] font-medium md:max-w-lg max-w-sm mt-2 staggered-reveal">
+              Some things I&apos;ve built with love, expertise and a pinch of
+              magical ingredients.{" "}
+            </h2>
+          </div>
+          <div
+            className={`${
+              clientHeight > 650 ? "mt-12" : "mt-8"
+            } flex project-wrapper no-scrollbar w-fit staggered-reveal`}
+          >
+            {PROJECTS.map((project, index) => (
+              <ProjectTile
+                classes={
+                  index === PROJECTS.length - 1 ? "" : "mr-6 xs:mr-8 sm:mr-10"
+                }
+                project={project}
+                isDesktop={isDesktop}
+                key={project.name}
+                onOpenModal={
+                  project.hasModal ? () => setSelectedProject(project) : undefined
+                }
+              />
+            ))}
+          </div>
         </div>
-        <div
-          className={`${
-            clientHeight > 650 ? "mt-12" : "mt-8"
-          } flex project-wrapper no-scrollbar w-fit staggered-reveal`}
-        >
-          {PROJECTS.map((project, index) => (
-            <ProjectTile
-              classes={
-                index === PROJECTS.length - 1 ? "" : "mr-6 xs:mr-8 sm:mr-10"
-              }
-              project={project}
-              isDesktop={isDesktop}
-              key={project.name}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
+      </section>
+
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
+    </>
   );
 };
 
