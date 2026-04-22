@@ -236,6 +236,35 @@ export const PROJECTS = [
     ],
     hasModal: true,
   },
+  {
+    name: "Alpha Ventures",
+    imageKey: null,
+    description: "Premium business consultancy & wealth advisory website with luxury black-and-gold aesthetic. Multi-page React app with conversion-focused architecture.",
+    gradient: ["#1A1200", "#3D2600"],
+    url: "https://alpha-ventures-demo.netlify.app",
+    tech: ["react", "vite", "tailwindcss", "framer-motion"],
+    tagline: "Premium Business Consultancy & Wealth Advisory",
+    tags: ["Client Project", "Frontend", "Business", "Finance"],
+    stats: [
+      { label: "Pages Built", value: "5" },
+      { label: "AUM Metrics", value: "₹2K Cr" },
+      { label: "Case Studies", value: "6" },
+    ],
+    features: [
+      "5-page React website (Home, About, Services, Case Studies, Contact)",
+      "Luxury black + gold design system with Playfair Display typography",
+      "Hero section with cinematic background and gradient overlays",
+      "Proven Track Record section with 6 real-world case study cards",
+      "Current Opportunities with live investment deal cards & qualification modal",
+      "Full case studies page with challenge / approach / outcome structure",
+      "Services page with 4 detailed offerings and expected outcomes",
+      "About page with founder profile and company story",
+      "Framer Motion scroll animations throughout",
+      "Floating WhatsApp CTA button",
+      "Deployed on Netlify with SPA routing configured",
+    ],
+    hasModal: true,
+  },
 ];
 
 export const WORK_CONTENTS = {
