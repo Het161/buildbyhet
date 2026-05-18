@@ -293,7 +293,7 @@ const Contact = () => {
 
             <div className="relative mt-14">
               <input
-                type="text"
+                type="email"
                 id="email"
                 className="block w-full h-12 sm:h-14 px-4 text-xl sm:text-2xl font-mono outline-none border-2 border-purple bg-transparent rounded-[0.6rem] transition-all duration-200"
                 value={formData.email}

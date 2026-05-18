@@ -90,7 +90,7 @@ const Projects = ({ isDesktop, clientHeight }) => {
           isDesktop && "min-h-screen"
         } w-full relative select-none section-container transform-gpu`}
       >
-        <div className="flex flex-col py- justify-center h-full">
+        <div className="flex flex-col py-2 justify-center h-full">
           <div
             className="flex flex-col inner-container transform-gpu"
             ref={sectionTitleRef}

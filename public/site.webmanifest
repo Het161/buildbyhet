@@ -1,0 +1,26 @@
+{
+  "name": "Het Patel — Full-Stack Developer & AI Automation Builder",
+  "short_name": "Het Patel",
+  "description": "Portfolio of Het Patel — full-stack web developer & AI automation builder in Ahmedabad, India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

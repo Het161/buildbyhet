@@ -15,7 +15,9 @@ import Work from "@/components/Work/Work";
 import Collaboration from "@/components/Collaboration/Collaboration";
 import Contact from "@/components/Contact/Contact";
 import Footer from "@/components/Footer/Footer";
+import Link from "next/link";
 import { displayFancyLogs } from "utils/log";
+import { getPublishedCities } from "../data/cities";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.config({ nullTargetWarn: false });
@@ -75,6 +77,24 @@ export default function Home() {
             <Collaboration clientHeight={clientHeight} />
             <Contact />
           </main>
+          {getPublishedCities().length > 0 && (
+            <section className="px-4 sm:px-8 lg:px-16 py-12 border-t border-gray-800 max-w-7xl mx-auto">
+              <h2 className="text-sm uppercase tracking-wider text-gray-500 mb-4">
+                Serving clients across India
+              </h2>
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                {getPublishedCities().map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/web-developer-in/${c.slug}`}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    {c.name}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
           <Footer />
         </>
       )}

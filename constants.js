@@ -1,23 +1,36 @@
 export const METADATA = {
-  author: "Het Patel",
-  title: "Portfolio | Het Patel",
+  title:
+    "Het Patel — Full-Stack Web Developer & AI Automation Builder | Ahmedabad",
   description:
-    "Het Patel is a passionate Frontend Engineer, dedicated to crafting aesthetic and modern apps that captivate and engage users.",
-  siteUrl: "https://www.buildbyhet.me/",
-  twitterHandle: "@shubhporwal24",
+    "Het Patel is a full-stack web developer in Ahmedabad, India building Next.js, MERN, and AI-automated SaaS products. Hire a freelance Next.js & React developer for startups and SMBs.",
   keywords: [
     "Het Patel",
-    "Full-Stack Developer",
-    "React Native Engineer",
-    "Software Engineer",
-    "Portfolio",
-    "Devfolio",
-    "Folio",
+    "Het Patel developer",
+    "buildbyhet",
+    "Het Patel Ahmedabad",
+    "web developer Ahmedabad",
+    "freelance web developer Ahmedabad",
+    "Next.js developer India",
+    "MERN stack developer Gujarat",
+    "full stack developer Ahmedabad",
+    "freelance developer India",
+    "Next.js developer",
+    "React developer",
+    "Node.js developer",
+    "MongoDB developer",
+    "PostgreSQL Prisma developer",
+    "Razorpay integration freelancer",
+    "SaaS developer India",
+    "AI automation developer",
+    "Tailwind CSS developer",
+    "TypeScript developer",
   ].join(", "),
-  image:
-    "https://res.cloudinary.com/dywdhyojt/image/upload/v1721378510/social-preview.png",
-  language: "English",
-  themeColor: "#000000",
+  siteUrl: "https://buildbyhet.me",
+  ogImage: "/og-image.png",
+  author: "Het Patel",
+  authorEmail: "hetpatelsk@gmail.com",
+  authorPhone: "+91 98252 47312",
+  authorLocation: "Ahmedabad, Gujarat, India",
 };
 
 export const MENULINKS = [
@@ -265,6 +278,36 @@ export const PROJECTS = [
     ],
     hasModal: true,
   },
+  {
+    name: "Shri Har Packaging",
+    imageKey: null,
+    description:
+      "Ahmedabad-based industrial machinery dealer selling LPI, REVO & Smart Stitch bag closing machines, threads and spares. Built a complete professional website from scratch for a 30+ year old business that had zero digital presence — only a shop and a business card.",
+    gradient: ["#18181B", "#EA580C"],
+    url: "https://shreeharpackaging.in",
+    tech: ["html", "css", "javascript", "vercel", "seo"],
+    tagline: "From business card to Google-ready website in 1 day",
+    tags: ["Client Project", "Frontend", "Industrial", "SEO"],
+    location: "Isanpur, Ahmedabad, Gujarat",
+    stats: [
+      { label: "Years in Business", value: "30+" },
+      { label: "Products Listed", value: "11" },
+      { label: "Build Time", value: "1 Day" },
+    ],
+    features: [
+      "Single-page site with 9 sections + animated stats counter",
+      "Filterable product catalogue (11 SKUs across 4 categories)",
+      "Individual product detail pages with full specs, image gallery & related products",
+      "Direct WhatsApp enquiry buttons pre-filled per product",
+      "Brand showcase for LPI / REVO / Smart Stitch",
+      "Custom dark industrial theme with safety orange accents & Bebas Neue typography",
+      "Full SEO: LocalBusiness, FAQPage & Product schema, sitemap.xml, robots.txt",
+      "Geo-targeting meta tags & Core Web Vitals optimization",
+      "Contact section with WhatsApp enquiry form & Google Maps embed",
+      "Mobile-first build, no frameworks — deployed on Vercel with custom domain",
+    ],
+    hasModal: true,
+  },
 ];
 
 export const WORK_CONTENTS = {
@@ -337,49 +380,5 @@ export const WORK_CONTENTS = {
     },
   ],
 };
-  // AVIATE: [
-  //   {
-  //     title: "Aviate",
-  //     description:
-  //       "Aviate is a preparation and mentorship platform for job-seekers that are seeking non-technical roles across top companies",
-  //     content: (
-  //       <div className="h-full w-full flex items-center justify-center text-white px-4">
-  //         Finding the right job isn&apos;t fate, it&apos;s navigation
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     title: "Innovation",
-  //     description:
-  //       "I spearheaded the development of Q-Rate, their flagship product, a voice-based applicant screening platform. Moreover, I took initiatives to enhance user engagement and drive substantial increases in daily traffic. Additionally, I implemented an error-logging and bug reporting system, significantly diminishing user-reported bugs.",
-  //     content: (
-  //       <div className="h-full w-full flex items-center justify-center text-white px-4">
-  //         Frontend Developer Intern
-  //       </div>
-  //     ),
-  //   },
-  // ],
-  // SPACENOS: [
-  //   {
-  //     title: "Spacenos",
-  //     description:
-  //       "A dynamic startup dedicated to creating innovative products that make the world a better place.",
-  //     content: (
-  //       <div className="h-full w-full flex items-center justify-center text-white px-4">
-  //         We build apps that solve problems for the next billion people
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     title: "Trailblazing",
-  //     description:
-  //       "I led the comprehensive overhaul of the Admin Portal, implementing CRUD features for all services and providers. Additionally, I architected a feature enabling precise customer location tracking and delivering insightful usage statistics. Through optimized and compressed file serving, I catalyzed a remarkable Yx increase in page speed, resulting in a X% boost in customer retention.",
-  //     content: (
-  //       <div className="h-full w-full flex items-center justify-center text-white px-4">
-  //         Web Developer Intern
-  //       </div>
-  //     ),
-  //   },
-  // ],
 
 export const GTAG = "G-5HCTL2TJ5W";
