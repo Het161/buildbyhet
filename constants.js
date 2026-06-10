@@ -123,6 +123,22 @@ export const SKILLS = {
 
 export const PROJECTS = [
   {
+    name: "HireLoop",
+    imageKey: "hireloop",
+    description: "AI mock interview platform with voice & text modes — 21 tech roles, adaptive questioning, and honest scored debriefs powered by Groq Llama 3.3 🎯",
+    gradient: ["#581C87", "#7C3AED"],
+    url: "https://hireloop-tau.vercel.app/",
+    tech: ["nextjs", "react", "typescript", "tailwindcss", "groq", "llama"],
+  },
+  {
+    name: "GitStory",
+    imageKey: "gitstory",
+    description: "Type any GitHub username and AI turns their commits into a shareable, magazine-style developer story — generated in seconds ✨",
+    gradient: ["#0F172A", "#1E40AF"],
+    url: "https://git-story-gold.vercel.app/",
+    tech: ["nextjs", "react", "typescript", "tailwindcss", "github-api", "openai"],
+  },
+  {
     name: "TT Marketing",
     imageKey: "ttmarketing",
     description: "Comprehensive marketing platform and high-tech retail presence for modern business growth 📈",
