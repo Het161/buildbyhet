@@ -7,18 +7,20 @@ import {
   ChangeEvent,
   FormEvent,
 } from "react";
+import clsx from "clsx";
 import Message, { ChatMessage } from "./Message";
 import SuggestedChips from "./SuggestedChips";
 import TypingIndicator from "./TypingIndicator";
+import styles from "./askhet.module.css";
 
 const HISTORY_KEY = "askhet-history";
 const MAX_INPUT_CHARS = 500;
 const HISTORY_TO_SEND = 8;
 
 interface Props {
-  /** If provided, renders a close button in the header. */
+  /** When provided, renders a close (×) button in the header. */
   onClose?: () => void;
-  /** Render style for full-page vs popup; only affects the outer layout class. */
+  /** "widget" uses the floating panel; "page" uses the full-page container. */
   variant?: "widget" | "page";
 }
 
@@ -50,7 +52,6 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
   const mountedRef = useRef(true);
   const hydratedRef = useRef(false);
 
-  // Mirror state into refs so callbacks don't need them in deps.
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
@@ -58,7 +59,7 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
     isStreamingRef.current = isStreaming;
   }, [isStreaming]);
 
-  // Load history once on mount.
+  // Hydrate from sessionStorage once.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -66,19 +67,20 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          const filtered = parsed
-            .filter(
-              (m: any) =>
-                m &&
-                (m.role === "user" || m.role === "assistant") &&
-                typeof m.content === "string"
-            )
-            .map((m: any) => ({
-              id: typeof m.id === "string" ? m.id : newId(),
-              role: m.role,
-              content: m.content,
-            }));
-          setMessages(filtered);
+          setMessages(
+            parsed
+              .filter(
+                (m: any) =>
+                  m &&
+                  (m.role === "user" || m.role === "assistant") &&
+                  typeof m.content === "string"
+              )
+              .map((m: any) => ({
+                id: typeof m.id === "string" ? m.id : newId(),
+                role: m.role,
+                content: m.content,
+              }))
+          );
         }
       }
     } catch {
@@ -86,7 +88,7 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
     }
   }, []);
 
-  // Persist only when idle (avoid 700 setItem calls during a stream).
+  // Persist only when idle.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!hydratedRef.current) {
@@ -97,11 +99,11 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
     try {
       window.sessionStorage.setItem(HISTORY_KEY, JSON.stringify(messages));
     } catch {
-      /* quota or disabled — non-fatal */
+      /* quota or disabled */
     }
   }, [messages, isStreaming]);
 
-  // Abort any in-flight fetch on unmount.
+  // Abort in-flight on unmount.
   useEffect(() => {
     return () => {
       mountedRef.current = false;
@@ -109,7 +111,7 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
     };
   }, []);
 
-  // Auto-scroll behavior.
+  // Auto-scroll.
   useEffect(() => {
     if (!logRef.current) return;
     if (pinnedToBottom) {
@@ -123,7 +125,8 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
   const handleLogScroll = useCallback(() => {
     const el = logRef.current;
     if (!el) return;
-    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 60;
+    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    const atBottom = distFromBottom < 80;
     setPinnedToBottom(atBottom);
     if (atBottom) setHasNewBelow(false);
   }, []);
@@ -156,6 +159,8 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
       setIsStreaming(true);
       isStreamingRef.current = true;
       setPinnedToBottom(true);
+      // Reset textarea height.
+      if (inputRef.current) inputRef.current.style.height = "auto";
 
       const controller = new AbortController();
       abortRef.current = controller;
@@ -181,7 +186,6 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
           }
           throw new Error(msg);
         }
-
         if (!resp.body) {
           if (mountedRef.current) setMessages((prev) => prev.slice(0, -1));
           throw new Error("empty response");
@@ -214,14 +218,12 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
           }
         }
 
-        // If the model returned an empty string, drop the placeholder.
         if (!acc.trim() && mountedRef.current) {
           setMessages((prev) => prev.slice(0, -1));
           setError("the model returned an empty response — try again");
         }
       } catch (err: any) {
         if (err?.name === "AbortError") {
-          // Drop a never-started placeholder so we don't persist an empty bubble.
           if (mountedRef.current) {
             setMessages((prev) => {
               const last = prev[prev.length - 1];
@@ -235,9 +237,7 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
           setError(err?.message || "connection hiccup — try again");
         }
       } finally {
-        if (mountedRef.current) {
-          setIsStreaming(false);
-        }
+        if (mountedRef.current) setIsStreaming(false);
         isStreamingRef.current = false;
         abortRef.current = null;
       }
@@ -291,8 +291,7 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
     setInput(value);
     const el = e.target;
     el.style.height = "auto";
-    const max = 96; // ~4 lines × 24px
-    el.style.height = `${Math.min(el.scrollHeight, max)}px`;
+    el.style.height = `${Math.min(el.scrollHeight, 96)}px`;
   };
 
   const onInputKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -311,7 +310,6 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
     }
   };
 
-  // Identify last assistant index for the streaming cursor.
   let lastAssistantIndex = -1;
   for (let i = messages.length - 1; i >= 0; i--) {
     if (messages[i].role === "assistant") {
@@ -328,39 +326,31 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
 
   const charCount = input.length;
   const isEmpty = messages.length === 0;
+  const isPanel = variant === "widget";
 
   return (
     <div
-      className={`flex flex-col h-full w-full bg-gray-dark-5 text-gray-light-1 ${
-        variant === "widget" ? "rounded-xl overflow-hidden" : ""
-      } border border-purple/30`}
+      className={clsx(styles.root, isPanel ? styles.panel : styles.pagePanel)}
+      role={isPanel ? "dialog" : undefined}
+      aria-modal={isPanel ? "true" : undefined}
+      aria-labelledby={isPanel ? "askhet-dialog-title" : undefined}
     >
-      {/* Header — terminal title bar */}
-      <header
-        className="flex items-center gap-2 border-b border-purple/30 px-3 py-2 shrink-0"
-        style={{ paddingTop: "calc(0.5rem + env(safe-area-inset-top, 0px))" }}
-      >
-        <span
-          id="askhet-dialog-title"
-          className="font-mono text-xs text-purple-light"
-        >
-          ❯ askhet --interactive
+      {/* Header */}
+      <header className={styles.header}>
+        <span id="askhet-dialog-title" className={styles.headerTitle}>
+          ❯ askhet
         </span>
-        <span
-          aria-hidden="true"
-          className="w-2 h-2 rounded-full bg-green motion-safe:animate-pulse"
-        />
-        <span className="sr-only">AskHet status: online</span>
-        <span className="font-mono text-[10px] text-gray-light-3 hidden xs:inline">
-          groq · llama-3.3
-        </span>
-        <div className="flex-1" />
+        <span aria-hidden="true" className={styles.dot} />
+        <span className={styles.srOnly}>AskHet status: online</span>
+        <span className={styles.headerStatus}>online</span>
+        <div className={styles.headerSpacer} />
+        <span className={styles.headerModel}>groq · llama-3.3</span>
         <button
           type="button"
           onClick={handleClear}
           aria-label="Clear chat history"
           title="Clear chat history"
-          className="text-gray-light-3 hover:text-white p-2.5 -m-1 min-w-[40px] min-h-[40px] inline-flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-purple"
+          className={styles.iconBtn}
         >
           <svg
             width="14"
@@ -386,11 +376,11 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
             onClick={onClose}
             aria-label="Close chat"
             title="Close chat"
-            className="text-gray-light-3 hover:text-white p-2.5 -m-1 min-w-[40px] min-h-[40px] inline-flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-purple"
+            className={styles.iconBtn}
           >
             <svg
-              width="16"
-              height="16"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -406,30 +396,42 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
         )}
       </header>
 
-      {/* Log */}
+      {/* Messages */}
       <div
         ref={logRef}
         onScroll={handleLogScroll}
+        className={styles.messages}
         role="log"
         aria-label="Chat conversation"
         aria-busy={isStreaming}
-        className="flex-1 min-h-0 overflow-y-auto px-3 py-3 relative"
       >
         {isEmpty ? (
-          <div className="text-sm">
-            <p className="text-gray-light-2 leading-relaxed">
-              Hi! I&apos;m{" "}
-              <span className="text-purple-light font-mono">AskHet</span> 👋 —
-              ask me anything about Het&apos;s projects, skills, or availability.
-            </p>
+          <>
+            <article
+              aria-label="AskHet intro"
+              className={clsx(styles.msgWrap, styles.msgWrapAssistant)}
+            >
+              <span className={styles.label}>
+                askhet <span className={styles.glyph}>❯</span>
+              </span>
+              <div className={clsx(styles.bubble, styles.bubbleAssistant)}>
+                <div className={styles.intro}>
+                  Hi! I&apos;m <span className={styles.brand}>AskHet</span> 👋
+                  — ask me anything about Het&apos;s projects, skills, or
+                  availability.
+                </div>
+              </div>
+            </article>
             <SuggestedChips
               onSelect={handleChipSelect}
               disabled={isStreaming}
             />
-          </div>
+          </>
         ) : (
           <>
             {messages.map((m, i) => {
+              // Hide the empty assistant placeholder; the TypingIndicator
+              // below covers that slot until the first token arrives.
               if (
                 i === messages.length - 1 &&
                 m.role === "assistant" &&
@@ -451,17 +453,14 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
         )}
 
         {error && (
-          <div
-            role="alert"
-            className="my-2 px-3 py-2 rounded-md border border-red/40 bg-red/10 text-sm font-mono"
-          >
-            <span className="text-red">⚠ </span>
-            <span className="text-gray-light-2">{error}</span>
+          <div role="alert" className={styles.errorBox}>
+            <span className={styles.errorIcon}>⚠ </span>
+            <span>{error}</span>
             {lastUserRef.current && (
               <button
                 type="button"
                 onClick={handleRetry}
-                className="ml-2 underline text-purple-light hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-purple"
+                className={styles.retryLink}
               >
                 retry
               </button>
@@ -480,28 +479,16 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
               }
             }}
             aria-label="Jump to newest message"
-            className="sticky bottom-2 left-1/2 -translate-x-1/2 font-mono text-[11px] px-3 py-1 rounded-full border border-purple/40 bg-gray-dark-3 text-gray-light-2 hover:text-white hover:border-purple shadow-lg shadow-black/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple"
+            className={styles.newPill}
           >
-            <span aria-hidden="true">↓</span> new message
+            ↓ new
           </button>
         )}
       </div>
 
       {/* Input */}
-      <form
-        onSubmit={onFormSubmit}
-        className="border-t border-purple/30 px-3 py-2 shrink-0"
-        style={{
-          paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom, 0px))",
-        }}
-      >
-        <div className="flex items-end gap-2 rounded-md focus-within:ring-1 focus-within:ring-purple/60 px-1 -mx-1 transition-shadow">
-          <span
-            aria-hidden="true"
-            className="font-mono text-purple-light text-sm pb-2 select-none"
-          >
-            ❯
-          </span>
+      <form onSubmit={onFormSubmit} className={styles.inputArea}>
+        <div className={styles.inputRow}>
           <textarea
             ref={inputRef}
             value={input}
@@ -512,42 +499,36 @@ export default function ChatWindow({ onClose, variant = "widget" }: Props) {
             aria-describedby="askhet-input-hint"
             maxLength={MAX_INPUT_CHARS}
             rows={1}
-            className="flex-1 resize-none font-mono text-base sm:text-sm bg-transparent text-gray-light-1 placeholder:text-gray-light-3 outline-none focus:outline-none py-2 leading-6"
-            style={{ maxHeight: 96 }}
+            className={styles.textarea}
           />
-          <span id="askhet-input-hint" className="sr-only">
-            Press Enter to send, Shift plus Enter for a new line. Max{" "}
+          {charCount > 400 && (
+            <span
+              className={clsx(
+                styles.charCounter,
+                charCount >= MAX_INPUT_CHARS && styles.charCounterMax
+              )}
+              aria-live={charCount >= MAX_INPUT_CHARS - 20 ? "polite" : "off"}
+              role={charCount >= MAX_INPUT_CHARS - 20 ? "status" : undefined}
+            >
+              {charCount} / {MAX_INPUT_CHARS}
+            </span>
+          )}
+          <span id="askhet-input-hint" className={styles.srOnly}>
+            Press Enter to send, Shift plus Enter for a new line. Maximum{" "}
             {MAX_INPUT_CHARS} characters.
           </span>
           <button
             type="submit"
             aria-label={isStreaming ? "Stop response" : "Send message"}
             disabled={!isStreaming && !input.trim()}
-            className="shrink-0 mb-1 px-4 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 rounded-md font-mono text-xs border border-purple/50 bg-purple/10 text-purple-light hover:bg-purple hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple"
+            className={styles.sendBtn}
           >
-            {isStreaming ? "stop" : "send"}
+            {isStreaming ? "■" : "❯"}
           </button>
         </div>
-        <div className="flex items-center justify-between pt-1 gap-2">
-          <p className="font-mono text-[10px] text-gray-light-3 truncate min-w-0">
-            built from scratch by het · powered by groq
-          </p>
-          {charCount > 400 && (
-            <p
-              className={`font-mono text-[10px] shrink-0 ${
-                charCount >= MAX_INPUT_CHARS ? "text-red" : "text-gray-light-2"
-              }`}
-              role={
-                charCount >= MAX_INPUT_CHARS - 20 ? "status" : undefined
-              }
-              aria-live={
-                charCount >= MAX_INPUT_CHARS - 20 ? "polite" : "off"
-              }
-            >
-              {charCount} / {MAX_INPUT_CHARS}
-            </p>
-          )}
-        </div>
+        <p className={styles.footer}>
+          built from scratch by het · powered by groq
+        </p>
       </form>
     </div>
   );

@@ -1,4 +1,5 @@
 import { memo } from "react";
+import styles from "./askhet.module.css";
 
 const CHIPS = [
   "What has Het built?",
@@ -17,7 +18,7 @@ function SuggestedChips({ onSelect, disabled }: Props) {
     <div
       role="group"
       aria-label="Suggested questions"
-      className="flex flex-wrap gap-2 gap-y-3 sm:gap-y-2 mt-4"
+      className={styles.chipList}
     >
       {CHIPS.map((c) => (
         <button
@@ -25,7 +26,7 @@ function SuggestedChips({ onSelect, disabled }: Props) {
           type="button"
           onClick={() => onSelect(c)}
           disabled={disabled}
-          className="font-mono text-xs px-3 py-2.5 min-h-[44px] sm:min-h-[36px] inline-flex items-center rounded-md border border-purple/40 text-gray-light-2 hover:border-purple hover:text-white hover:bg-purple/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-purple"
+          className={styles.chip}
         >
           {c}
         </button>
