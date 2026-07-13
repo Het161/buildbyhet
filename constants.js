@@ -284,4 +284,94 @@ export const WORK_CONTENTS = {
   ],
 };
 
+export const CERTIFICATIONS = [
+  {
+    slug: "hackbaroda-2026",
+    name: "HackBaroda 2026 — Finalist",
+    issuer: "Coder's Corner",
+    date: "June 2026",
+    year: 2026,
+    category: "Hackathon",
+    highlight: "Finalist",
+    description:
+      "Selected with Team Society for the Final Round of HackBaroda 2026, Gujarat's largest hackathon, held in Vadodara.",
+    image: "/certifications/hackbaroda-2026.webp",
+    gradient: ["#7C2D12", "#C2410C"],
+  },
+  {
+    slug: "nasa-space-apps-2025",
+    name: "Galactic Problem Solver",
+    issuer: "NASA International Space Apps Challenge",
+    date: "October 2025",
+    year: 2025,
+    category: "Hackathon",
+    highlight: "Global",
+    description:
+      "Awarded for outstanding participation in the 2025 NASA International Space Apps Challenge, the world's largest global hackathon.",
+    image: "/certifications/nasa-space-apps-2025.webp",
+    gradient: ["#0F172A", "#1E40AF"],
+  },
+  {
+    slug: "adobe-india-hackathon",
+    name: "Adobe India Hackathon — Round 1",
+    issuer: "Adobe · Unstop",
+    date: "2025",
+    year: 2025,
+    category: "Hackathon",
+    description:
+      "Cleared Round 1 (Online MCQ Assessment + Coding) of the Adobe India Hackathon, representing Gandhinagar University.",
+    image: "/certifications/adobe-india-hackathon.webp",
+    gradient: ["#7F1D1D", "#DC2626"],
+  },
+  {
+    slug: "iit-madras-road-safety-hackathon",
+    name: "National Road Safety Hackathon 2025",
+    issuer: "IIT Madras · Unstop",
+    date: "2025",
+    year: 2025,
+    category: "Hackathon",
+    description:
+      "Participated in the National Road Safety Hackathon 2025 organised by the Indian Institute of Technology (IIT), Madras.",
+    image: "/certifications/iit-madras-road-safety-hackathon.webp",
+    gradient: ["#1E3A8A", "#2563EB"],
+  },
+  {
+    slug: "techstars-startup-weekend",
+    name: "Techstars Startup Weekend Gandhinagar",
+    issuer: "PDEU Innovation & Incubation Centre",
+    date: "August 2025",
+    year: 2025,
+    category: "Startup",
+    description:
+      "Certificate of Appreciation for participating in the 54-hour Techstars Startup Weekend hosted by PDEU IIC, backed by Google for Startups.",
+    image: "/certifications/techstars-startup-weekend.webp",
+    gradient: ["#831843", "#BE185D"],
+  },
+  {
+    slug: "murf-ai-agents",
+    name: "30 Days of AI Agents",
+    issuer: "Murf AI",
+    date: "August 2025",
+    year: 2025,
+    category: "AI",
+    description:
+      "Completed Murf's 30 Days of AI Agents challenge — building voice-enabled AI agents on the Murf API.",
+    image: "/certifications/murf-ai-agents.webp",
+    gradient: ["#581C87", "#7C3AED"],
+  },
+  {
+    slug: "royal-technosoft-bootcamp",
+    name: "Bootcamp Lead",
+    issuer: "Royal Technosoft Pvt. Ltd.",
+    date: "June 2025",
+    year: 2025,
+    category: "Leadership",
+    highlight: "Led",
+    description:
+      "Recognised for successfully heading the developer bootcamps held at Royal Technosoft Pvt. Ltd.",
+    image: "/certifications/royal-technosoft-bootcamp.webp",
+    gradient: ["#064E3B", "#059669"],
+  },
+];
+
 export const GTAG = "G-5HCTL2TJ5W";

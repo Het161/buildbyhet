@@ -1,16 +1,25 @@
 import React, { useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { MENULINKS } from "../../../constants";
 
 const Menu = () => {
-  useEffect(() => {
-    const anchorNodes = document.querySelectorAll('a[href^="#"]');
+  const router = useRouter();
+  const isHome = router.pathname === "/";
 
-    anchorNodes.forEach((el) => {
-      el.addEventListener("click", () => {
-        const checkbox = document.querySelector(".checkbox-toggle");
-        checkbox.checked = false;
-      });
-    });
+  useEffect(() => {
+    const anchorNodes = document.querySelectorAll(".menu a");
+
+    const closeMenu = () => {
+      const checkbox = document.querySelector(".checkbox-toggle");
+      if (checkbox) checkbox.checked = false;
+    };
+
+    anchorNodes.forEach((el) => el.addEventListener("click", closeMenu));
+
+    return () => {
+      anchorNodes.forEach((el) => el.removeEventListener("click", closeMenu));
+    };
   }, []);
 
   return (
@@ -22,12 +31,20 @@ const Menu = () => {
               <li key={el.name} className="p-0 m-6 text-2xl block">
                 <a
                   className="link relative inline font-mono font-bold text-5xl duration-300 hover:no-underline"
-                  href={`#${el.ref}`}
+                  href={isHome ? `#${el.ref}` : `/#${el.ref}`}
                 >
                   {el.name}
                 </a>
               </li>
             ))}
+            <li className="p-0 m-6 text-2xl block">
+              <Link
+                className="link relative inline font-mono font-bold text-5xl duration-300 hover:no-underline"
+                href="/certifications"
+              >
+                Certifications
+              </Link>
+            </li>
             <li className="p-0 m-6 text-2xl block">
               <a
                 className="link relative inline font-mono font-bold text-5xl duration-300 hover:no-underline"

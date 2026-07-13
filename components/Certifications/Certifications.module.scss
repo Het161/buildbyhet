@@ -1,0 +1,352 @@
+/* ---------------------------------- Grid --------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* --------------------------------- Filters -------------------------------- */
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filterChip {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 0.75rem 1.25rem;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #ffffff;
+    border-color: rgba(159, 85, 255, 0.6);
+    background: rgba(139, 49, 255, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #9f55ff;
+    outline-offset: 2px;
+  }
+}
+
+.filterChipActive {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(to right, #9f55ff, #7000ff);
+
+  &:hover {
+    background: linear-gradient(to right, #9f55ff, #7000ff);
+    border-color: transparent;
+  }
+}
+
+.filterCount {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+/* ---------------------------------- Card ---------------------------------- */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: linear-gradient(to bottom right, #242225, #1a171e);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-0.375rem);
+    border-color: rgba(159, 85, 255, 0.5);
+    box-shadow: 0 1rem 2.5rem rgba(112, 0, 255, 0.18);
+
+    .thumbImage {
+      transform: scale(1.04);
+    }
+
+    .viewLink {
+      color: #b985ff;
+    }
+
+    .viewArrow {
+      transform: translateX(0.25rem);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid #9f55ff;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: border-color 0.3s ease;
+
+    &:hover,
+    &:focus-visible {
+      transform: none;
+
+      .thumbImage,
+      .viewArrow {
+        transform: none;
+      }
+    }
+  }
+}
+
+/* Accent strip echoing each certificate's palette */
+.accentBar {
+  height: 4px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #120e16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.thumbImage {
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+/* Keeps light-background certificates from glaring against the dark UI */
+.thumbScrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(18, 14, 22, 0.55) 0%,
+    rgba(18, 14, 22, 0) 45%
+  );
+}
+
+.badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(to right, #9f55ff, #7000ff);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.35);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.5rem;
+  padding: 1.25rem;
+}
+
+.category {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b985ff;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #aaaaaa;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #8a8a8a;
+  flex-shrink: 0;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #dbdbdb;
+  margin-top: 0.25rem;
+}
+
+.viewLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+  transition: color 0.25s ease;
+}
+
+.viewArrow {
+  transition: transform 0.25s ease;
+}
+
+/* -------------------------------- Lightbox -------------------------------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.lightbox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 56rem;
+  max-height: 90vh;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: #1a171e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  animation: slideUp 0.25s ease;
+
+  @media (max-width: 640px) {
+    max-height: 95vh;
+    border-radius: 1.25rem;
+  }
+}
+
+.lightboxImageWrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  background: #120e16;
+  padding: 1.5rem;
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+  }
+}
+
+.lightboxImage {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 0.5rem;
+}
+
+.lightboxBody {
+  padding: 1.25rem 1.5rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #ffffff;
+    background: rgba(139, 49, 255, 0.35);
+    border-color: rgba(159, 85, 255, 0.6);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #9f55ff;
+    outline-offset: 2px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .lightbox {
+    animation: none;
+  }
+}
