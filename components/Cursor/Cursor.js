@@ -49,18 +49,36 @@ const Cursor = ({ isDesktop }) => {
 
       document.addEventListener("mousemove", moveCircle);
 
-      document.querySelectorAll(".link").forEach((el) => {
-        el.addEventListener("mouseenter", hover);
-        el.addEventListener("mouseleave", unHover);
-      });
+      // Delegated hover detection: works for `.link` elements added to the DOM
+      // AFTER mount (lazy-loaded WebGL gallery CTAs, project/cert modals) —
+      // a one-time querySelectorAll would miss those. mouseover/mouseout
+      // bubble (unlike mouseenter/mouseleave), so we track the nearest
+      // `.link` ancestor and only fire on entering/leaving its boundary.
+      let activeLink = null;
+
+      const onOver = (e) => {
+        const link = e.target.closest?.(".link");
+        if (link && link !== activeLink) {
+          activeLink = link;
+          hover();
+        }
+      };
+
+      const onOut = (e) => {
+        if (!activeLink) return;
+        // Ignore moves that stay within the same `.link` subtree.
+        if (e.relatedTarget && activeLink.contains(e.relatedTarget)) return;
+        activeLink = null;
+        unHover();
+      };
+
+      document.addEventListener("mouseover", onOver);
+      document.addEventListener("mouseout", onOut);
 
       return () => {
         document.removeEventListener("mousemove", moveCircle);
-
-        document.querySelectorAll(".link").forEach((el) => {
-          el.removeEventListener("mouseenter", hover);
-          el.removeEventListener("mouseleave", unHover);
-        });
+        document.removeEventListener("mouseover", onOver);
+        document.removeEventListener("mouseout", onOut);
       };
     }
   }, [cursor, follower, isDesktop]);

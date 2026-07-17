@@ -1,84 +1,103 @@
 import { useEffect, useRef, useState } from "react";
-import { MENULINKS, PROJECTS } from "../../constants";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import ProjectTile from "./ProjectTile/ProjectTile";
+import { MENULINKS, PROJECTS } from "../../constants";
 import ProjectModal from "./ProjectModal/ProjectModal";
+import ProjectInfoPanel from "./ProjectInfoPanel";
+import styles from "./Projects.module.scss";
 
-const Projects = ({ isDesktop, clientHeight }) => {
-  const sectionRef = useRef(null);
-  const sectionTitleRef = useRef(null);
-  const [selectedProject, setSelectedProject] = useState(null);
+// The WebGL ring is client-only and lives in its own lazy chunk — it never
+// touches SSR and stays out of the initial bundle.
+const OrbitalGallery = dynamic(() => import("./OrbitalGallery"), {
+  ssr: false,
+});
 
-  useEffect(() => {
-    let projectsScrollTrigger;
-    let projectsTimeline;
-
-    if (isDesktop) {
-      [projectsTimeline, projectsScrollTrigger] = getProjectsSt();
-    } else {
-      const projectWrapper =
-        sectionRef.current.querySelector(".project-wrapper");
-      projectWrapper.style.width = "calc(100vw - 1rem)";
-      projectWrapper.style.overflowX = "scroll";
-    }
-
-    const [revealTimeline, revealScrollTrigger] = getRevealSt();
-
-    return () => {
-      projectsScrollTrigger && projectsScrollTrigger.kill();
-      projectsTimeline && projectsTimeline.kill();
-      revealScrollTrigger && revealScrollTrigger.kill();
-      revealTimeline && revealTimeline.progress(1);
-    };
-  }, [sectionRef, sectionTitleRef, isDesktop]);
-
-  const getRevealSt = () => {
-    const revealTl = gsap.timeline({ defaults: { ease: "none" } });
-
-    revealTl.from(
-      sectionRef.current.querySelectorAll(".staggered-reveal"),
-      { opacity: 0, duration: 0.5, stagger: 0.5 },
-      "<"
+function webglSupported() {
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl2") || canvas.getContext("webgl"))
     );
+  } catch {
+    return false;
+  }
+}
 
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top bottom",
-      end: "bottom bottom",
-      scrub: 0,
-      animation: revealTl,
-    });
+const Projects = () => {
+  const sectionRef = useRef(null);
+  const stageRef = useRef(null);
 
-    return [revealTl, scrollTrigger];
-  };
+  // null = still deciding; "webgl" | "fallback" once known (client only).
+  const [mode, setMode] = useState(null);
+  const [contextLost, setContextLost] = useState(false); // WebGL gave out
+  const [mounted, setMounted] = useState(false); // lazy gallery mount
+  const [centeredIndex, setCenteredIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const galleryApi = useRef(null);
 
-  const getProjectsSt = () => {
-    const timeline = gsap.timeline({ defaults: { ease: "none" } });
-    const sidePadding =
-      document.body.clientWidth -
-      sectionRef.current.querySelector(".inner-container").clientWidth;
-    const elementWidth =
-      sidePadding +
-      sectionRef.current.querySelector(".project-wrapper").clientWidth;
-    sectionRef.current.style.width = `${elementWidth}px`;
-    const width = window.innerWidth - elementWidth;
-    const duration = `${(elementWidth / window.innerHeight) * 100}%`;
-    timeline
-      .to(sectionRef.current, { x: width })
-      .to(sectionTitleRef.current, { x: -width }, "<");
+  // Decide render mode: no WebGL / reduced-motion → static DOM grid.
+  useEffect(() => {
+    const reduce = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    )?.matches;
+    setMode(reduce || !webglSupported() ? "fallback" : "webgl");
+  }, []);
 
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: duration,
-      scrub: 0,
-      pin: true,
-      animation: timeline,
-      pinSpacing: "margin",
-    });
+  // Heading reveal (plays once on enter; matches the site's staggered pattern).
+  useEffect(() => {
+    if (!sectionRef.current) return undefined;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ paused: true });
+      tl.from(sectionRef.current.querySelectorAll(".staggered-reveal"), {
+        opacity: 0,
+        y: 24,
+        duration: 0.5,
+        stagger: 0.12,
+        ease: "power2.out",
+      });
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 80%",
+        once: true,
+        onEnter: () => tl.play(),
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
-    return [timeline, scrollTrigger];
+  // Lazily mount the gallery when the stage is within ~1.5 viewports.
+  useEffect(() => {
+    if (mode !== "webgl" || !stageRef.current) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMounted(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "150% 0px" }
+    );
+    io.observe(stageRef.current);
+    return () => io.disconnect();
+  }, [mode]);
+
+  // Keep sibling ScrollTriggers (About/Work/Contact pins) aligned once the
+  // gallery has taken its space.
+  useEffect(() => {
+    if (!mounted) return undefined;
+    const id = setTimeout(() => ScrollTrigger.refresh(), 300);
+    return () => clearTimeout(id);
+  }, [mounted]);
+
+  const centeredProject = PROJECTS[centeredIndex] || PROJECTS[0];
+
+  const handleActivate = (index) => {
+    const project = PROJECTS[index];
+    if (!project) return;
+    if (project.hasModal) setSelectedProject(project);
+    else window.open(project.url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -86,46 +105,81 @@ const Projects = ({ isDesktop, clientHeight }) => {
       <section
         ref={sectionRef}
         id={MENULINKS[2].ref}
-        className={`${
-          isDesktop && "min-h-screen"
-        } w-full relative select-none section-container transform-gpu`}
+        className="w-full relative select-none"
       >
-        <div className="flex flex-col py-2 justify-center h-full">
-          <div
-            className="flex flex-col inner-container transform-gpu"
-            ref={sectionTitleRef}
-          >
-            <p className="uppercase tracking-widest text-gray-light-1 staggered-reveal">
-              PROJECTS
-            </p>
-            <h1 className="text-6xl mt-2 font-medium text-gradient w-fit staggered-reveal">
-              My Projects
-            </h1>
-            <h2 className="text-[1.65rem] font-medium md:max-w-lg max-w-sm mt-2 staggered-reveal">
-              Some things I&apos;ve built with love, expertise and a pinch of
-              magical ingredients.{" "}
-            </h2>
-          </div>
-          <div
-            className={`${
-              clientHeight > 650 ? "mt-12" : "mt-8"
-            } flex project-wrapper no-scrollbar w-fit staggered-reveal`}
-          >
-            {PROJECTS.map((project, index) => (
-              <ProjectTile
-                classes={
-                  index === PROJECTS.length - 1 ? "" : "mr-6 xs:mr-8 sm:mr-10"
-                }
-                project={project}
-                isDesktop={isDesktop}
-                key={project.name}
-                onOpenModal={
-                  project.hasModal ? () => setSelectedProject(project) : undefined
-                }
-              />
-            ))}
-          </div>
+        <div className="section-container py-8">
+          <p className="uppercase tracking-widest text-gray-light-1 staggered-reveal">
+            PROJECTS
+          </p>
+          <h1 className="text-6xl mt-2 font-medium text-gradient w-fit staggered-reveal">
+            My Projects
+          </h1>
+          <h2 className="text-[1.65rem] font-medium md:max-w-lg max-w-sm mt-2 staggered-reveal">
+            Some things I&apos;ve built with love, expertise and a pinch of
+            magical ingredients.
+          </h2>
         </div>
+
+        {/* Always-rendered, visually-hidden list for crawlers & screen readers
+            (the canvas carries no text). */}
+        <ul className={styles.srOnly}>
+          {PROJECTS.map((project) => (
+            <li key={project.name}>
+              <a href={project.url}>{project.name}</a> — {project.description}
+            </li>
+          ))}
+        </ul>
+
+        {mode === "fallback" || contextLost ? (
+          <div className="section-container">
+            <FallbackGrid onOpenModal={setSelectedProject} />
+          </div>
+        ) : (
+          <>
+            <div ref={stageRef} className={styles.stage}>
+              <div className={styles.canvasHost}>
+                {mounted && (
+                  <OrbitalGallery
+                    items={PROJECTS}
+                    onIndex={setCenteredIndex}
+                    onActivate={handleActivate}
+                    onApi={(api) => {
+                      galleryApi.current = api;
+                    }}
+                    onContextLost={() => setContextLost(true)}
+                  />
+                )}
+              </div>
+
+              <button
+                type="button"
+                aria-label="Previous project"
+                onClick={() => galleryApi.current?.snap(-1)}
+                className={`${styles.navBtn} ${styles.navPrev} link`}
+              >
+                <NavArrow direction="left" />
+              </button>
+              <button
+                type="button"
+                aria-label="Next project"
+                onClick={() => galleryApi.current?.snap(1)}
+                className={`${styles.navBtn} ${styles.navNext} link`}
+              >
+                <NavArrow direction="right" />
+              </button>
+
+              <span className={styles.hint}>Drag · scroll to spin</span>
+            </div>
+
+            <ProjectInfoPanel
+              project={centeredProject}
+              onOpenModal={() =>
+                centeredProject?.hasModal &&
+                setSelectedProject(centeredProject)
+              }
+            />
+          </>
+        )}
       </section>
 
       {selectedProject && (
@@ -137,5 +191,67 @@ const Projects = ({ isDesktop, clientHeight }) => {
     </>
   );
 };
+
+const NavArrow = ({ direction }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="22"
+    height="22"
+    aria-hidden="true"
+    style={{ transform: direction === "left" ? "rotate(180deg)" : "none" }}
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+// Static DOM grid — the reduced-motion / no-WebGL / context-lost fallback.
+const FallbackGrid = ({ onOpenModal }) => (
+  <div className={styles.fallbackGrid}>
+    {PROJECTS.map((project) =>
+      project.hasModal ? (
+        <button
+          key={project.name}
+          type="button"
+          onClick={() => onOpenModal(project)}
+          className={`${styles.fallbackCard} link`}
+        >
+          <FallbackCardInner project={project} label="View details" />
+        </button>
+      ) : (
+        <a
+          key={project.name}
+          href={project.url}
+          target="_blank"
+          rel="noreferrer"
+          className={`${styles.fallbackCard} link`}
+        >
+          <FallbackCardInner project={project} label="Visit ↗" />
+        </a>
+      )
+    )}
+  </div>
+);
+
+const FallbackCardInner = ({ project, label }) => (
+  <>
+    <span
+      className={styles.fallbackAccent}
+      style={{
+        background: `linear-gradient(135deg, ${project.gradient[0]} 0%, ${project.gradient[1]} 100%)`,
+      }}
+    />
+    <span className={styles.fallbackBody}>
+      <span className={styles.fallbackName}>{project.name}</span>
+      <span className={styles.fallbackDesc}>{project.description}</span>
+      <span className={styles.fallbackLink}>{label}</span>
+    </span>
+  </>
+);
 
 export default Projects;

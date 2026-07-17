@@ -124,7 +124,10 @@ export const SKILLS = {
 export const PROJECTS = [
   {
     name: "HireLoop",
+    slug: "hireloop",
     imageKey: "hireloop",
+    image: "/projects/hireloop.webp",
+    imageAlt: "HireLoop AI mock interview platform interface",
     description: "AI mock interview platform with voice & text modes — 21 tech roles, adaptive questioning, and honest scored debriefs powered by Groq Llama 3.3 🎯",
     gradient: ["#581C87", "#7C3AED"],
     url: "https://hireloop-tau.vercel.app/",
@@ -132,7 +135,10 @@ export const PROJECTS = [
   },
   {
     name: "GitStory",
+    slug: "gitstory",
     imageKey: "gitstory",
+    image: "/projects/gitstory.webp",
+    imageAlt: "GitStory AI-generated developer story from GitHub commits",
     description: "Type any GitHub username and AI turns their commits into a shareable, magazine-style developer story — generated in seconds ✨",
     gradient: ["#0F172A", "#1E40AF"],
     url: "https://git-story-gold.vercel.app/",
@@ -140,7 +146,10 @@ export const PROJECTS = [
   },
   {
     name: "TT Marketing",
+    slug: "tt-marketing",
     imageKey: "ttmarketing",
+    image: "/projects/tt-marketing.webp",
+    imageAlt: "TT Marketing platform landing page",
     description: "Comprehensive marketing platform and high-tech retail presence for modern business growth 📈",
     gradient: ["#1E1B4B", "#4338CA"],
     url: "https://ttmarketing.co.in",
@@ -148,7 +157,10 @@ export const PROJECTS = [
   },
   {
     name: "OM Marketing Digital System",
+    slug: "om-marketing",
     imageKey: "om-marketing",
+    image: "/projects/om-marketing.webp",
+    imageAlt: "OM Marketing digital inventory and workflow system",
     description: "Digitized inventory & business workflow system reducing reconciliation time by 60% 📊",
     gradient: ["#065F46", "#064E3B"],
     url: "https://www.ommarketing.co.in",
@@ -156,6 +168,9 @@ export const PROJECTS = [
   },
   {
     name: "FindUrTrip",
+    slug: "findurtrip",
+    image: "/projects/findurtrip.webp",
+    imageAlt: "FindUrTrip travel booking website",
     imageKey: null,
     description: "Travel company offering customised trips across India and internationally. Budget to premium travelers with personalised itineraries & zero hidden charges.",
     gradient: ["#7C2D12", "#C2410C"],
@@ -183,6 +198,9 @@ export const PROJECTS = [
   },
   {
     name: "Shri Har Packaging",
+    slug: "shri-har-packaging",
+    image: "/projects/shri-har-packaging.webp",
+    imageAlt: "Shri Har Packaging industrial machinery website",
     imageKey: null,
     description:
       "Ahmedabad-based industrial machinery dealer selling LPI, REVO & Smart Stitch bag closing machines, threads and spares. Built a complete professional website from scratch for a 30+ year old business that had zero digital presence — only a shop and a business card.",
