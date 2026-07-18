@@ -11,14 +11,56 @@
   margin-top: 2.5rem;
 
   @media (max-width: 767px) {
-    height: 46vh;
-    min-height: 22rem;
+    height: 54vh;
+    min-height: 24rem;
+    max-height: 34rem;
+    margin-top: 1.5rem;
+  }
+
+  /* Landscape phones: very little vertical room, so cap by height. */
+  @media (max-width: 900px) and (orientation: landscape) {
+    height: 78vh;
+    min-height: 18rem;
   }
 }
 
 .canvasHost {
   position: absolute;
   inset: 0;
+  z-index: 1;
+}
+
+/* Ambient purple glows behind the canvas — atmosphere, not spotlight. */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.glowA {
+  left: -8%;
+  bottom: -12%;
+  width: 46%;
+  height: 60%;
+  background: radial-gradient(
+    circle,
+    rgba(112, 0, 255, 0.16) 0%,
+    rgba(112, 0, 255, 0) 70%
+  );
+}
+
+.glowB {
+  right: -6%;
+  top: -14%;
+  width: 40%;
+  height: 55%;
+  background: radial-gradient(
+    circle,
+    rgba(159, 85, 255, 0.12) 0%,
+    rgba(159, 85, 255, 0) 70%
+  );
 }
 
 .hint {
@@ -33,6 +75,81 @@
   color: rgba(255, 255, 255, 0.32);
   pointer-events: none;
   user-select: none;
+}
+
+/* ------------------------------ Glitch title ------------------------------ */
+
+.glitchWrap {
+  position: absolute;
+  top: 4%;
+  left: 0;
+  z-index: 2;
+  padding-left: 1rem;
+  pointer-events: none;
+  user-select: none;
+
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+  }
+  @media (min-width: 1280px) {
+    padding-left: 5rem;
+  }
+
+  /* Landscape phones: the stage nearly fills the viewport, so a top-anchored
+     title sits under the site's fixed header. Anchor it to the bottom instead
+     — this is the only place the project name is shown. */
+  @media (max-width: 900px) and (orientation: landscape) {
+    top: auto;
+    bottom: 12%;
+  }
+}
+
+.glitchTitle,
+.glitchLayer {
+  margin: 0;
+  font-size: clamp(1.75rem, 4.2vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+
+  /* Long names ("OM Marketing Digital System") would overflow a phone at
+     nowrap — allow two lines and cap the width instead. */
+  @media (max-width: 767px) {
+    font-size: clamp(1.35rem, 6vw, 2rem);
+    white-space: normal;
+    max-width: 74vw;
+    line-height: 1.12;
+  }
+}
+
+.glitchTitle {
+  position: relative;
+  color: #ffffff;
+  text-shadow: 0 0.15rem 1.5rem rgba(0, 0, 0, 0.85);
+}
+
+.glitchLayer {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  opacity: 0;
+  mix-blend-mode: screen;
+
+  @media (min-width: 768px) {
+    left: 3rem;
+  }
+  @media (min-width: 1280px) {
+    left: 5rem;
+  }
+}
+
+.glitchRed {
+  color: #ff2d55;
+}
+
+.glitchCyan {
+  color: #00e5ff;
 }
 
 /* -------------------------------- Nav buttons ----------------------------- */

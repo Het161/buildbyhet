@@ -26,7 +26,6 @@ const ProjectInfoPanel = ({ project, onOpenModal }) => {
     <div className={`${styles.panel} section-container`} aria-live="polite">
       <div ref={contentRef}>
         <p className={styles.panelCategory}>{category}</p>
-        <h3 className={styles.panelName}>{project.name}</h3>
         {project.tagline && (
           <p className={styles.panelTagline}>&ldquo;{project.tagline}&rdquo;</p>
         )}

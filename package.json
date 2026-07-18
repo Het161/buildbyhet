@@ -16,7 +16,6 @@
     "howler": "^2.2.4",
     "lottie-web": "^5.12.2",
     "next": "^14.2.33",
-    "ogl": "^1.0.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
@@ -25,6 +24,7 @@
     "remark-gfm": "^4.0.1",
     "sass": "^1.77.1",
     "tailwind-merge": "^2.3.0",
+    "three": "^0.185.1",
     "typed.js": "^2.1.0",
     "url-loader": "^4.1.1",
     "vanilla-tilt": "^1.8.1"

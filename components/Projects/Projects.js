@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { MENULINKS, PROJECTS } from "../../constants";
 import ProjectModal from "./ProjectModal/ProjectModal";
 import ProjectInfoPanel from "./ProjectInfoPanel";
+import GlitchTitle from "./GlitchTitle";
 import styles from "./Projects.module.scss";
 
 // The WebGL ring is client-only and lives in its own lazy chunk — it never
@@ -137,6 +138,8 @@ const Projects = () => {
         ) : (
           <>
             <div ref={stageRef} className={styles.stage}>
+              <span className={`${styles.glow} ${styles.glowA}`} aria-hidden="true" />
+              <span className={`${styles.glow} ${styles.glowB}`} aria-hidden="true" />
               <div className={styles.canvasHost}>
                 {mounted && (
                   <OrbitalGallery
@@ -150,6 +153,8 @@ const Projects = () => {
                   />
                 )}
               </div>
+
+              <GlitchTitle text={centeredProject?.name} />
 
               <button
                 type="button"
