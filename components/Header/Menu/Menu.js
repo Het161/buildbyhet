@@ -40,6 +40,14 @@ const Menu = () => {
             <li className="p-0 m-6 text-2xl block">
               <Link
                 className="link relative inline font-mono font-bold text-5xl duration-300 hover:no-underline"
+                href="/hackathons"
+              >
+                Hackathons
+              </Link>
+            </li>
+            <li className="p-0 m-6 text-2xl block">
+              <Link
+                className="link relative inline font-mono font-bold text-5xl duration-300 hover:no-underline"
                 href="/certifications"
               >
                 Certifications

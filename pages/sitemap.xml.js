@@ -17,6 +17,11 @@ function generateSiteMap(projectSlugs, citySlugs) {
       changefreq: "monthly",
       priority: "0.8",
     },
+    {
+      loc: `${SITE_URL}/hackathons`,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
     ...projectSlugs.map((slug) => ({
       loc: `${SITE_URL}/projects/${slug}`,
       changefreq: "monthly",

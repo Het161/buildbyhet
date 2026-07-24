@@ -1,14 +1,11 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import Card from "./Card";
-import HeroMonolith from "./HeroMonolith";
-import Particles from "./Particles";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { FinalShader } from "./shaders/post";
-import { detectTier, getTierConfig } from "./tiers";
+import Monolith from "../../webgl/Monolith";
+import ParticleField from "../../webgl/ParticleField";
+import PostFX from "../../webgl/PostFX";
+import { detectTier, getTierConfig } from "../../webgl/tiers";
+import { BRAND, FOG } from "../../webgl/colors";
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const now = () =>
@@ -22,10 +19,6 @@ const SCROLL_SMOOTH = 0.5; // scroll-velocity smoothing toward the target
 const SCROLL_CLAMP = 3; // max scroll-driven velocity (world units / frame)
 const IDLE_HOLD_MS = 2600; // pause idle drift this long after interaction
 const TAP_THRESHOLD = 8; // px of movement below which a pointer up is a "tap"
-
-const COLORS = { a: 0x8b31ff, b: 0x7000ff, rim: 0xb985ff };
-const FOG_COLOR = 0x0a0611;
-const FOG_DENSITY = 0.021;
 
 export default class Gallery {
   constructor(container, { items, onIndex, onActivate, onContextLost } = {}) {
@@ -65,7 +58,7 @@ export default class Gallery {
     this.onResize();
     this.createCards();
     this.createEnvironment();
-    this.createComposer();
+    this.createPost();
     this.addEvents();
   }
 
@@ -96,7 +89,7 @@ export default class Gallery {
 
   createScene() {
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(FOG_COLOR, FOG_DENSITY);
+    this.scene.fog = new THREE.FogExp2(FOG.color, FOG.density);
   }
 
   computeSizes() {
@@ -132,10 +125,12 @@ export default class Gallery {
     this.dragFactor = this.sizes.viewport.width / this.screen.width;
     if (this.cards) this.cards.forEach((c) => c.onResize(this.sizes));
     const attenuation = this.getAttenuation();
-    this.monolith?.onResize(this.sizes, attenuation);
+    if (this.monolith) {
+      const { width, position } = this.monolithLayout();
+      this.monolith.setLayout(width, position, attenuation);
+    }
     this.particles?.onResize(this.sizes, attenuation);
-    this.composer?.setSize(this.screen.width, this.screen.height);
-    this.bloomPass?.setSize(this.screen.width / 2, this.screen.height / 2);
+    this.post?.setSize(this.screen.width, this.screen.height);
   }
 
   createCards() {
@@ -147,7 +142,7 @@ export default class Gallery {
           index,
           length: this.items.length,
           sizes: this.sizes,
-          colors: COLORS,
+          colors: BRAND,
           maxAnisotropy: this.maxAnisotropy,
         })
     );
@@ -160,52 +155,48 @@ export default class Gallery {
     return this.renderer.domElement.height / (2 * Math.tan(fov / 2));
   }
 
-  createEnvironment() {
-    const fog = { color: FOG_COLOR, density: FOG_DENSITY };
-    const attenuation = this.getAttenuation();
+  // Δ sized/positioned relative to the stage (kept identical to the original
+  // homepage layout after the shared-lib extraction).
+  monolithLayout() {
+    const { width: vpW, height: vpH } = this.sizes.viewport;
+    return {
+      width: Math.min(vpH * 1.09, vpW * 0.92),
+      position: new THREE.Vector3(0, vpH * 0.12, -6),
+    };
+  }
 
-    this.monolith = new HeroMonolith({
+  createEnvironment() {
+    const attenuation = this.getAttenuation();
+    const { width, position } = this.monolithLayout();
+
+    this.monolith = new Monolith({
       scene: this.scene,
       count: this.cfg.heroParticles,
-      sizes: this.sizes,
-      fog,
+      fog: FOG,
       attenuation,
+      width,
+      position,
     });
 
-    this.particles = new Particles({
+    this.particles = new ParticleField({
       scene: this.scene,
       clusterCount: this.cfg.clusterCount,
       clusterSize: this.cfg.clusterSize,
       sizes: this.sizes,
-      fog,
+      fog: FOG,
       attenuation,
     });
   }
 
-  // RenderPass → half-res bloom (rims/particles only) → CA + vignette + grain.
-  createComposer() {
-    if (!this.cfg.post) return;
-    const { width, height } = this.screen;
-
-    this.composer = new EffectComposer(this.renderer);
-    this.composer.setPixelRatio(this.renderer.getPixelRatio());
-    this.composer.setSize(width, height);
-    this.composer.addPass(new RenderPass(this.scene, this.camera));
-
-    if (this.cfg.bloom) {
-      // Half resolution, high threshold, low strength — only the brightest
-      // fresnel rims and particle highlights bloom. No frame-wide haze.
-      this.bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(width / 2, height / 2),
-        0.42,
-        0.55,
-        0.78
-      );
-      this.composer.addPass(this.bloomPass);
-    }
-
-    this.finalPass = new ShaderPass(FinalShader);
-    this.composer.addPass(this.finalPass);
+  createPost() {
+    this.post = new PostFX({
+      renderer: this.renderer,
+      scene: this.scene,
+      camera: this.camera,
+      cfg: this.cfg,
+      width: this.screen.width,
+      height: this.screen.height,
+    });
   }
 
   holdIdle(ms = IDLE_HOLD_MS) {
@@ -392,15 +383,10 @@ export default class Gallery {
       this.camera.lookAt(0, 0, 0);
     }
 
-    if (this.finalPass) {
-      const u = this.finalPass.uniforms;
-      u.uTime.value = time;
-      // Aberration leans up a touch while the ring is moving fast.
-      u.uAberration.value = 0.0032 + Math.min(Math.abs(delta) * 0.004, 0.004);
+    // Aberration leans up a touch while the ring is moving fast.
+    if (!this.post.render(time, delta)) {
+      this.renderer.render(this.scene, this.camera);
     }
-
-    if (this.composer) this.composer.render();
-    else this.renderer.render(this.scene, this.camera);
 
     this.raf = requestAnimationFrame(this.update);
   }
@@ -426,9 +412,7 @@ export default class Gallery {
     this.cards = [];
     this.monolith?.dispose();
     this.particles?.dispose();
-    this.bloomPass?.dispose?.();
-    this.finalPass?.dispose?.();
-    this.composer?.dispose?.();
+    this.post?.dispose();
     this.scene?.clear();
     this.renderer.dispose();
     this.renderer.forceContextLoss?.();

@@ -5,7 +5,7 @@ import { particleVertex, particleFragment } from "./shaders/particles";
 // dissolve into the fog — atmosphere, never confetti.
 const PALETTE = [0x8b31ff, 0x7000ff, 0xb985ff, 0xc94fd6, 0x4f6dff];
 
-export default class Particles {
+export default class ParticleField {
   constructor({ scene, clusterCount, clusterSize, sizes, fog, attenuation }) {
     this.scene = scene;
     this.clusterCount = clusterCount;

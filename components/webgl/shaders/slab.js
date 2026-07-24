@@ -2,7 +2,7 @@
 // and the matrix uniforms automatically, so they're never redeclared here.
 // Fog chunks are included so distant cards dissolve into the void.
 
-export const cardVertex = /* glsl */ `
+export const slabVertex = /* glsl */ `
   #include <common>
   #include <fog_pars_vertex>
 
@@ -31,7 +31,7 @@ export const cardVertex = /* glsl */ `
   }
 `;
 
-export const cardFragment = /* glsl */ `
+export const slabFragment = /* glsl */ `
   #include <common>
   #include <fog_pars_fragment>
 

@@ -2,13 +2,35 @@ import * as THREE from "three";
 import { particleVertex, particleFragment } from "./shaders/particles";
 
 // The Δ mark — the site's triangle logo (outline + crossbar) rebuilt from
-// particles, standing behind the ring so cards sweep in front of it.
-// Generated procedurally; no model file.
-export default class HeroMonolith {
-  constructor({ scene, count, sizes, fog, attenuation }) {
+// particles. Generated procedurally; no model file. Placement (world width +
+// position + opacity) is passed in, so the homepage ring and the hackathons
+// intro/outro can size and position it independently.
+export default class Monolith {
+  constructor({
+    scene,
+    count,
+    fog,
+    attenuation,
+    width,
+    position = new THREE.Vector3(0, 0, -6),
+    opacity = 0.8,
+    uSize = 0.09,
+    sway = 0.35,
+    swaySpeed = 0.16,
+    colorBase = 0x7000ff,
+    colorTip = 0xb985ff,
+  }) {
     this.scene = scene;
     this.count = count;
-    this.build(sizes, fog, attenuation);
+    this.fog = fog;
+    this.attenuation = attenuation;
+    this.opacity = opacity;
+    this.uSize = uSize;
+    this.sway = sway;
+    this.swaySpeed = swaySpeed;
+    this.colorBase = colorBase;
+    this.colorTip = colorTip;
+    this.build(width, position);
   }
 
   // Samples the logo silhouette: 72% along the outline + crossbar, the rest
@@ -25,8 +47,8 @@ export default class HeroMonolith {
     const barY = -h / 2 + h * 0.22;
     const barHalf = w * 0.28;
 
-    const base = new THREE.Color(0x7000ff);
-    const tip = new THREE.Color(0xb985ff);
+    const base = new THREE.Color(this.colorBase);
+    const tip = new THREE.Color(this.colorTip);
     const tmp = new THREE.Color();
 
     for (let i = 0; i < count; i++) {
@@ -34,7 +56,6 @@ export default class HeroMonolith {
       let y;
 
       if (Math.random() < 0.72) {
-        // Outline / crossbar
         const e = Math.random();
         let a;
         let b;
@@ -47,7 +68,6 @@ export default class HeroMonolith {
         x = a[0] + (b[0] - a[0]) * t + (Math.random() - 0.5) * w * 0.014;
         y = a[1] + (b[1] - a[1]) * t + (Math.random() - 0.5) * h * 0.014;
       } else {
-        // Sparse interior (uniform barycentric sample)
         let u = Math.random();
         let v = Math.random();
         if (u + v > 1) {
@@ -64,7 +84,6 @@ export default class HeroMonolith {
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
 
-      // Vertical gradient: deep indigo at the base → light purple at the apex.
       tmp.copy(base).lerp(tip, (y + h / 2) / h);
       colors[i * 3] = tmp.r;
       colors[i * 3 + 1] = tmp.g;
@@ -77,12 +96,10 @@ export default class HeroMonolith {
     return { positions, colors, scales, phases };
   }
 
-  build(sizes, fog, attenuation) {
-    // Large enough that the mark's edges read around the cards rather than
-    // hiding behind the centred one.
-    // Clamp to the viewport width too — vpHeight is constant regardless of
-    // screen, so a height-only size overflows and dominates on portrait phones.
-    const w = Math.min(sizes.viewport.height * 1.09, sizes.viewport.width * 0.92);
+  build(width, position) {
+    this.width = width;
+    this.currentPosition = position.clone();
+    const w = width;
     const h = w / 0.95;
     const depth = w * 0.22;
 
@@ -110,39 +127,38 @@ export default class HeroMonolith {
       blending: THREE.AdditiveBlending,
       uniforms: {
         uTime: { value: 0 },
-        uSize: { value: 0.09 },
+        uSize: { value: this.uSize },
         uBreath: { value: w * 0.012 },
-        uOpacity: { value: 0.8 },
-        uAttenuation: { value: attenuation },
-        uFogColor: { value: new THREE.Color(fog.color) },
-        uFogDensity: { value: fog.density },
+        uOpacity: { value: this.opacity },
+        uAttenuation: { value: this.attenuation },
+        uFogColor: { value: new THREE.Color(this.fog.color) },
+        uFogDensity: { value: this.fog.density },
       },
     });
 
     this.points = new THREE.Points(this.geometry, this.material);
     this.points.frustumCulled = false;
-    // Behind the card band, lifted so the apex peeks above the centred card.
-    this.points.position.set(0, sizes.viewport.height * 0.12, -6);
+    this.points.position.copy(position);
     this.scene.add(this.points);
   }
 
   update(time) {
     this.material.uniforms.uTime.value = time;
-    // Gentle sway rather than a full spin: a flat mark rotated 90° would go
-    // edge-on and vanish, and this is the brand logo — it should stay legible.
-    this.points.rotation.y = Math.sin(time * 0.16) * 0.35;
+    // Gentle sway rather than a full spin: a flat mark rotated 90° goes
+    // edge-on and vanishes, and this is the brand logo — keep it legible.
+    this.points.rotation.y = Math.sin(time * this.swaySpeed) * this.sway;
   }
 
-  onResize(sizes, nextAttenuation) {
-    // Rebuild at the new scale so the mark keeps its proportion to the stage.
-    const attenuation =
-      nextAttenuation ?? this.material.uniforms.uAttenuation.value;
-    const fog = {
-      color: this.material.uniforms.uFogColor.value.getHex(),
-      density: this.material.uniforms.uFogDensity.value,
-    };
+  setOpacity(v) {
+    this.opacity = v;
+    if (this.material) this.material.uniforms.uOpacity.value = v;
+  }
+
+  // Re-layout at a new world width/position (resize, or intro→outro growth).
+  setLayout(width, position, attenuation) {
+    if (attenuation != null) this.attenuation = attenuation;
     this.dispose();
-    this.build(sizes, fog, attenuation);
+    this.build(width, position);
   }
 
   dispose() {
