@@ -56,7 +56,33 @@ const SemanticTimeline = ({ items, visible = false }) => {
                   Certificate
                 </a>
               )}
+              {item.media?.deck && (
+                <a
+                  href={item.media.deck}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${visible ? styles.tlLink : ""} link`}
+                >
+                  Pitch Deck ↗
+                </a>
+              )}
             </div>
+
+            {item.media?.gallery?.length > 0 && (
+              <div className={visible ? styles.tlGallery : undefined}>
+                {item.media.gallery.map((g) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={g.src}
+                    src={g.src}
+                    alt={g.alt || `${item.project} photo`}
+                    loading="lazy"
+                    decoding="async"
+                    className={visible ? styles.tlThumb : undefined}
+                  />
+                ))}
+              </div>
+            )}
           </li>
         );
       })}

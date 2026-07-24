@@ -72,6 +72,9 @@ export default class Scene {
       cfg: this.cfg,
       width: this.screen.width,
       height: this.screen.height,
+      // Covers here are real (often light) screenshots — keep bloom to the
+      // very brightest rims/particles so light UIs don't blow out.
+      bloom: { strength: 0.28, radius: 0.5, threshold: 0.95 },
     });
   }
 
@@ -217,7 +220,8 @@ export default class Scene {
       const r = Math.sin((i + 1) * 91.7);
       return {
         slab,
-        image: project.image,
+        // Prefer the optimized cover; fall back to any legacy image path.
+        image: project.media?.cover || project.image,
         anchor: this.anchors[i],
         tiltZ: r * 0.08,
         floatPhase: (r + 1) * Math.PI,

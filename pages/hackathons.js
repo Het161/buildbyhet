@@ -47,6 +47,10 @@ export default function HackathonsPage() {
       if (h.event) item.about = h.event;
       if (h.liveUrl) item.url = h.liveUrl;
       if (h.result?.status === "highlight") item.award = h.result.label;
+      const gallery = h.media?.gallery || [];
+      if (gallery.length) {
+        item.image = gallery.map((g) => `${METADATA.siteUrl}${g.src}`);
+      }
       return { "@type": "ListItem", position: i + 1, item };
     }),
   };

@@ -396,6 +396,12 @@ export const CERTIFICATIONS = [
 // strings / missing fields render gracefully (element omitted, never "undefined").
 // image resolves to /hackathons/<slug>.webp if present, else a gradient
 // placeholder is generated at runtime.
+// Optimized media path helper (outputs from `npm run media:hackathon`).
+const hkMedia = (folder, slug, size = 1600) =>
+  `/hackathon/_opt/${folder}/${slug}-${size}.webp`;
+const hkGallery = (folder, slugs, alt) =>
+  slugs.map((s) => ({ src: hkMedia(folder, s, 1600), alt }));
+
 export const HACKATHONS = [
   {
     slug: "simguard",
@@ -452,11 +458,67 @@ export const HACKATHONS = [
     image: "/hackathons/transitops.webp",
     result: { label: "Result Awaited", status: "pending" },
     accent: "#b985ff",
+    media: {
+      cover: hkMedia(
+        "transitops-hackathon",
+        "screenshot-2026-07-12-at-5-17-45-pm",
+        800
+      ),
+      gallery: hkGallery(
+        "transitops-hackathon",
+        [
+          "screenshot-2026-07-12-at-5-17-45-pm",
+          "screenshot-2026-07-12-at-5-17-52-pm",
+          "screenshot-2026-07-12-at-5-17-59-pm",
+          "screenshot-2026-07-12-at-5-18-09-pm",
+          "screenshot-2026-07-12-at-5-18-16-pm",
+          "screenshot-2026-07-12-at-5-18-24-pm",
+          "screenshot-2026-07-12-at-5-18-32-pm",
+          "screenshot-2026-07-12-at-5-18-38-pm",
+          "screenshot-2026-07-12-at-5-18-47-pm",
+          "screenshot-2026-07-12-at-5-18-55-pm",
+        ],
+        "TransitOps fleet dispatch platform screenshot"
+      ),
+    },
+  },
+  {
+    // Scaffolded from the ADANI/ media (a separate edge computer-vision project
+    // at the Adani University hackathon). TODO(Het): confirm event/date/result.
+    slug: "adani-edge",
+    project: "Real-Time Edge Restoration",
+    event: "Adani University Hackathon",
+    date: "",
+    tagline:
+      "Real-time GAN video deblurring & low-light enhancement on Jetson AGX",
+    stack: ["GAN", "Jetson AGX", "TensorRT", "Computer Vision"],
+    liveUrl: null,
+    image: null,
+    result: { label: "", status: "neutral" },
+    accent: "#7000ff",
+    media: {
+      cover: hkMedia("adani", "real-time-restoration-at-the-edge", 800),
+      gallery: hkGallery(
+        "adani",
+        [
+          "real-time-restoration-at-the-edge",
+          "the-speed-vs-clarity-trade-off",
+          "key-innovation-motion-deblurring",
+          "technical-architecture",
+          "edge-optimisation",
+          "built-for-performance",
+          "the-dashboard-actionable-insights",
+          "business-impact",
+          "ready-for-deployment",
+        ],
+        "Real-Time Edge Restoration pitch slide"
+      ),
+    },
   },
   {
     slug: "smartwork360",
     project: "SMARTWORK 360",
-    event: "",
+    event: "Smart India Hackathon (SIH)",
     date: "",
     tagline:
       "AI task & performance management — sentiment, fraud detection, burnout prediction, blockchain audit",
@@ -471,6 +533,18 @@ export const HACKATHONS = [
     image: "/hackathons/smartwork360.webp",
     result: { label: "Cleared Round 1", status: "neutral" },
     accent: "#8b31ff",
+    media: {
+      cover: hkMedia("sih", "whatsapp-image-2026-07-22-at-19-22-48-1", 800),
+      gallery: hkGallery(
+        "sih",
+        [
+          "whatsapp-image-2026-07-22-at-19-22-48",
+          "whatsapp-image-2026-07-22-at-19-22-48-1",
+          "whatsapp-image-2026-07-22-at-19-22-48-2",
+        ],
+        "SMARTWORK 360 team at Smart India Hackathon"
+      ),
+    },
   },
   {
     slug: "agentic-pharma",
@@ -483,6 +557,9 @@ export const HACKATHONS = [
     image: "/hackathons/agentic-pharma.webp",
     result: { label: "Result Awaited", status: "pending" },
     accent: "#9f55ff",
+    media: {
+      deck: "/hackathon/TeamCoders_Pharmaceuticals.pdf",
+    },
   },
   {
     slug: "shecarex",
@@ -496,6 +573,25 @@ export const HACKATHONS = [
     image: "/hackathons/shecarex.webp",
     result: null,
     accent: "#cf0000",
+    media: {
+      cover: hkMedia("pdeu", "whatsapp-image-2026-07-24-at-12-25-26", 800),
+      gallery: hkGallery(
+        "pdeu",
+        [
+          "whatsapp-image-2026-07-24-at-12-25-26",
+          "whatsapp-image-2026-07-24-at-12-25-27",
+          "whatsapp-image-2026-07-24-at-12-25-27-1",
+          "whatsapp-image-2026-07-24-at-12-25-28",
+          "whatsapp-image-2026-07-24-at-12-25-28-1",
+          "whatsapp-image-2026-07-24-at-12-25-29",
+          "whatsapp-image-2026-07-24-at-12-25-29-1",
+          "whatsapp-image-2026-07-24-at-12-25-30",
+          "whatsapp-image-2026-07-24-at-12-25-30-1",
+          "whatsapp-image-2026-07-24-at-12-25-30-2",
+        ],
+        "SheCareX team at PDEU Hackathon"
+      ),
+    },
   },
   {
     slug: "dhanrakshak",
@@ -520,6 +616,32 @@ export const HACKATHONS = [
     image: "/hackathons/talk-to-lead.webp",
     result: { label: "Top 100 · Won 5K credits", status: "highlight" },
     accent: "#b985ff",
+  },
+  {
+    // Scaffolded from the PARUL/ media (separate Parul University hackathon).
+    // TODO(Het): project name, tagline, stack, date, result.
+    slug: "parul-hackathon",
+    project: "Parul University Hackathon",
+    event: "Parul University Hackathon",
+    date: "",
+    tagline: "",
+    stack: [],
+    liveUrl: null,
+    image: null,
+    result: null,
+    accent: "#9f55ff",
+    media: {
+      cover: hkMedia("parul", "whatsapp-image-2026-07-24-at-12-25-25", 800),
+      gallery: hkGallery(
+        "parul",
+        [
+          "whatsapp-image-2026-07-24-at-12-25-25",
+          "whatsapp-image-2026-07-24-at-12-25-31",
+        ],
+        "Parul University Hackathon"
+      ),
+      deck: "/hackathon/PARUL/ParulHackathon.pdf",
+    },
   },
 ];
 

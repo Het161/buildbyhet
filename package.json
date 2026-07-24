@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "media:hackathon": "node scripts/optimize-hackathon-media.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
@@ -37,6 +38,7 @@
     "eslint": "8.1.0",
     "eslint-config-next": "^14.2.13",
     "postcss": "^8.4.28",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.3.3",
     "typescript": "^6.0.3"
   },

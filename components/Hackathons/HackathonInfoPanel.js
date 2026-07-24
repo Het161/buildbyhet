@@ -4,7 +4,7 @@ import styles from "./Hackathons.module.scss";
 
 // Fixed lower-third panel synced to the active station. Every field is optional
 // and omitted when empty — nothing ever renders "undefined".
-const HackathonInfoPanel = ({ item }) => {
+const HackathonInfoPanel = ({ item, onOpenGallery }) => {
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -78,6 +78,25 @@ const HackathonInfoPanel = ({ item }) => {
               className={`${styles.cta} ${styles.ctaSecondary} link`}
             >
               Certificate
+            </a>
+          )}
+          {item.media?.gallery?.length > 0 && (
+            <button
+              type="button"
+              onClick={onOpenGallery}
+              className={`${styles.cta} ${styles.ctaSecondary} link`}
+            >
+              Photos ({item.media.gallery.length})
+            </button>
+          )}
+          {item.media?.deck && (
+            <a
+              href={item.media.deck}
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.cta} ${styles.ctaSecondary} link`}
+            >
+              Pitch Deck ↗
             </a>
           )}
         </div>

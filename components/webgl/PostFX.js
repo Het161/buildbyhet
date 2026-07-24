@@ -9,7 +9,7 @@ import { FinalShader } from "./shaders/post";
 // chromatic aberration + vignette + grain. Bloom/post gated by the tier config.
 // When post is disabled the caller falls back to a plain renderer.render().
 export default class PostFX {
-  constructor({ renderer, scene, camera, cfg, width, height }) {
+  constructor({ renderer, scene, camera, cfg, width, height, bloom }) {
     this.renderer = renderer;
     this.scene = scene;
     this.camera = camera;
@@ -22,13 +22,15 @@ export default class PostFX {
     this.composer.addPass(new RenderPass(scene, camera));
 
     if (cfg.bloom) {
-      // Half resolution, high threshold, low strength — only the brightest
-      // fresnel rims and particle highlights bloom. No frame-wide haze.
+      // Half resolution. Defaults (strength .42 / radius .55 / threshold .78)
+      // suit the homepage's dark screenshots; callers with light textures pass
+      // a gentler, higher-threshold bloom so bright images don't blow out.
+      const b = bloom || { strength: 0.42, radius: 0.55, threshold: 0.78 };
       this.bloomPass = new UnrealBloomPass(
         new THREE.Vector2(width / 2, height / 2),
-        0.42,
-        0.55,
-        0.78
+        b.strength,
+        b.radius,
+        b.threshold
       );
       this.composer.addPass(this.bloomPass);
     }

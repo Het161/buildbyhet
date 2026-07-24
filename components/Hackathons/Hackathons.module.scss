@@ -464,6 +464,124 @@
   }
 }
 
+/* ------------------------------- Gallery lightbox ------------------------ */
+
+.glBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: hkFade 0.2s ease;
+}
+
+.glModal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 64rem;
+  max-height: 92vh;
+}
+
+.glStage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  flex: 1;
+}
+
+.glImage {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 0.75rem;
+  animation: hkFade 0.2s ease;
+}
+
+.glClose,
+.glNav {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(18, 14, 22, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #ffffff;
+    background: rgba(139, 49, 255, 0.4);
+    border-color: rgba(159, 85, 255, 0.6);
+  }
+  &:focus-visible {
+    outline: 2px solid #9f55ff;
+    outline-offset: 2px;
+  }
+}
+
+.glClose {
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+
+  @media (min-width: 768px) {
+    top: 0;
+    right: 0;
+  }
+}
+
+.glNav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+}
+.glPrev {
+  left: 0.25rem;
+}
+.glNext {
+  right: 0.25rem;
+}
+
+.glFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0.25rem 0;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.glTitle {
+  color: #dbdbdb;
+}
+.glCount {
+  color: #8a8a8a;
+}
+
+@keyframes hkFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ===================== Semantic fallback / SEO layer ===================== */
 
 .srOnly {
@@ -581,4 +699,19 @@
   &:hover {
     color: #ffffff;
   }
+}
+
+.tlGallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.tlThumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }

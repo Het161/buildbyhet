@@ -6,6 +6,7 @@ import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import HackathonInfoPanel from "./HackathonInfoPanel";
 import HackathonRail from "./HackathonRail";
 import TrackedTitle from "./TrackedTitle";
+import HackathonGallery from "./HackathonGallery";
 import styles from "./Hackathons.module.scss";
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -22,6 +23,7 @@ const smoothstep01 = (x, a, b) => {
 // canvas is lazy + client-only; the DOM overlay is server-rendered.
 const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
   const [active, setActive] = useState(0);
+  const [galleryItem, setGalleryItem] = useState(null);
   const titleRefs = useRef([]);
   const activeRef = useRef(0);
   const glowRef = useRef(null);
@@ -192,9 +194,20 @@ const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
       </div>
 
       <div ref={panelRef}>
-        <HackathonInfoPanel item={items[active]} />
+        <HackathonInfoPanel
+          item={items[active]}
+          onOpenGallery={() => setGalleryItem(items[active])}
+        />
       </div>
       <HackathonRail items={items} active={active} onJump={scrollToStation} />
+
+      {galleryItem?.media?.gallery?.length > 0 && (
+        <HackathonGallery
+          title={galleryItem.project}
+          images={galleryItem.media.gallery}
+          onClose={() => setGalleryItem(null)}
+        />
+      )}
     </div>
   );
 };
