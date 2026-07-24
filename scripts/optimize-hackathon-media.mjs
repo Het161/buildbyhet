@@ -89,7 +89,10 @@ async function run() {
     if (stat.size > 8 * 1024 * 1024) big.push([src, stat.size]);
 
     const rel = path.relative(ROOT, src);
-    const folder = rel.split(path.sep)[0].toLowerCase();
+    const parts = rel.split(path.sep);
+    // Root-level images (single covers dropped straight into public/hackathon/)
+    // are grouped under "covers"; everything else keeps its folder name.
+    const folder = parts.length > 1 ? parts[0].toLowerCase() : "covers";
     const slug = slugify(path.basename(src));
     const outDir = path.join(OUT_ROOT, folder);
     await fs.mkdir(outDir, { recursive: true });

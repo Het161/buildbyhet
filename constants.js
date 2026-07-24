@@ -427,6 +427,7 @@ export const HACKATHONS = [
     certSlug: "",
     result: { label: "Finalist", status: "highlight" },
     accent: "#9f55ff",
+    media: { cover: hkMedia("covers", "citemind", 800) },
   },
   {
     slug: "aegis",
@@ -446,6 +447,7 @@ export const HACKATHONS = [
     image: "/hackathons/aegis.webp",
     result: { label: "", status: "neutral" },
     accent: "#7000ff",
+    media: { cover: hkMedia("covers", "isro", 800) },
   },
   {
     slug: "transitops",
@@ -604,6 +606,7 @@ export const HACKATHONS = [
     image: "/hackathons/dhanrakshak.webp",
     result: { label: "Results 31 July", status: "pending" },
     accent: "#00ac56",
+    media: { cover: hkMedia("covers", "mavrick", 800) },
   },
   {
     slug: "talk-to-lead",
@@ -616,30 +619,34 @@ export const HACKATHONS = [
     image: "/hackathons/talk-to-lead.webp",
     result: { label: "Top 100 · Won 5K credits", status: "highlight" },
     accent: "#b985ff",
+    media: { cover: hkMedia("covers", "talktolead", 800) },
   },
   {
-    // Scaffolded from the PARUL/ media (separate Parul University hackathon).
-    // TODO(Het): project name, tagline, stack, date, result.
-    slug: "parul-hackathon",
-    project: "Parul University Hackathon",
-    event: "Parul University Hackathon",
+    // From the PARUL/ media (AgriScan AI at PU Code Hackathon 3.0).
+    // TODO(Het): confirm date/result and refine tagline/stack.
+    slug: "agriscan",
+    project: "AgriScan AI",
+    event: "PU Code Hackathon 3.0 — Parul University",
     date: "",
-    tagline: "",
+    tagline: "Multilingual AI crop nutrient detector (EN / हिंदी / ગુજરાતી)",
     stack: [],
     liveUrl: null,
     image: null,
     result: null,
-    accent: "#9f55ff",
+    accent: "#00ac56",
     media: {
-      cover: hkMedia("parul", "whatsapp-image-2026-07-24-at-12-25-25", 800),
-      gallery: hkGallery(
-        "parul",
-        [
-          "whatsapp-image-2026-07-24-at-12-25-25",
-          "whatsapp-image-2026-07-24-at-12-25-31",
-        ],
-        "Parul University Hackathon"
-      ),
+      cover: hkMedia("parul", "agriscan", 800),
+      gallery: [
+        { src: hkMedia("parul", "agriscan", 1600), alt: "AgriScan AI app" },
+        ...hkGallery(
+          "parul",
+          [
+            "whatsapp-image-2026-07-24-at-12-25-25",
+            "whatsapp-image-2026-07-24-at-12-25-31",
+          ],
+          "AgriScan AI at PU Code Hackathon 3.0"
+        ),
+      ],
       deck: "/hackathon/PARUL/ParulHackathon.pdf",
     },
   },

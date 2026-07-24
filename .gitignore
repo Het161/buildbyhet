@@ -36,6 +36,9 @@ yarn-error.log*
 # Raw hackathon media originals — regenerate optimized copies with
 # `npm run media:hackathon`. Only the _opt/ WebP outputs and the two
 # referenced PDFs (deck links) are committed.
+/public/hackathon/*.png
+/public/hackathon/*.jpg
+/public/hackathon/*.jpeg
 /public/hackathon/*/*.png
 /public/hackathon/*/*.jpg
 /public/hackathon/*/*.jpeg
