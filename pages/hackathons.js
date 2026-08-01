@@ -55,8 +55,9 @@ export default function HackathonsPage() {
     numberOfItems: HACKATHONS.length,
     itemListElement: HACKATHONS.map((h, i) => {
       const item = { "@type": "CreativeWork", name: h.project };
+      if (h.description || h.tagline) item.description = h.description || h.tagline;
       if (h.event) item.about = h.event;
-      if (h.liveUrl) item.url = h.liveUrl;
+      if (h.repoUrl || h.liveUrl) item.url = h.repoUrl || h.liveUrl;
       if (h.result?.status === "highlight") item.award = h.result.label;
       const gallery = h.media?.gallery || [];
       if (gallery.length) {

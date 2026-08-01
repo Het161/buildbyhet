@@ -24,6 +24,7 @@ const smoothstep01 = (x, a, b) => {
 const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
   const [active, setActive] = useState(0);
   const [galleryItem, setGalleryItem] = useState(null);
+  const [videoItem, setVideoItem] = useState(null);
   const titleRefs = useRef([]);
   const activeRef = useRef(0);
   const glowRef = useRef(null);
@@ -94,6 +95,21 @@ const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
   const handleIndex = useCallback((i) => {
     activeRef.current = i;
     setActive(i);
+  }, []);
+
+  // Deep link: /hackathons#<slug> scrolls to that station on load.
+  useEffect(() => {
+    if (tier3) return undefined;
+    const slug = window.location.hash.replace("#", "");
+    if (!slug) return undefined;
+    const idx = items.findIndex((it) => it.slug === slug);
+    if (idx < 0) return undefined;
+    const t = setTimeout(() => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo(0, Math.round(stationT(idx) * max));
+    }, 700);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Keyboard nav: Arrow/Page keys jump between stations (not raw scroll).
@@ -197,6 +213,7 @@ const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
         <HackathonInfoPanel
           item={items[active]}
           onOpenGallery={() => setGalleryItem(items[active])}
+          onOpenVideo={() => setVideoItem(items[active])}
         />
       </div>
       <HackathonRail items={items} active={active} onJump={scrollToStation} />
@@ -206,6 +223,17 @@ const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
           title={galleryItem.project}
           images={galleryItem.media.gallery}
           onClose={() => setGalleryItem(null)}
+        />
+      )}
+
+      {videoItem?.media?.video && (
+        <HackathonGallery
+          title={`${videoItem.project} — demo`}
+          video={{
+            src: videoItem.media.video,
+            poster: videoItem.media.videoPoster,
+          }}
+          onClose={() => setVideoItem(null)}
         />
       )}
     </div>

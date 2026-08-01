@@ -43,4 +43,6 @@ yarn-error.log*
 /public/hackathon/*/*.jpg
 /public/hackathon/*/*.jpeg
 /public/hackathon/*/*.heic
+/public/hackathon/*/*.mp4
 /public/hackathon/NASA/
+/public/hackathon/SEMICON/

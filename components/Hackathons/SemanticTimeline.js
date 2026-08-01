@@ -12,11 +12,24 @@ const SemanticTimeline = ({ items, visible = false }) => {
         return (
           <li
             key={item.slug}
+            id={item.slug}
             className={visible ? styles.tlCard : undefined}
             style={visible ? { borderLeftColor: accent } : undefined}
           >
             <div className={visible ? styles.tlMeta : undefined}>
-              {item.event && <span>{item.event}</span>}
+              {item.event &&
+                (item.eventUrl ? (
+                  <a
+                    href={item.eventUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link"
+                  >
+                    {item.event} ↗
+                  </a>
+                ) : (
+                  <span>{item.event}</span>
+                ))}
               {item.date && <span>{item.date}</span>}
               {item.result?.label && <span>{item.result.label}</span>}
             </div>
@@ -27,6 +40,14 @@ const SemanticTimeline = ({ items, visible = false }) => {
               <p className={visible ? styles.tlTagline : undefined}>
                 {item.tagline}
               </p>
+            )}
+            {item.description && (
+              <p className={visible ? styles.tlTagline : undefined}>
+                {item.description}
+              </p>
+            )}
+            {item.team && (
+              <p className={visible ? styles.team : undefined}>{item.team}</p>
             )}
             {stack.length > 0 && (
               <div className={visible ? styles.tlStack : undefined}>
@@ -48,12 +69,24 @@ const SemanticTimeline = ({ items, visible = false }) => {
                   Live Demo ↗
                 </a>
               )}
-              {item.certSlug && (
+              {item.repoUrl && (
                 <a
-                  href={`/certifications#${item.certSlug}`}
+                  href={item.repoUrl}
+                  target="_blank"
+                  rel="noreferrer"
                   className={`${visible ? styles.tlLink : ""} link`}
                 >
-                  Certificate
+                  GitHub ↗
+                </a>
+              )}
+              {(item.videoUrl || item.media?.video) && (
+                <a
+                  href={item.videoUrl || item.media.video}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${visible ? styles.tlLink : ""} link`}
+                >
+                  Demo Video ↗
                 </a>
               )}
               {item.media?.deck && (
@@ -64,6 +97,24 @@ const SemanticTimeline = ({ items, visible = false }) => {
                   className={`${visible ? styles.tlLink : ""} link`}
                 >
                   Pitch Deck ↗
+                </a>
+              )}
+              {item.postUrl && (
+                <a
+                  href={item.postUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${visible ? styles.tlLink : ""} link`}
+                >
+                  Announcement ↗
+                </a>
+              )}
+              {item.certSlug && (
+                <a
+                  href={`/certifications#${item.certSlug}`}
+                  className={`${visible ? styles.tlLink : ""} link`}
+                >
+                  Certificate
                 </a>
               )}
             </div>

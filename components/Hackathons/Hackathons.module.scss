@@ -273,8 +273,23 @@
 .event {
   color: #b985ff;
 }
+.eventLink {
+  transition: color 0.2s ease;
+  &:hover {
+    color: #ffffff;
+  }
+}
 .date {
   color: #8a8a8a;
+}
+
+.team {
+  margin-top: 0.6rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: #8a8a8a;
+  max-width: 34rem;
 }
 
 .badge {
@@ -502,6 +517,14 @@
   max-height: 80vh;
   object-fit: contain;
   border-radius: 0.75rem;
+  animation: hkFade 0.2s ease;
+}
+
+.glVideo {
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 0.75rem;
+  background: #000;
   animation: hkFade 0.2s ease;
 }
 

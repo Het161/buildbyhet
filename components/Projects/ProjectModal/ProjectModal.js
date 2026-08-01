@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import styles from "./ProjectModal.module.scss";
 
 const ProjectModal = ({ project, onClose }) => {
@@ -15,6 +16,8 @@ const ProjectModal = ({ project, onClose }) => {
     stats,
     features,
     gradient,
+    links, // optional: [{ label, url, internal? }]
+    note, // optional: a single honesty/highlight line
   } = project;
 
   // Close on Escape key
@@ -100,31 +103,58 @@ const ProjectModal = ({ project, onClose }) => {
           </div>
 
           {/* Live URL button */}
-          <a
-            href={url}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.liveBtn}
-            style={{
-              background: `linear-gradient(135deg, ${gradient[0]} 0%, ${gradient[1]} 100%)`,
-            }}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              width="16"
-              height="16"
+          {url && (
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className={styles.liveBtn}
+              style={{
+                background: `linear-gradient(135deg, ${gradient[0]} 0%, ${gradient[1]} 100%)`,
+              }}
             >
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" y1="14" x2="21" y2="3" />
-            </svg>
-            View Live Site
-          </a>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                width="16"
+                height="16"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              View Live Site
+            </a>
+          )}
+
+          {/* Optional extra links (GitHub, demo video, full story…) */}
+          {links && links.length > 0 && (
+            <div className={styles.linkRow}>
+              {links.map((l) =>
+                l.internal ? (
+                  <Link key={l.url} href={l.url} className={styles.linkBtn}>
+                    {l.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={l.url}
+                    href={l.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.linkBtn}
+                  >
+                    {l.label}
+                  </a>
+                )
+              )}
+            </div>
+          )}
+
+          {note && <p className={styles.note}>{note}</p>}
 
           {/* Stats */}
           {stats && stats.length > 0 && (

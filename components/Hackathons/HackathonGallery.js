@@ -1,12 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./Hackathons.module.scss";
 
-// Keyboard-accessible multi-image lightbox for a station's gallery. Adapted
-// from CertificationLightbox: Escape / backdrop / ✕ close, arrow keys + on-
-// screen buttons for prev/next. Images lazy-load (this only mounts on open).
-const HackathonGallery = ({ title, images, startIndex = 0, onClose }) => {
+// Keyboard-accessible lightbox for a station's gallery — or a single video.
+// Adapted from CertificationLightbox: Escape / backdrop / ✕ close, arrow keys +
+// on-screen buttons for prev/next. Images lazy-load; video is preload="none".
+const HackathonGallery = ({
+  title,
+  images = [],
+  video,
+  startIndex = 0,
+  onClose,
+}) => {
   const [index, setIndex] = useState(startIndex);
   const closeRef = useRef(null);
+  const isVideo = !!video;
   const count = images.length;
 
   const prev = useCallback(
@@ -18,6 +25,7 @@ const HackathonGallery = ({ title, images, startIndex = 0, onClose }) => {
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
+      else if (isVideo) return;
       else if (e.key === "ArrowLeft") prev();
       else if (e.key === "ArrowRight") next();
     };
@@ -56,42 +64,56 @@ const HackathonGallery = ({ title, images, startIndex = 0, onClose }) => {
         </button>
 
         <div className={styles.glStage}>
-          {count > 1 && (
-            <button
-              type="button"
-              onClick={prev}
-              className={`${styles.glNav} ${styles.glPrev} link`}
-              aria-label="Previous image"
-            >
-              <Chevron dir="left" />
-            </button>
-          )}
+          {isVideo ? (
+            <video
+              className={styles.glVideo}
+              src={video.src}
+              poster={video.poster}
+              controls
+              preload="none"
+              playsInline
+              autoPlay
+            />
+          ) : (
+            <>
+              {count > 1 && (
+                <button
+                  type="button"
+                  onClick={prev}
+                  className={`${styles.glNav} ${styles.glPrev} link`}
+                  aria-label="Previous image"
+                >
+                  <Chevron dir="left" />
+                </button>
+              )}
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            key={current.src}
-            src={current.src}
-            alt={current.alt || `${title} — image ${index + 1}`}
-            className={styles.glImage}
-            loading="lazy"
-            decoding="async"
-          />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                key={current.src}
+                src={current.src}
+                alt={current.alt || `${title} — image ${index + 1}`}
+                className={styles.glImage}
+                loading="lazy"
+                decoding="async"
+              />
 
-          {count > 1 && (
-            <button
-              type="button"
-              onClick={next}
-              className={`${styles.glNav} ${styles.glNext} link`}
-              aria-label="Next image"
-            >
-              <Chevron dir="right" />
-            </button>
+              {count > 1 && (
+                <button
+                  type="button"
+                  onClick={next}
+                  className={`${styles.glNav} ${styles.glNext} link`}
+                  aria-label="Next image"
+                >
+                  <Chevron dir="right" />
+                </button>
+              )}
+            </>
           )}
         </div>
 
         <div className={styles.glFoot}>
           <span className={styles.glTitle}>{title}</span>
-          {count > 1 && (
+          {!isVideo && count > 1 && (
             <span className={styles.glCount}>
               {index + 1} / {count}
             </span>

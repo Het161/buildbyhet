@@ -229,6 +229,39 @@ export const PROJECTS = [
     ],
     hasModal: true,
   },
+  {
+    name: "DriftLock",
+    slug: "driftlock",
+    // Placeholder until the ablation-trio cover is dropped in.
+    image: "/projects/driftlock.webp",
+    imageAlt: "DriftLock wafer-inspection localization",
+    imageKey: null,
+    description:
+      "SEM stage drift means a wafer-inspection tool never lands on the exact same site twice — and every die repeats the identical layout, so there is nothing unique to lock onto. No public dataset of this problem exists, so we generated our own.",
+    gradient: ["#3B0764", "#7C3AED"],
+    url: null,
+    tech: ["Python", "NumPy", "OpenCV", "SciPy", "Matplotlib"],
+    tagline: "Finding one site in a sea of identical patterns",
+    tags: ["Hackathon", "Computer Vision", "Applied Materials"],
+    stats: [
+      { label: "within 5 px", value: "91%" },
+      { label: "median error", value: "0.08 px" },
+      { label: "per pair · CPU", value: "0.66 s" },
+      { label: "across 180 pairs", value: "94%" },
+    ],
+    features: [
+      "Physics data generator — synthetic SEM images from 13 cited constants (DRAM 6F² geometry, edge-brightening, Poisson–Gaussian + scan-line noise)",
+      "Classical ZNCC localizer — multi-scale × multi-rotation matching, lattice-aware peak analysis, parabolic sub-pixel refinement, PSR confidence",
+      "Evaluation harness — 180 pairs with an intentional failure case to prove the method's limits",
+    ],
+    note: "We proved our own synthetic data was broken — twice — before trusting it.",
+    links: [
+      { label: "GitHub ↗", url: "https://github.com/Het161/driftlock" },
+      { label: "Demo Video ↗", url: "https://youtu.be/UR5ryk2oOdo" },
+      { label: "Full story →", url: "/hackathons#driftlock", internal: true },
+    ],
+    hasModal: true,
+  },
 ];
 
 export const WORK_CONTENTS = {
@@ -457,8 +490,11 @@ export const HACKATHONS = [
     tagline: "Fleet dispatch platform — single dispatch engine, API-first",
     stack: ["Next.js 14", "TypeScript", "Prisma", "PostgreSQL"],
     liveUrl: null,
+    repoUrl: "https://github.com/Het161/transitops-fleet-management",
+    postUrl:
+      "https://www.linkedin.com/posts/hetkumar-sanjaykumar-patel-54730933b_transitops-ugcPost-7488913031876362240-D3Uc/",
     image: "/hackathons/transitops.webp",
-    result: { label: "Result Awaited", status: "pending" },
+    result: { label: "Finale Selected", status: "highlight" },
     accent: "#b985ff",
     media: {
       cover: hkMedia(
@@ -603,10 +639,16 @@ export const HACKATHONS = [
     tagline: "",
     stack: [],
     liveUrl: "https://dhanrakshakai.netlify.app/",
+    repoUrl: "https://github.com/Het161/DHANRAKSHAK",
     image: "/hackathons/dhanrakshak.webp",
-    result: { label: "Results 31 July", status: "pending" },
+    result: { label: "Result Awaited", status: "pending" },
     accent: "#00ac56",
-    media: { cover: hkMedia("covers", "mavrick", 800) },
+    media: {
+      cover: hkMedia("covers", "mavrick", 800),
+      video: "/hackathon/_opt/dhanrakshak/demo-720p.mp4",
+      videoPoster: "/hackathon/_opt/dhanrakshak/demo-poster-800.webp",
+      deck: "/hackathon/DHANRAKSHAK/dhanrakshak-deck.pdf",
+    },
   },
   {
     slug: "talk-to-lead",
@@ -649,6 +691,27 @@ export const HACKATHONS = [
       ],
       deck: "/hackathon/PARUL/ParulHackathon.pdf",
     },
+  },
+  {
+    // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
+    // public/hackathon/SEMICON/ (ablation trio = cover; geometry / success /
+    // failure / robustness = gallery); until then the placeholder covers it.
+    slug: "driftlock",
+    project: "DriftLock",
+    event: "SEMICON India Hackathon 2026 — Applied Materials track",
+    eventUrl: "https://i4c.in/hackathon-2026/",
+    date: "Aug 2026",
+    tagline:
+      "Physics-based synthetic SEM data + classical multi-scale localization for wafer inspection. 91% within 5 px, median error 0.08 px, 0.66 s per pair on a plain CPU.",
+    description:
+      "DriftLock — finding one site in a sea of identical patterns. A wafer inspection tool must return to the exact same site thousands of times a day while every die repeats the same layout. DriftLock pairs a physics-grounded synthetic SEM data generator (13 cited constants: DRAM 6F² geometry, SEM edge-brightening, Poisson–Gaussian + scan-line noise) with a classical localizer: multi-scale × multi-rotation ZNCC, lattice-aware peak analysis, ambiguity-gated fallback, parabolic sub-pixel refinement, PSR confidence. 94% within 5 px across 180 pairs, median error 0.08 px, 0.66 s per pair, CPU-only — no deep learning, no GPU.",
+    stack: ["Python", "NumPy", "OpenCV", "SciPy", "Matplotlib"],
+    liveUrl: null,
+    repoUrl: "https://github.com/Het161/driftlock",
+    videoUrl: "https://youtu.be/UR5ryk2oOdo",
+    result: { label: "Submitted · Results Pending", status: "pending" },
+    accent: "#b985ff",
+    team: "Het Patel — algorithm, data generator, architecture · Eklavya Jha — evaluation, visualization, presentation",
   },
 ];
 

@@ -4,7 +4,7 @@ import styles from "./Hackathons.module.scss";
 
 // Fixed lower-third panel synced to the active station. Every field is optional
 // and omitted when empty — nothing ever renders "undefined".
-const HackathonInfoPanel = ({ item, onOpenGallery }) => {
+const HackathonInfoPanel = ({ item, onOpenGallery, onOpenVideo }) => {
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -26,7 +26,19 @@ const HackathonInfoPanel = ({ item, onOpenGallery }) => {
     <div className={styles.panel}>
       <div ref={contentRef} className={styles.panelInner}>
         <div className={styles.panelMeta}>
-          {item.event && <span className={styles.event}>{item.event}</span>}
+          {item.event &&
+            (item.eventUrl ? (
+              <a
+                href={item.eventUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={`${styles.event} ${styles.eventLink} link`}
+              >
+                {item.event} ↗
+              </a>
+            ) : (
+              <span className={styles.event}>{item.event}</span>
+            ))}
           {item.date && <span className={styles.date}>{item.date}</span>}
         </div>
 
@@ -50,6 +62,8 @@ const HackathonInfoPanel = ({ item, onOpenGallery }) => {
 
         {item.tagline && <p className={styles.tagline}>{item.tagline}</p>}
 
+        {item.team && <p className={styles.team}>{item.team}</p>}
+
         {stack.length > 0 && (
           <div className={styles.stack}>
             {stack.map((tech) => (
@@ -72,12 +86,33 @@ const HackathonInfoPanel = ({ item, onOpenGallery }) => {
               Live Demo ↗
             </a>
           )}
-          {item.certSlug && (
+          {item.repoUrl && (
             <a
-              href={`/certifications#${item.certSlug}`}
+              href={item.repoUrl}
+              target="_blank"
+              rel="noreferrer"
               className={`${styles.cta} ${styles.ctaSecondary} link`}
             >
-              Certificate
+              GitHub ↗
+            </a>
+          )}
+          {item.media?.video && (
+            <button
+              type="button"
+              onClick={onOpenVideo}
+              className={`${styles.cta} ${styles.ctaSecondary} link`}
+            >
+              Demo Video
+            </button>
+          )}
+          {item.videoUrl && (
+            <a
+              href={item.videoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.cta} ${styles.ctaSecondary} link`}
+            >
+              Demo Video ↗
             </a>
           )}
           {item.media?.gallery?.length > 0 && (
@@ -97,6 +132,24 @@ const HackathonInfoPanel = ({ item, onOpenGallery }) => {
               className={`${styles.cta} ${styles.ctaSecondary} link`}
             >
               Pitch Deck ↗
+            </a>
+          )}
+          {item.postUrl && (
+            <a
+              href={item.postUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.cta} ${styles.ctaSecondary} link`}
+            >
+              Announcement ↗
+            </a>
+          )}
+          {item.certSlug && (
+            <a
+              href={`/certifications#${item.certSlug}`}
+              className={`${styles.cta} ${styles.ctaSecondary} link`}
+            >
+              Certificate
             </a>
           )}
         </div>
