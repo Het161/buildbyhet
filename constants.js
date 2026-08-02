@@ -607,7 +607,8 @@ export const HACKATHONS = [
     tagline:
       "Offline-first personal safety — SOS, guardian escalation, ERSS-aligned",
     stack: [],
-    liveUrl: "https://she-care-x-pdeu.vercel.app/",
+    liveUrl: "https://shecarex.netlify.app/",
+    repoUrl: "https://github.com/Het161/SheCareX",
     image: "/hackathons/shecarex.webp",
     result: null,
     accent: "#cf0000",
