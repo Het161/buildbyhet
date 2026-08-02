@@ -567,7 +567,8 @@ export const HACKATHONS = [
       "Railway",
       "Blockchain/SHA-256",
     ],
-    liveUrl: null,
+    liveUrl: "https://smartwork360.vercel.app",
+    repoUrl: "https://github.com/Het161/smartwork360",
     image: "/hackathons/smartwork360.webp",
     result: { label: "Cleared Round 1", status: "neutral" },
     accent: "#8b31ff",
@@ -582,6 +583,7 @@ export const HACKATHONS = [
         ],
         "SMARTWORK 360 team at Smart India Hackathon"
       ),
+      deck: "/hackathon/SIH/smartwork360-deck.pdf",
     },
   },
   {
