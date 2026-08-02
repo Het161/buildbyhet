@@ -583,7 +583,7 @@ export const HACKATHONS = [
         ],
         "SMARTWORK 360 team at Smart India Hackathon"
       ),
-      deck: "/hackathon/SIH/smartwork360-deck.pdf",
+      deck: "/hackathon/SIH/SMARTWORK360_SIH_2025.pdf",
     },
   },
   {
