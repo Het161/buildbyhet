@@ -1,0 +1,9 @@
+<!-- PLACEHOLDER signature — replace with a potrace of your real scan.
+     Any SVG works; <path> strokes draw themselves on. Keep viewBox tight. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 110" fill="none"
+     stroke="#c9a6ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 78 C 20 55, 22 38, 24 24 C 25 40, 26 58, 27 74 C 40 60, 52 58, 60 66 C 66 72, 58 84, 48 82 C 40 80, 40 66, 52 62 C 62 59, 70 64, 74 72" />
+  <path d="M92 46 C 84 46, 78 54, 80 66 C 82 78, 96 80, 104 72 M 80 60 C 90 58, 100 57, 108 58" />
+  <path d="M126 30 C 124 46, 122 62, 124 74 C 126 82, 134 82, 140 76 M 116 52 C 128 50, 140 49, 150 50" />
+  <path d="M160 70 C 190 52, 232 46, 286 44 C 250 50, 214 58, 182 70" />
+</svg>

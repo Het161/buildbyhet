@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import JourneyMonolith from "./JourneyMonolith";
+import GuideStars from "./GuideStars";
 import PostFX from "../webgl/PostFX";
 import { detectTier, getTierConfig } from "../webgl/tiers";
 import { FOG } from "../webgl/colors";
@@ -39,6 +40,20 @@ export default class JourneyScene {
     this.scroll = { p: 0, last: 0 };
     this.velocity = 0;
     this.chapter = -1;
+    // Opening ritual: a subliminal Δ pulse foreshadowed at p=0 (GSAP-driven
+    // from the wrapper). Added to convergence, so it only reads before scroll.
+    this.introFlicker = 0;
+
+    // Held breath: on a pull-quote crossing, the ambient clock dips and the
+    // vignette deepens for a beat, then releases. Scaled clock (not wall time)
+    // so the slow-down is real without stalling the scroll-locked camera.
+    this.clockTime = 0;
+    this.lastNow = now();
+    this.timeScale = 1;
+    this.timeScaleTarget = 1;
+    this.breathVig = 0;
+    this.breathVigTarget = 0;
+    this.breathUntil = 0;
     this.raf = null;
     this.running = false;
     this.startTime = now();
@@ -58,6 +73,7 @@ export default class JourneyScene {
     this.onResize();
     this.buildPath();
     this.createMonolith();
+    this.createGuideStars();
     this.createPost();
     this.addEvents();
   }
@@ -125,6 +141,15 @@ export default class JourneyScene {
     });
   }
 
+  createGuideStars() {
+    this.guideStars = new GuideStars({
+      scene: this.scene,
+      center: this.deltaCenter.clone(),
+      width: this.viewport.height * 0.7,
+      attenuation: this.getAttenuation(),
+    });
+  }
+
   createPost() {
     this.post = new PostFX({
       renderer: this.renderer,
@@ -149,6 +174,7 @@ export default class JourneyScene {
     const h = 2 * Math.tan(fov / 2) * 14;
     this.viewport = { height: h, width: h * this.camera.aspect };
     this.monolith?.setAttenuation(this.getAttenuation());
+    this.guideStars?.setAttenuation(this.getAttenuation());
     this.post?.setSize(this.screen.width, this.screen.height);
   }
 
@@ -182,9 +208,29 @@ export default class JourneyScene {
     this.onContextLost?.();
   }
 
+  // Called by the wrapper when a chapter's pull-quote reaches the reading line.
+  holdBreath() {
+    this.timeScaleTarget = 0.42;
+    this.breathVigTarget = 1;
+    this.breathUntil = this.clockTime + 1.1;
+  }
+
   update() {
     if (!this.running) return;
-    const time = (now() - this.startTime) / 1000;
+
+    // Scaled ambient clock. dt clamped so a backgrounded tab can't lurch time.
+    const realNow = now();
+    const dt = Math.min((realNow - this.lastNow) / 1000, 0.05);
+    this.lastNow = realNow;
+    if (this.clockTime > this.breathUntil) {
+      this.timeScaleTarget = 1;
+      this.breathVigTarget = 0;
+    }
+    this.timeScale += (this.timeScaleTarget - this.timeScale) * 0.08;
+    this.breathVig += (this.breathVigTarget - this.breathVig) * 0.08;
+    this.clockTime += dt * this.timeScale;
+    const time = this.clockTime;
+
     const p = clamp(this.scroll.p, 0, 1);
     this.velocity = p - this.scroll.last;
     this.scroll.last = p;
@@ -206,10 +252,15 @@ export default class JourneyScene {
     this.scene.fog.density = s.fog;
     this.scene.fog.color.copy(s.accent).multiplyScalar(0.14);
     this.monolith.update(time, {
-      progress: s.convergence,
+      progress: clamp(s.convergence + this.introFlicker, 0, 1),
       saturation: s.saturation,
       fogDensity: s.fog,
+      chapter: p * CHAPTERS,
     });
+    this.guideStars.update(time, p);
+
+    // Vignette deepens with the held breath (base 0.55 → ~0.85).
+    this.post?.setVignette?.(0.55 + this.breathVig * 0.3);
 
     const chapter = clamp(Math.floor(p * CHAPTERS), 0, CHAPTERS - 1);
     if (chapter !== this.chapter) this.chapter = chapter;
@@ -237,6 +288,7 @@ export default class JourneyScene {
     this.pause();
     this.removeEvents();
     this.monolith?.dispose();
+    this.guideStars?.dispose();
     this.post?.dispose();
     this.scene?.clear();
     this.renderer.dispose();

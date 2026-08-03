@@ -1,4 +1,6 @@
+import Link from "next/link";
 import styles from "./Journey.module.scss";
+import { JOURNEY_ENDING } from "../../constants";
 
 // The always-rendered, crawlable narrative. In Tier 3 (reduced-motion / no
 // WebGL / context lost) it IS the page — a typeset long-form essay. All chapter
@@ -54,6 +56,31 @@ const JourneyEssay = ({ chapters }) => (
         )}
       </section>
     ))}
+
+    <footer className={styles.essayEnd}>
+      {JOURNEY_ENDING.dedication?.text && (
+        <p className={styles.dedication}>
+          {JOURNEY_ENDING.dedication.text}
+          {JOURNEY_ENDING.dedication.gloss && (
+            <span className={styles.dedicationGloss}>
+              {JOURNEY_ENDING.dedication.gloss}
+            </span>
+          )}
+        </p>
+      )}
+      <p className={styles.recap}>{chapters.map((c) => c.title).join("  →  ")}</p>
+      <div className={styles.endingCtas}>
+        <Link href="/hackathons" className={`${styles.cta} ${styles.ctaPrimary} link`}>
+          See the hackathons →
+        </Link>
+        <Link href="/#projects" className={`${styles.cta} ${styles.ctaSecondary} link`}>
+          See the work →
+        </Link>
+        <Link href="/#contact" className={`${styles.cta} ${styles.ctaSecondary} link`}>
+          Let&apos;s talk →
+        </Link>
+      </div>
+    </footer>
   </article>
 );
 

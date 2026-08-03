@@ -44,6 +44,11 @@ export default class PostFX {
     this.bloomPass?.setSize(width / 2, height / 2);
   }
 
+  // Runtime vignette control (e.g. the /journey "held breath" beat).
+  setVignette(v) {
+    if (this.finalPass) this.finalPass.uniforms.uVignette.value = v;
+  }
+
   // velocity: unclamped motion signal; nudges chromatic aberration up while
   // the scene moves fast. Returns true if it rendered, false to fall back.
   render(time, velocity = 0) {

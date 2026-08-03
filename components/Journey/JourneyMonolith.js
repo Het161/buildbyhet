@@ -15,10 +15,18 @@ const vertex = /* glsl */ `
   uniform float uAttenuation;
   uniform float uProgress;   // 0 = scattered, 1 = assembled
   uniform float uBreath;
+  uniform float uChapter;    // continuous chapter, p*8 ∈ [0,8]
+  uniform float uSpan;       // Δ width, the unit for motion amplitudes
 
   varying vec3 vColor;
   varying float vFogDepth;
   varying float vTwinkle;
+
+  // Triangular window peaking at a chapter's centre — how strongly that
+  // chapter's motion character applies right now.
+  float win(float c, float halfw) {
+    return 1.0 - smoothstep(0.0, halfw, abs(uChapter - c));
+  }
 
   void main() {
     vColor = aColor;
@@ -37,6 +45,54 @@ const vertex = /* glsl */ `
       cos(aPhase * 1.3 + uTime * 0.38 + aScatter.x * 0.4),
       sin(aPhase * 0.7 + uTime * 0.33 + aScatter.z * 0.4)
     ) * drift * aScale;
+
+    // ---- Per-chapter motion character -----------------------------------
+    // Layered onto the scattered cloud and faded out by assembly (amp), so it
+    // is felt in the early chapters and never fights the final Δ lock. Each is
+    // the chapter's story, not ornament.
+    float amp = 1.0 - lp;
+
+    // ch1 — aimless drift. The directionless early years: a slow, purposeless
+    // wander with no shared heading.
+    float w1 = win(0.5, 1.1);
+    p += vec3(
+      sin(uTime * 0.18 + aPhase * 1.1),
+      sin(uTime * 0.15 + aPhase * 1.7 + 1.3),
+      cos(uTime * 0.12 + aPhase * 0.9)
+    ) * (w1 * amp * uSpan * 0.05);
+
+    // ch3 — self-organizing lattice. No tuition, teaching himself: the cloud
+    // pulls toward a loose grid, order emerging from nothing.
+    float w3 = win(2.5, 0.9);
+    float L = uSpan * 0.17;
+    vec3 node = floor(aScatter / L + 0.5) * L;
+    p += (node - aScatter) * (0.55 * w3 * amp);
+
+    // ch4 — two exchanging streams. School in the morning, the shop floor in
+    // the afternoon: two flows biased left/right, trading places over time.
+    float w4 = win(3.5, 0.85);
+    float side = sign(aScatter.x + 0.0001);
+    float swap = sin(uTime * 0.22 + aPhase * 0.15);
+    p += vec3(
+      side * uSpan * 0.42 - aScatter.x,
+      swap * uSpan * 0.16,
+      0.0
+    ) * (0.35 * w4 * amp);
+
+    // ch5 — redirect and curl. The plan changed; he turned toward code. The
+    // whole field rotates and swirls onto a new heading.
+    float w5 = win(4.5, 0.85);
+    float ang = 0.55 * w5 * amp + sin(uTime * 0.25) * 0.08 * w5;
+    float cs = cos(ang), sn = sin(ang);
+    vec2 rot = vec2(p.x * cs - p.y * sn, p.x * sn + p.y * cs);
+    p.xy = mix(p.xy, rot, w5 * amp);
+
+    // ch6 — fast orbit, no formation, a downward sag. The honest low: motion
+    // without progress, and a quiet loss of altitude.
+    float w6 = win(5.5, 0.85);
+    float oa = uTime * 0.85 + aPhase * 2.0;
+    p.xy += vec2(cos(oa), sin(oa)) * (uSpan * 0.045 * w6 * amp);
+    p.y -= uSpan * 0.13 * w6 * amp;
 
     vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
     vFogDepth = -mvPosition.z;
@@ -163,6 +219,8 @@ export default class JourneyMonolith {
         uProgress: { value: 0 },
         uSaturation: { value: 0.1 },
         uBreath: { value: w * 0.02 },
+        uChapter: { value: 0 },
+        uSpan: { value: w },
         uOpacity: { value: 0.9 },
         uFogColor: { value: new THREE.Color(fog.color) },
         uFogDensity: { value: fog.density },
@@ -175,12 +233,13 @@ export default class JourneyMonolith {
     this.scene.add(this.points);
   }
 
-  update(time, { progress, saturation, fogDensity, rotation = 0 }) {
+  update(time, { progress, saturation, fogDensity, chapter, rotation = 0 }) {
     const u = this.material.uniforms;
     u.uTime.value = time;
     if (progress != null) u.uProgress.value = progress;
     if (saturation != null) u.uSaturation.value = saturation;
     if (fogDensity != null) u.uFogDensity.value = fogDensity;
+    if (chapter != null) u.uChapter.value = chapter;
     // Barely rotates once assembled; still while scattered.
     this.points.rotation.y = Math.sin(time * 0.12) * 0.18 * (progress ?? 0);
   }

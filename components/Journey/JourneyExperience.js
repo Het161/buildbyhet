@@ -4,6 +4,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import JourneyScene from "./JourneyScene";
+import SignatureDraw from "./SignatureDraw";
+import { JOURNEY_ENDING } from "../../constants";
 import styles from "./Journey.module.scss";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -21,6 +23,9 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
   const blockRefs = useRef([]);
   const endingRef = useRef(null);
   const skipRef = useRef(null);
+  const introRef = useRef(null);
+  const sceneRef = useRef(null);
+  const breathRef = useRef(new Set());
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
 
@@ -71,12 +76,31 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
         skipRef.current.style.opacity = o.toFixed(3);
         skipRef.current.style.pointerEvents = o > 0.4 ? "auto" : "none";
       }
+      // Opening ritual clears the moment the reader begins to move.
+      if (introRef.current) {
+        const o = 1 - smoothstep(0.0, 0.035, p);
+        introRef.current.style.opacity = o.toFixed(3);
+        introRef.current.style.visibility = o < 0.01 ? "hidden" : "visible";
+      }
+      // Held breath — once per chapter, as its pull-quote reaches the reading
+      // line. A beat where the scene slows and the frame draws in.
+      const local = p * N - chapter;
+      if (
+        chapters[chapter]?.pull &&
+        local > 0.45 &&
+        local < 0.62 &&
+        !breathRef.current.has(chapter)
+      ) {
+        breathRef.current.add(chapter);
+        sceneRef.current?.holdBreath();
+      }
+
       if (chapter !== activeRef.current) {
         activeRef.current = chapter;
         setActive(chapter);
       }
     },
-    [N]
+    [N, chapters]
   );
 
   useEffect(() => {
@@ -84,9 +108,37 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
     if (!host) return undefined;
 
     const scene = new JourneyScene(host);
+    sceneRef.current = scene;
     scene.onFrame = handleFrame;
     scene.onContextLost = () => onContextLost?.();
     scene.start();
+
+    // Opening ritual — only when the page actually loads at the top. The name
+    // settles, the honest-version line follows, particles fade up out of the
+    // dark, and the Δ pulses once (foreshadowing where this is all going)
+    // before the scroll affordance appears. Scrolling at any point clears it.
+    let ritual;
+    const atTop = (window.scrollY || window.pageYOffset || 0) < 6;
+    const opacityU = scene.monolith?.material.uniforms.uOpacity;
+    if (atTop && opacityU) {
+      opacityU.value = 0;
+      const name = introRef.current?.querySelector("[data-ritual='name']");
+      const sub = introRef.current?.querySelector("[data-ritual='sub']");
+      const hint = introRef.current?.querySelector("[data-ritual='hint']");
+      gsap.set([name, sub, hint], { autoAlpha: 0, y: 14 });
+      ritual = gsap.timeline({ delay: 0.35 });
+      ritual
+        .to(name, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" })
+        .to(sub, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" }, "+=0.35")
+        .to(opacityU, { value: 0.9, duration: 1.4, ease: "power1.inOut" }, "-=0.5")
+        // Subliminal convergence flicker: 0 → ~0.06 → 0.
+        .to(scene, { introFlicker: 0.06, duration: 0.6, ease: "sine.in" }, "-=0.6")
+        .to(scene, { introFlicker: 0.0, duration: 0.9, ease: "sine.out" })
+        .to(hint, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.3");
+    } else if (introRef.current) {
+      introRef.current.style.opacity = "0";
+      introRef.current.style.visibility = "hidden";
+    }
 
     const tween = gsap.to(scene.scroll, {
       p: 1,
@@ -118,6 +170,7 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
     window.addEventListener("keydown", onKey);
 
     return () => {
+      ritual?.kill();
       tween.scrollTrigger?.kill();
       tween.kill();
       ro.disconnect();
@@ -137,6 +190,20 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
         aria-hidden="true"
       />
       <div className={styles.scrim} aria-hidden="true" />
+
+      {/* Opening ritual — the threshold before chapter one. Never blocks scroll. */}
+      <div ref={introRef} className={styles.intro} aria-hidden="true">
+        <p data-ritual="name" className={styles.introName}>
+          Het Patel
+        </p>
+        <p data-ritual="sub" className={styles.introSub}>
+          Class 9 to now. The honest version.
+        </p>
+        <span data-ritual="hint" className={styles.introHint}>
+          Scroll
+          <span className={styles.introChevron} />
+        </span>
+      </div>
 
       <div className={styles.textColumn}>
         {chapters.map((ch, i) => (
@@ -178,8 +245,15 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
         ))}
       </div>
 
-      {/* Chapter rail — an escape hatch, always reachable. */}
+      {/* Chapter rail — an escape hatch, always reachable. The line is the path
+          walked; passed dots fill in behind you. */}
       <nav className={styles.rail} aria-label="Chapters">
+        <span className={styles.railTrack} aria-hidden="true">
+          <span
+            className={styles.railProgress}
+            style={{ height: `${(active / (N - 1)) * 100}%` }}
+          />
+        </span>
         <ol className={styles.railList}>
           {chapters.map((ch, i) => (
             <li key={ch.id}>
@@ -189,7 +263,11 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
                 aria-label={`Chapter ${ch.chapter} — ${ch.title}`}
                 aria-current={i === active ? "true" : undefined}
                 className={`${styles.railDot} ${
-                  i === active ? styles.railDotActive : ""
+                  i === active
+                    ? styles.railDotActive
+                    : i < active
+                    ? styles.railDotPassed
+                    : ""
                 } link`}
               />
             </li>
@@ -206,22 +284,48 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
         Skip to the end ↓
       </button>
 
-      {/* Ending — the assembled Δ, then three ways out. */}
+      {/* Ending — the assembled Δ, then a dedication, the signature drawing
+          itself on, the journey in one line, and three ways out. */}
       <div
         ref={endingRef}
         className={styles.ending}
         style={{ opacity: 0, pointerEvents: "none" }}
       >
-        <div className={styles.endingCtas}>
-          <Link href="/hackathons" className={`${styles.cta} ${styles.ctaPrimary} link`}>
-            See the hackathons →
-          </Link>
-          <Link href="/#projects" className={`${styles.cta} ${styles.ctaSecondary} link`}>
-            See the work →
-          </Link>
-          <Link href="/#contact" className={`${styles.cta} ${styles.ctaSecondary} link`}>
-            Let&apos;s talk →
-          </Link>
+        <div className={styles.endingInner}>
+          {JOURNEY_ENDING.dedication?.text && (
+            <p className={styles.dedication}>
+              {JOURNEY_ENDING.dedication.text}
+              {JOURNEY_ENDING.dedication.gloss && (
+                <span className={styles.dedicationGloss}>
+                  {JOURNEY_ENDING.dedication.gloss}
+                </span>
+              )}
+            </p>
+          )}
+
+          {JOURNEY_ENDING.signature && (
+            <SignatureDraw
+              src={JOURNEY_ENDING.signature}
+              play={active === N - 1}
+              className={styles.signature}
+            />
+          )}
+
+          <p className={styles.recap}>
+            {chapters.map((c) => c.title).join("  →  ")}
+          </p>
+
+          <div className={styles.endingCtas}>
+            <Link href="/hackathons" className={`${styles.cta} ${styles.ctaPrimary} link`}>
+              See the hackathons →
+            </Link>
+            <Link href="/#projects" className={`${styles.cta} ${styles.ctaSecondary} link`}>
+              See the work →
+            </Link>
+            <Link href="/#contact" className={`${styles.cta} ${styles.ctaSecondary} link`}>
+              Let&apos;s talk →
+            </Link>
+          </div>
         </div>
       </div>
     </>

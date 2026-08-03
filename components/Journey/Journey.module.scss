@@ -6,7 +6,8 @@
   z-index: 0;
 }
 
-/* Left scrim keeps body text ≥ 4.5:1 over the (sometimes light) backdrop. */
+/* Left scrim keeps text full-contrast over the (increasingly lit) backdrop at
+   EVERY scroll position — the saturation arc is canvas-only; DOM never dims. */
 .scrim {
   position: fixed;
   inset: 0;
@@ -14,18 +15,93 @@
   pointer-events: none;
   background: linear-gradient(
     to right,
-    rgba(4, 2, 8, 0.82) 0%,
-    rgba(4, 2, 8, 0.6) 34%,
-    rgba(4, 2, 8, 0) 62%
+    rgba(3, 2, 6, 0.92) 0%,
+    rgba(3, 2, 6, 0.82) 30%,
+    rgba(3, 2, 6, 0.5) 48%,
+    rgba(3, 2, 6, 0) 66%
   );
 
   @media (max-width: 767px) {
     background: linear-gradient(
       to top,
-      rgba(4, 2, 8, 0.9) 0%,
-      rgba(4, 2, 8, 0.55) 42%,
-      rgba(4, 2, 8, 0) 72%
+      rgba(3, 2, 6, 0.94) 0%,
+      rgba(3, 2, 6, 0.82) 30%,
+      rgba(3, 2, 6, 0.4) 55%,
+      rgba(3, 2, 6, 0) 76%
     );
+  }
+}
+
+/* --------------------------- Opening ritual ---------------------------- */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 1.5rem;
+  will-change: opacity;
+}
+
+.introName {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 0.2rem 2rem rgba(0, 0, 0, 0.85);
+}
+
+.introSub {
+  margin-top: 1.1rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  letter-spacing: 0.04em;
+  color: #b8b8c2;
+  text-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.85);
+}
+
+.introHint {
+  margin-top: 3.5rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a8a94;
+}
+
+.introChevron {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-right: 1.5px solid rgba(159, 85, 255, 0.8);
+  border-bottom: 1.5px solid rgba(159, 85, 255, 0.8);
+  transform: rotate(45deg);
+  animation: introBob 1.8s ease-in-out infinite;
+}
+
+@keyframes introBob {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(45deg) translate(3px, 3px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .introChevron {
+    animation: none;
   }
 }
 
@@ -167,6 +243,29 @@
   }
 }
 
+/* The connecting path behind the dots. */
+.railTrack {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0.31rem;
+  bottom: 0.31rem;
+  width: 1.5px;
+  background: rgba(255, 255, 255, 0.16);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Fills from the top down to the current chapter — the distance travelled. */
+.railProgress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, #9f55ff, #7000ff);
+  transition: height 0.5s ease;
+}
+
 .railList {
   list-style: none;
   margin: 0;
@@ -174,6 +273,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .railDot {
@@ -194,6 +295,12 @@
     outline: 2px solid #9f55ff;
     outline-offset: 3px;
   }
+}
+
+/* Chapters already walked fill in behind you. */
+.railDotPassed {
+  background: rgba(159, 85, 255, 0.55);
+  border-color: rgba(159, 85, 255, 0.7);
 }
 
 .railDotActive {
@@ -232,10 +339,57 @@
   inset: 0;
   z-index: 3;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding-bottom: 12vh;
+  padding: 6vh 1.25rem;
   will-change: opacity;
+}
+
+.endingInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.6rem;
+  max-width: 46rem;
+}
+
+.dedication {
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  line-height: 1.5;
+  font-weight: 500;
+  color: #e6e6ea;
+  max-width: 34rem;
+}
+
+.dedicationGloss {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #9a9aa4;
+}
+
+/* The signature draws itself on. Colour comes from the SVG's own stroke. */
+.signature {
+  width: clamp(9rem, 24vw, 13rem);
+  height: auto;
+  opacity: 0.92;
+
+  svg {
+    display: block;
+    overflow: visible;
+  }
+}
+
+/* The whole journey in one quiet line. */
+.recap {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.72rem;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: #7e7e8a;
+  max-width: 40rem;
 }
 
 .endingCtas {
@@ -243,7 +397,7 @@
   flex-wrap: wrap;
   gap: 0.9rem;
   justify-content: center;
-  padding: 0 1.25rem;
+  padding: 0.4rem 0 0;
 }
 
 .cta {
@@ -394,6 +548,16 @@
   font-weight: 500;
   color: #b985ff;
   max-width: 34rem;
+}
+
+.essayEnd {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
 }
 
 .artifact {

@@ -804,4 +804,16 @@ export const JOURNEY_STATE = [
   { cameraY: 1.0, fog: 0.014, saturation: 1.0, convergence: 1.0, accent: "#9f55ff" },
 ];
 
+// The ending trio, shown once the Δ has assembled.
+//  • dedication — the one personal line. Absent until you write it: null renders
+//    NOTHING (never a gap). { text, gloss } — gloss is the quieter second line.
+//  • signature — drop a stroke-drawable SVG (potrace your scan) at this path; it
+//    draws itself on, then the CTAs follow. Missing file = silently skipped.
+//  • recap is assembled from the chapter titles at render time (not stored).
+export const JOURNEY_ENDING = {
+  // TODO(Het): your dedication, e.g. { text: "For …", gloss: "…" }.
+  dedication: null,
+  signature: "/journey/signature.svg",
+};
+
 export const GTAG = "G-5HCTL2TJ5W";
