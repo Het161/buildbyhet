@@ -644,7 +644,7 @@ export const HACKATHONS = [
     liveUrl: "https://dhanrakshakai.netlify.app/",
     repoUrl: "https://github.com/Het161/DHANRAKSHAK",
     image: "/hackathons/dhanrakshak.webp",
-    result: { label: "Result Awaited", status: "pending" },
+    result: { label: "Finale Selected", status: "highlight" },
     accent: "#00ac56",
     media: {
       cover: hkMedia("covers", "mavrick", 800),
