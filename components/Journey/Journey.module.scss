@@ -1,0 +1,416 @@
+/* ========================= WebGL experience ============================= */
+
+.canvasHost {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Left scrim keeps body text ≥ 4.5:1 over the (sometimes light) backdrop. */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgba(4, 2, 8, 0.82) 0%,
+    rgba(4, 2, 8, 0.6) 34%,
+    rgba(4, 2, 8, 0) 62%
+  );
+
+  @media (max-width: 767px) {
+    background: linear-gradient(
+      to top,
+      rgba(4, 2, 8, 0.9) 0%,
+      rgba(4, 2, 8, 0.55) 42%,
+      rgba(4, 2, 8, 0) 72%
+    );
+  }
+}
+
+.textColumn {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    align-items: flex-end;
+  }
+}
+
+/* Chapters are stacked and cross-faded — only the active one is visible. */
+.block {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  max-width: 40rem;
+  padding: 0 1.5rem 0 2.5rem;
+  will-change: opacity, transform;
+
+  @media (min-width: 768px) {
+    padding-left: 5rem;
+  }
+  @media (min-width: 1280px) {
+    padding-left: 7rem;
+  }
+  @media (max-width: 767px) {
+    bottom: 6vh;
+    top: auto;
+    padding: 0 1.25rem 0 1.25rem;
+    max-width: 100%;
+  }
+}
+
+.blockMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.blockNum {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(185, 133, 255, 0.6);
+  line-height: 1;
+}
+
+.blockPeriod {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+}
+
+.blockTitle {
+  font-size: clamp(1.9rem, 4.4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 0.15rem 1.6rem rgba(0, 0, 0, 0.9);
+}
+
+.blockTitleFinal {
+  background: linear-gradient(to right, #9f55ff, #7000ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.blockBody {
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: #e6e6ea;
+  max-width: 36rem;
+  text-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.9);
+
+  @media (max-width: 767px) {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+}
+
+.blockPull {
+  margin-top: 1.5rem;
+  padding-left: 1.1rem;
+  border-left: 2px solid rgba(159, 85, 255, 0.6);
+  font-size: 1.3rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: #c9a6ff;
+  max-width: 32rem;
+  text-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.9);
+
+  @media (max-width: 767px) {
+    font-size: 1.1rem;
+  }
+}
+
+.blockArtifact {
+  margin: 1.6rem 0 0;
+
+  img {
+    width: 100%;
+    max-width: 22rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+  }
+  figcaption {
+    margin-top: 0.5rem;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.68rem;
+    color: #8a8a8a;
+  }
+}
+
+/* --------------------------------- Rail --------------------------------- */
+
+.rail {
+  position: fixed;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+
+  @media (min-width: 1024px) {
+    right: 1.75rem;
+  }
+}
+
+.railList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.railDot {
+  display: block;
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: #ffffff;
+    transform: scale(1.25);
+  }
+  &:focus-visible {
+    outline: 2px solid #9f55ff;
+    outline-offset: 3px;
+  }
+}
+
+.railDotActive {
+  background: #9f55ff;
+  border-color: #9f55ff;
+  transform: scale(1.7);
+}
+
+/* ------------------------------ Skip / ending --------------------------- */
+
+.skip {
+  position: fixed;
+  left: 50%;
+  bottom: 1.75rem;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  background: rgba(4, 2, 8, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: #ffffff;
+    border-color: rgba(159, 85, 255, 0.6);
+  }
+}
+
+.ending {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12vh;
+  will-change: opacity;
+}
+
+.endingCtas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  justify-content: center;
+  padding: 0 1.25rem;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.ctaPrimary {
+  color: #ffffff;
+  background: linear-gradient(to right, #9f55ff, #7000ff);
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.6rem 1.4rem rgba(112, 0, 255, 0.35);
+  }
+}
+
+.ctaSecondary {
+  color: #dbdbdb;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  &:hover {
+    color: #ffffff;
+    border-color: rgba(159, 85, 255, 0.6);
+    transform: translateY(-2px);
+  }
+}
+
+/* ============================ Tier 3 essay =============================== */
+/* A deliberately editorial long-form read — this must stand on its own. */
+
+.essay {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 8rem 1.5rem 7rem;
+
+  @media (min-width: 768px) {
+    padding: 9rem 2rem 8rem;
+  }
+}
+
+.essayHead {
+  margin-bottom: 5rem;
+}
+
+.essayEyebrow {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.essayTitle {
+  font-size: clamp(3rem, 9vw, 5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  margin-top: 0.75rem;
+  background: linear-gradient(to right, #9f55ff, #7000ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.essaySub {
+  margin-top: 1.25rem;
+  max-width: 32rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #aaaaaa;
+}
+
+.chapter {
+  padding: 3.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  &:first-of-type {
+    border-top: 0;
+  }
+}
+
+.chapterMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.chapterNum {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(185, 133, 255, 0.55);
+  line-height: 1;
+}
+
+.chapterPeriod {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.chapterTitle {
+  font-size: clamp(1.75rem, 4.5vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin-bottom: 1.4rem;
+}
+
+/* Only the final chapter gets the brand gradient — the arc resolving. */
+.chapterTitleFinal {
+  background: linear-gradient(to right, #9f55ff, #7000ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.chapterBody {
+  font-size: 1.12rem;
+  line-height: 1.8;
+  color: #dbdbdb;
+  max-width: 38rem; /* ~65ch */
+}
+
+.pull {
+  margin-top: 2rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(159, 85, 255, 0.5);
+  font-size: 1.35rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #b985ff;
+  max-width: 34rem;
+}
+
+.artifact {
+  margin: 2.5rem 0 0;
+
+  img {
+    width: 100%;
+    max-width: 30rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: block;
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.72rem;
+    color: #8a8a8a;
+  }
+}

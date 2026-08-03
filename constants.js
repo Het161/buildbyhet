@@ -718,4 +718,90 @@ export const HACKATHONS = [
   },
 ];
 
+// My Journey — narrative chapters (Class 9 → now). Copy is final prose,
+// rendered verbatim. Dates marked "verify" are Het's best reconstruction.
+// Optional per-chapter artifact: { src, alt, caption } (TODO(Het) to supply).
+export const JOURNEY = [
+  {
+    id: "ch1",
+    chapter: "01",
+    title: "Last bench, last section",
+    period: "Class 9 · 2020–21", // verify
+    body: `I sat at the back of the last section. Maths and science didn't make sense, so I memorised questions and answers and hoped the exam asked them the same way. I was good at one thing — cricket. I got picked for the inter-school team, got injured in practice, and didn't play. Then COVID closed the school. Class became a Zoom window; the rest was BGMI, outdoor games, and time at home.`,
+    pull: "Memorised the answers. Didn't understand one of them.",
+  },
+  {
+    id: "ch2",
+    chapter: "02",
+    title: "Manoj sir and Pradeep sir",
+    period: "Class 10 · 2021–22", // verify
+    body: `Boards were the year students could have coasted — marks were being carried across. I studied anyway. Manoj sir took maths, Pradeep sir took science, and both started from the base: not the chapter, the thing underneath the chapter. It was the first time those subjects made sense instead of needing to be memorised. I scored well in both. The bigger change wasn't on the marksheet — I could walk into a new place and talk to the people in it.`,
+    pull: "They taught from the base. Everything after that is downstream of it.",
+  },
+  {
+    id: "ch3",
+    chapter: "03",
+    title: "No tuition",
+    period: "Class 11 · 2022–23", // verify
+    body: `The day class 10 ended I started class 11 physics, chemistry and maths — months before the syllabus did. I was preparing for the NDA exam, so I pushed further: by the end of class 11 I had finished both class 11 and class 12 maths. No tuition that year, in any subject. I didn't sit the NDA exam in the end — family reasons. The maths stayed.`,
+    pull: "Two years of maths in one. Taught to myself.",
+  },
+  {
+    id: "ch4",
+    chapter: "04",
+    title: "Two educations",
+    period: "Class 12 · 2023–24", // verify
+    body: `Mornings and nights were board prep — the same tuition as class 10, paper after paper. In between I went with my father to the weighing-scale business and sold scales myself. That taught what school doesn't: how to open a conversation with a customer, how to move them to yes, how money actually moves through a business. After Diwali the market got interesting — MoneyControl, TradingView, drawing charts, paper trades off my own research. Fake money. The profit taught me something real.`,
+    pull: "School in the morning. The shop floor in the afternoon.",
+  },
+  {
+    id: "ch5",
+    chapter: "05",
+    title: "Gandhinagar University",
+    period: "Year 1 · 2024", // verify
+    // TODO(Het): trim the last two sentences to taste — your call on how much to say here
+    body: `B.Tech, Computer Engineering. Six months of IELTS preparation, 6.5 band — the plan was to study abroad. The plan changed. I turned toward code instead.`,
+    pull: null,
+  },
+  {
+    id: "ch6",
+    chapter: "06",
+    title: "I couldn't write a program from a blank file",
+    period: "Sem 1–2 · 2024–25", // verify
+    body: `For most of first year I wasn't really a programmer. Free ChatGPT, free Gemini — paste the prompt, paste the answer back, ship something that ran. I went to hackathons with friends and understood almost nothing we submitted. The grades were fine, good CGPA across every subject, which made the gap easy to ignore. I started 100 Days of Code and the Apna College track, and still couldn't write a program from an empty file.`,
+    pull: "The grades were fine. That was the problem.",
+  },
+  {
+    id: "ch7",
+    chapter: "07",
+    title: "Blank page, then build it cold",
+    period: "Sem 3–4 · 2025–26", // verify
+    body: `Fourth semester is where it turned. The MERN course, then DSA in Java, with one rule: solve it on paper first, write it from a blank page, then rebuild it cold the next day. Projects stopped being prompts and started being code. SMARTWORK 360 went to Smart India Hackathon. TransitOps went to Odoo. CiteMind reached the HackBaroda finals. Clients started paying for websites.`,
+    pull: "Paper first. Blank page. Cold rebuild.",
+  },
+  {
+    id: "ch8",
+    chapter: "08",
+    title: "Now",
+    period: "2026",
+    body: `OM Marketing Solutions runs alongside my father's weighing-scale business and my degree. I ship production features on a live sports-booking SaaS. Ten hackathons in, with a national finalist, an Odoo finale, and a top-100 win. DriftLock — sub-pixel wafer localization, no deep learning — is with the SEMICON India judges now.`,
+    pull: "Six years ago I memorised answers because understanding them felt out of reach. The pattern since has been the same every time: show up short, close the gap, repeat.",
+  },
+];
+
+// Per-chapter visual state for the 3D layer — interpolated continuously by
+// scroll progress (never stepped). cameraY rises, fog thins, saturation warms
+// toward full brand purple as the Δ assembles (convergence 0 → 1). Chapter 6
+// deliberately dips (the honest low point) before chapter 7 lifts.
+export const JOURNEY_STATE = [
+  { cameraY: 0.0, fog: 0.05, saturation: 0.1, convergence: 0.0, accent: "#3a3a42" },
+  { cameraY: 0.14, fog: 0.044, saturation: 0.25, convergence: 0.12, accent: "#4a4458" },
+  { cameraY: 0.28, fog: 0.04, saturation: 0.35, convergence: 0.25, accent: "#5b4a7a" },
+  { cameraY: 0.43, fog: 0.032, saturation: 0.5, convergence: 0.4, accent: "#6b4a9a" },
+  { cameraY: 0.58, fog: 0.028, saturation: 0.6, convergence: 0.52, accent: "#7000ff" },
+  { cameraY: 0.68, fog: 0.03, saturation: 0.55, convergence: 0.62, accent: "#5f5a7a" },
+  { cameraY: 0.84, fog: 0.02, saturation: 0.85, convergence: 0.82, accent: "#8b31ff" },
+  { cameraY: 1.0, fog: 0.014, saturation: 1.0, convergence: 1.0, accent: "#9f55ff" },
+];
+
 export const GTAG = "G-5HCTL2TJ5W";
