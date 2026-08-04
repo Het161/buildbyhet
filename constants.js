@@ -531,6 +531,7 @@ export const HACKATHONS = [
       "Real-time GAN video deblurring & low-light enhancement on Jetson AGX",
     stack: ["GAN", "Jetson AGX", "TensorRT", "Computer Vision"],
     liveUrl: null,
+    repoUrl: "https://github.com/Het161/Railway-Inspection",
     image: null,
     result: { label: "", status: "neutral" },
     accent: "#7000ff",
@@ -551,6 +552,7 @@ export const HACKATHONS = [
         ],
         "Real-Time Edge Restoration pitch slide"
       ),
+      deck: "/hackathon/ADANI/railway-inspection-deck.pdf",
     },
   },
   {
