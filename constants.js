@@ -816,4 +816,16 @@ export const JOURNEY_ENDING = {
   signature: "/journey/signature.svg",
 };
 
+// A journey-only ambient bed, separate from the global SoundBar and OFF by
+// default. The toggle only appears when `pad` points at a real file — drop a
+// CC0 pad (≤1.5MB, seamless loop) at the path and set it here to light it up.
+// A lowpass opens 400Hz→8kHz and the level lifts −18→−10dB across the scroll;
+// a single chime marks ch6→ch7 (synthesised if `chime` is null). Absent = no
+// toggle, no gap.
+export const JOURNEY_AUDIO = {
+  // TODO(Het): e.g. "/journey/pad.webm" (a CC0 ambient drone).
+  pad: null,
+  chime: null,
+};
+
 export const GTAG = "G-5HCTL2TJ5W";

@@ -5,7 +5,8 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import JourneyScene from "./JourneyScene";
 import SignatureDraw from "./SignatureDraw";
-import { JOURNEY_ENDING } from "../../constants";
+import JourneyAudio from "./JourneyAudio";
+import { JOURNEY_ENDING, JOURNEY_AUDIO } from "../../constants";
 import styles from "./Journey.module.scss";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -28,8 +29,37 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
   const breathRef = useRef(new Set());
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
+  const [lightbox, setLightbox] = useState(null);
+  const [soundOn, setSoundOn] = useState(false);
+  const audioRef = useRef(null);
+  const lastPRef = useRef(0);
 
   const N = chapters.length;
+  const hasAudio = Boolean(JOURNEY_AUDIO.pad);
+
+  const toggleSound = useCallback(async () => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (soundOn) {
+      a.disable();
+      setSoundOn(false);
+      try {
+        localStorage.setItem("journey-sound", "off");
+      } catch {
+        /* private mode */
+      }
+    } else {
+      const ok = await a.enable();
+      if (!ok) return;
+      a.setProgress(lastPRef.current);
+      setSoundOn(true);
+      try {
+        localStorage.setItem("journey-sound", "on");
+      } catch {
+        /* private mode */
+      }
+    }
+  }, [soundOn]);
 
   const scrollToChapter = useCallback(
     (i) => {
@@ -95,6 +125,13 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
         sceneRef.current?.holdBreath();
       }
 
+      // Ambient bed follows the scroll; the chime marks the ch6 → ch7 turn.
+      lastPRef.current = p;
+      if (audioRef.current) {
+        audioRef.current.setProgress(p);
+        if (chapter >= 6) audioRef.current.chime();
+      }
+
       if (chapter !== activeRef.current) {
         activeRef.current = chapter;
         setActive(chapter);
@@ -102,6 +139,16 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
     },
     [N, chapters]
   );
+
+  // Escape closes the memory-object lightbox.
+  useEffect(() => {
+    if (!lightbox) return undefined;
+    const onEsc = (e) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [lightbox]);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -111,7 +158,41 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
     sceneRef.current = scene;
     scene.onFrame = handleFrame;
     scene.onContextLost = () => onContextLost?.();
+    scene.onMemoryOpen = (artifact) => setLightbox(artifact);
     scene.start();
+
+    // Ambient bed (opt-in, its own toggle). If the reader left it on before,
+    // resume on their first gesture — audio can't autostart without one.
+    let gestureCleanup;
+    if (hasAudio) {
+      audioRef.current = new JourneyAudio({
+        padSrc: JOURNEY_AUDIO.pad,
+        chimeSrc: JOURNEY_AUDIO.chime,
+      });
+      let pref = "off";
+      try {
+        pref = localStorage.getItem("journey-sound") || "off";
+      } catch {
+        /* private mode */
+      }
+      if (pref === "on") {
+        const resume = async () => {
+          const ok = await audioRef.current?.enable();
+          if (ok) {
+            audioRef.current.setProgress(lastPRef.current);
+            setSoundOn(true);
+          }
+          gestureCleanup?.();
+        };
+        ["pointerdown", "keydown", "wheel", "touchstart"].forEach((ev) =>
+          window.addEventListener(ev, resume, { once: true, passive: true })
+        );
+        gestureCleanup = () =>
+          ["pointerdown", "keydown", "wheel", "touchstart"].forEach((ev) =>
+            window.removeEventListener(ev, resume)
+          );
+      }
+    }
 
     // Opening ritual — only when the page actually loads at the top. The name
     // settles, the honest-version line follows, particles fade up out of the
@@ -176,6 +257,8 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
       ro.disconnect();
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("keydown", onKey);
+      gestureCleanup?.();
+      audioRef.current?.disable();
       scene.destroy();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -227,20 +310,8 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
             </h2>
             <p className={styles.blockBody}>{ch.body}</p>
             {ch.pull && <p className={styles.blockPull}>{ch.pull}</p>}
-            {ch.artifact?.src && (
-              <figure className={styles.blockArtifact}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={ch.artifact.src}
-                  alt={ch.artifact.alt || ""}
-                  loading="lazy"
-                  decoding="async"
-                />
-                {ch.artifact.caption && (
-                  <figcaption>{ch.artifact.caption}</figcaption>
-                )}
-              </figure>
-            )}
+            {/* The artifact is a glass slab in the scene, not a DOM figure —
+                the Tier-3 essay carries the accessible inline image. */}
           </div>
         ))}
       </div>
@@ -283,6 +354,27 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
       >
         Skip to the end ↓
       </button>
+
+      {/* Journey-only ambient bed — separate from the site's SoundBar, off by
+          default. Only present when a pad is configured. */}
+      {hasAudio && (
+        <button
+          type="button"
+          onClick={toggleSound}
+          aria-pressed={soundOn}
+          aria-label={soundOn ? "Turn ambient sound off" : "Turn ambient sound on"}
+          className={`${styles.soundToggle} ${
+            soundOn ? styles.soundToggleOn : ""
+          } link`}
+        >
+          <span className={styles.soundBarsMini} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          {soundOn ? "Sound on" : "Sound"}
+        </button>
+      )}
 
       {/* Ending — the assembled Δ, then a dedication, the signature drawing
           itself on, the journey in one line, and three ways out. */}
@@ -328,6 +420,38 @@ const JourneyExperience = ({ chapters, scrollId, onContextLost }) => {
           </div>
         </div>
       </div>
+
+      {/* Memory-object lightbox — opened by clicking a slab. */}
+      {lightbox && (
+        <div
+          className={styles.lightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.alt || "Artifact"}
+          onClick={() => setLightbox(null)}
+        >
+          <figure
+            className={styles.lightboxInner}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={lightbox.src} alt={lightbox.alt || ""} decoding="async" />
+            {lightbox.caption && (
+              <figcaption className={styles.lightboxCaption}>
+                {lightbox.caption}
+              </figcaption>
+            )}
+          </figure>
+          <button
+            type="button"
+            className={`${styles.lightboxClose} link`}
+            aria-label="Close"
+            onClick={() => setLightbox(null)}
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </>
   );
 };

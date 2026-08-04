@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import JourneyMonolith from "./JourneyMonolith";
 import GuideStars from "./GuideStars";
+import MemorySlabs from "./MemorySlabs";
 import PostFX from "../webgl/PostFX";
 import { detectTier, getTierConfig } from "../webgl/tiers";
 import { FOG } from "../webgl/colors";
-import { JOURNEY_STATE } from "../../constants";
+import { JOURNEY, JOURNEY_STATE } from "../../constants";
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -62,10 +63,13 @@ export default class JourneyScene {
     this._look = new THREE.Vector3();
     this.onFrame = null;
     this.onContextLost = null;
+    this.onMemoryOpen = null;
+    this.raycaster = new THREE.Raycaster();
 
     this.update = this.update.bind(this);
     this.onPointerMove = this.onPointerMove.bind(this);
     this.onContextLostEvent = this.onContextLostEvent.bind(this);
+    this.onClick = this.onClick.bind(this);
 
     this.createRenderer();
     this.createCamera();
@@ -74,6 +78,7 @@ export default class JourneyScene {
     this.buildPath();
     this.createMonolith();
     this.createGuideStars();
+    this.createMemorySlabs();
     this.createPost();
     this.addEvents();
   }
@@ -150,6 +155,16 @@ export default class JourneyScene {
     });
   }
 
+  createMemorySlabs() {
+    this.memorySlabs = new MemorySlabs({
+      scene: this.scene,
+      chapters: JOURNEY,
+      center: this.deltaCenter.clone(),
+      viewportHeight: this.viewport.height,
+      maxAnisotropy: this.renderer.capabilities.getMaxAnisotropy(),
+    });
+  }
+
   createPost() {
     this.post = new PostFX({
       renderer: this.renderer,
@@ -186,6 +201,8 @@ export default class JourneyScene {
       this.onContextLostEvent,
       false
     );
+    if (this.memorySlabs.hasAny())
+      this.renderer.domElement.addEventListener("click", this.onClick);
   }
 
   removeEvents() {
@@ -195,6 +212,25 @@ export default class JourneyScene {
       this.onContextLostEvent,
       false
     );
+    this.renderer.domElement.removeEventListener("click", this.onClick);
+  }
+
+  // Raycast a click against the visible memory slabs → open its lightbox.
+  onClick(e) {
+    if (!this.onMemoryOpen) return;
+    const meshes = this.memorySlabs.visibleMeshes();
+    if (!meshes.length) return;
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    const ndc = {
+      x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
+      y: -((e.clientY - rect.top) / rect.height) * 2 + 1,
+    };
+    this.raycaster.setFromCamera(ndc, this.camera);
+    const hits = this.raycaster.intersectObjects(meshes, false);
+    if (hits.length) {
+      const art = this.memorySlabs.artifactForMesh(hits[0].object);
+      if (art) this.onMemoryOpen(art);
+    }
   }
 
   onPointerMove(e) {
@@ -258,6 +294,11 @@ export default class JourneyScene {
       chapter: p * CHAPTERS,
     });
     this.guideStars.update(time, p);
+    this.memorySlabs.update(time, {
+      p,
+      saturation: s.saturation,
+      camera: this.camera,
+    });
 
     // Vignette deepens with the held breath (base 0.55 → ~0.85).
     this.post?.setVignette?.(0.55 + this.breathVig * 0.3);
@@ -289,6 +330,7 @@ export default class JourneyScene {
     this.removeEvents();
     this.monolith?.dispose();
     this.guideStars?.dispose();
+    this.memorySlabs?.dispose();
     this.post?.dispose();
     this.scene?.clear();
     this.renderer.dispose();
