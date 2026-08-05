@@ -571,6 +571,7 @@ export const HACKATHONS = [
     ],
     liveUrl: "https://smartwork360.vercel.app",
     repoUrl: "https://github.com/Het161/smartwork360",
+    videoUrl: "https://youtu.be/wYtL33ZdV7U",
     image: "/hackathons/smartwork360.webp",
     result: { label: "Cleared Round 1", status: "neutral" },
     accent: "#8b31ff",
