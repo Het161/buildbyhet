@@ -265,6 +265,47 @@ export const PROJECTS = [
 ];
 
 export const WORK_CONTENTS = {
+  FIRSTBOOKIT: [
+    {
+      title: "FirstBookit",
+      description:
+        "FirstBookit (firstbookit.in) is a live sports-venue booking platform where I work as a Full Stack Developer across three codebases — a React web app, a React Native mobile app, and a Node/Prisma backend. Around 450 commits shipping real production features end to end.",
+      content: (
+        <div className="h-full w-full flex flex-col items-center justify-center text-white px-4 gap-2 text-center">
+          <span>Full Stack Developer</span>
+          <a
+            href="https://firstbookit.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link text-[#5170ff]"
+          >
+            firstbookit.in ↗
+          </a>
+        </div>
+      ),
+    },
+    {
+      title: "Booking, Payments & Splits",
+      description:
+        "I built the commerce core: guest email-OTP booking, live Razorpay order creation, multi-slot bookings paid in one combined transaction, a 20% advance / balance-at-venue model, and owner-side Collect Payment. Plus a full split-with-friends subsystem — per-member pay links, a 15-minute hold, auto-confirm when everyone pays, and auto-refund on expiry.",
+      content: (
+        <div className="h-full w-full flex items-center justify-center text-white px-4 text-center">
+          Razorpay • Multi-slot • Split payments
+        </div>
+      ),
+    },
+    {
+      title: "Portals, Tracking & Platform",
+      description:
+        "Owner, Manager and Admin portals — dashboards, slot & pricing rules, Razorpay Route payouts, court-approval workflow, live analytics and refunds. A running-club GPS run-tracker with background tracking and a Strava-style share card. A notifications system with cron reminders, SEO landing pages, a Three.js welcome scene, and backend performance work: pagination, DB indexes, caching, and N+1 fixes.",
+      content: (
+        <div className="h-full w-full flex items-center justify-center text-white px-4 text-center">
+          Owner • Manager • Admin • Run-tracker
+        </div>
+      ),
+    },
+  ],
+
   OM_MARKETING: [
     {
       title: "OM Marketing",
