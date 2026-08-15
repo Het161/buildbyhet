@@ -740,6 +740,55 @@ export const HACKATHONS = [
     },
   },
   {
+    // Hacker House Goa 2026 — Task 1 (shortlisting round). Imagery TODO(Het):
+    // public/hackathon/HHGOA/ ; placeholder covers it until then.
+    slug: "hhgoa-frame",
+    project: "Frame / ID Card Generator",
+    event: "Hacker House Goa 2026 — Task 1",
+    date: "Aug 2026",
+    tagline:
+      "Photo upload → event-branded frame / ID card → downloadable share card. The shortlisting build that advanced to the voice-RAG round.",
+    stack: [],
+    liveUrl: "https://frameingoa.netlify.app/",
+    repoUrl: "https://github.com/Het161/HackerHouseGoa",
+    postUrl: "https://lnkd.in/p/dkUdsN8q",
+    result: { label: "Shortlisted", status: "highlight" },
+    accent: "#7a3aff",
+  },
+  {
+    // Hacker House Goa 2026 — Task 2 (main). Imagery TODO(Het): public/hackathon/SHRUTI/.
+    slug: "shruti",
+    project: "SHRUTI",
+    event: "Hacker House Goa 2026 — Task 2",
+    date: "Aug 2026",
+    tagline:
+      "Voice-first Indic RAG. Speak Hindi, Gujarati, English or code-mixed; it retrieves from multilingual MS MARCO and answers in your language — sub-200ms, every query proving its own latency on screen.",
+    description:
+      "SHRUTI (श्रुति, \"that which is heard\") is a voice-first, Indic-first answering instrument. Latency is killed structurally, not hoped for: zero network calls in the retrieval path — static Model2Vec embeddings (sub-millisecond query encoding), in-process BM25, and HNSW vector search all in RAM, loaded once at startup. A two-tier answer guarantees the SLO — a grounded extractive answer in single-digit ms (an honest P100 < 200ms), then a streamed Cerebras generation expands it with TTFT measured separately. Chunking is an evaluated experiment, not an adjective: six strategies (passage-native, fixed+overlap, sentence-window, semantic-boundary, parent-child, metadata-aware) scored on real IR metrics — MRR@10, Recall@5/@20 — using the dataset's is_selected labels, and the winner ships. A Jina reranker adds precision only where the ΔMRR justified the bounded latency cost. Four visible guardrails — scope (calibrated abstention with plotted in/out-of-domain distributions), safety, grounding, injection hygiene — each surfaced with a REFUSED lamp naming the gate. Benchmarked P50/P70/P100 across 300+ queries, per-language, warmup excluded and cold-start reported separately. Sarvam Saaras v3 streaming STT, deployed on Modal.",
+    stack: ["FastAPI", "Sarvam Saaras v3", "Model2Vec", "BM25", "HNSW", "Cerebras", "Jina Reranker", "Modal"],
+    liveUrl: "https://hetpatelsk--shruti-fastapi-app.modal.run/",
+    repoUrl: "https://github.com/Het161/shruti",
+    result: { label: "Task 2 · In Progress", status: "pending" },
+    accent: "#8b31ff",
+  },
+  {
+    // ABTalks Vibe-Code Hackathon. Imagery TODO(Het): public/hackathon/TAAR/.
+    slug: "taar",
+    project: "TAAR",
+    event: "ABTalks Vibe-Code Hackathon",
+    date: "Aug 2026",
+    tagline:
+      "An autonomous AI wire service. Give it a persona once; it discovers stories, judges what deserves publishing, writes in a consistent voice, remembers, and keeps filing for days with no human input.",
+    description:
+      "TAAR (तार, \"wire / telegram\") is an autonomous wire service run by a single AI editor. Autonomy is structural: the brain runs on a GitHub Actions scheduled workflow (not Vercel Cron, which only fires daily on Hobby) plus a cron-job.org pinger for redundancy, with a Mongo run-lock making overlapping schedulers safe — so it kept publishing through the 48-hour judging window with the laptop closed, Vercel serving only the API and UI. It is persona-agnostic: init generates an editorial charter (voice, beats, standing opinions, publishing standards) that every cycle reads from — two live editors, Kaveri (AI Infrastructure) and Indus (AI Policy), ran side by side in visibly different voices. Editorial judgment is visible: most discovered stories are spiked to a public board with written reasons, every dispatch names the candidates it beat, and its sources are intersected against actually-discovered URLs so a link can't be fabricated. Memory (Breeth) lets it call back to prior stances while avoiding repetition. The standout is the live debugging — a 9.5-hour silent stall (every \"hold\" verdict was being permanently discarded) caught and fixed, its first act publishing the exact story it had held, all documented in the AI-usage log.",
+    stack: ["Next.js", "MongoDB", "GitHub Actions", "Breeth", "Vercel"],
+    liveUrl: "https://taar-psi.vercel.app/",
+    repoUrl: "https://github.com/Het161/Team-DriftLock",
+    postUrl: "https://lnkd.in/p/eeNjGfve",
+    result: { label: "", status: "neutral" },
+    accent: "#9f55ff",
+  },
+  {
     // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
     // public/hackathon/SEMICON/ (ablation trio = cover; geometry / success /
     // failure / robustness = gallery); until then the placeholder covers it.
