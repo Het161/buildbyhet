@@ -40,6 +40,12 @@ export default function HackathonsPage() {
     );
   }, []);
 
+  // The WebGL fly-through is a desktop experience — its side-framed camera
+  // doesn't fit a narrow portrait viewport. Touch devices (and Tier 3) get the
+  // semantic timeline instead, which is fully responsive and carries the same
+  // content, links and media. Undecided (SSR) also renders the timeline.
+  const useWebGL = tier3 === false && isDesktop;
+
   const scrollVh = (HACKATHONS.length + 2) * 120;
 
   const pageUrl = `${METADATA.siteUrl}/hackathons`;
@@ -99,9 +105,15 @@ export default function HackathonsPage() {
       <ProgressIndicator />
       <Cursor isDesktop={isDesktop} />
 
-      {tier3 ? (
-        <SemanticTimeline items={HACKATHONS} visible />
-      ) : (
+      {tier3 === null ? (
+        // Undecided (SSR / first paint): a dark void placeholder so neither the
+        // desktop canvas nor the mobile timeline flashes in, plus the always-
+        // rendered crawlable timeline (visually hidden).
+        <>
+          <div style={{ minHeight: "100vh", background: "#05030a" }} aria-hidden="true" />
+          <SemanticTimeline items={HACKATHONS} />
+        </>
+      ) : useWebGL ? (
         <>
           <div
             id={SCROLL_ID}
@@ -117,6 +129,8 @@ export default function HackathonsPage() {
           {/* Always-rendered crawlable content (visually hidden here). */}
           <SemanticTimeline items={HACKATHONS} />
         </>
+      ) : (
+        <SemanticTimeline items={HACKATHONS} visible />
       )}
     </>
   );
