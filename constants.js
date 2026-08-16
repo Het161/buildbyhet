@@ -378,6 +378,19 @@ export const WORK_CONTENTS = {
 
 export const CERTIFICATIONS = [
   {
+    slug: "abtalks-vicodathon-2026",
+    name: "ViCoDathon 2026 — Participant",
+    issuer: "AB Talks",
+    date: "August 2026",
+    year: 2026,
+    category: "Hackathon",
+    highlight: "Participant",
+    description:
+      "Participated in ViCoDathon 2026 — India's AI Vibe Coding Hackathon by AB Talks — building TAAR, an autonomous AI wire service. Certificate ID ABT-HK-UCSXJ.",
+    image: "/certifications/abtalks-vicodathon-2026.webp",
+    gradient: ["#2e1065", "#7c3aed"],
+  },
+  {
     slug: "hackbaroda-2026",
     name: "HackBaroda 2026 — Finalist",
     issuer: "Coder's Corner",
@@ -497,6 +510,7 @@ export const HACKATHONS = [
     tagline: "GEO / AI-search citation-memory agent",
     stack: ["Groq", "MongoDB"],
     liveUrl: "https://cite-mind-six.vercel.app/",
+    postUrl: "https://lnkd.in/p/dZxKTqAy",
     image: "/hackathons/citemind.webp",
     certSlug: "",
     result: { label: "Finalist", status: "highlight" },
@@ -518,6 +532,7 @@ export const HACKATHONS = [
       "React",
     ],
     liveUrl: "https://aegis-vert-chi.vercel.app/",
+    postUrl: "https://lnkd.in/p/dBSGp-ra",
     image: "/hackathons/aegis.webp",
     result: { label: "", status: "neutral" },
     accent: "#7000ff",
@@ -532,8 +547,7 @@ export const HACKATHONS = [
     stack: ["Next.js 14", "TypeScript", "Prisma", "PostgreSQL"],
     liveUrl: null,
     repoUrl: "https://github.com/Het161/transitops-fleet-management",
-    postUrl:
-      "https://www.linkedin.com/posts/hetkumar-sanjaykumar-patel-54730933b_transitops-ugcPost-7488913031876362240-D3Uc/",
+    postUrl: "https://lnkd.in/p/dz7p8DDt",
     image: "/hackathons/transitops.webp",
     result: { label: "Finale Selected", status: "highlight" },
     accent: "#b985ff",
@@ -687,6 +701,7 @@ export const HACKATHONS = [
     stack: [],
     liveUrl: "https://dhanrakshakai.netlify.app/",
     repoUrl: "https://github.com/Het161/DHANRAKSHAK",
+    postUrl: "https://lnkd.in/p/di-GUrYR",
     image: "/hackathons/dhanrakshak.webp",
     result: { label: "Finale Selected", status: "highlight" },
     accent: "#00ac56",
@@ -754,6 +769,7 @@ export const HACKATHONS = [
     postUrl: "https://lnkd.in/p/dkUdsN8q",
     result: { label: "Shortlisted", status: "highlight" },
     accent: "#7a3aff",
+    media: { cover: hkMedia("hackerhouse", "task1", 800) },
   },
   {
     // Hacker House Goa 2026 — Task 2 (main). Imagery TODO(Het): public/hackathon/SHRUTI/.
@@ -770,6 +786,7 @@ export const HACKATHONS = [
     repoUrl: "https://github.com/Het161/shruti",
     result: { label: "Task 2 · In Progress", status: "pending" },
     accent: "#8b31ff",
+    media: { cover: hkMedia("hackerhouse", "task2", 800) },
   },
   {
     // ABTalks Vibe-Code Hackathon. Imagery TODO(Het): public/hackathon/TAAR/.
@@ -784,9 +801,11 @@ export const HACKATHONS = [
     stack: ["Next.js", "MongoDB", "GitHub Actions", "Breeth", "Vercel"],
     liveUrl: "https://taar-psi.vercel.app/",
     repoUrl: "https://github.com/Het161/Team-DriftLock",
-    postUrl: "https://lnkd.in/p/eeNjGfve",
+    postUrl: "https://lnkd.in/p/dDpYZg-V",
+    certSlug: "abtalks-vicodathon-2026",
     result: { label: "", status: "neutral" },
     accent: "#9f55ff",
+    media: { cover: hkMedia("abtalks", "abtalks", 800) },
   },
   {
     // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
