@@ -808,6 +808,36 @@ export const HACKATHONS = [
     media: { cover: hkMedia("abtalks", "abtalks", 800) },
   },
   {
+    slug: "orbitwx",
+    project: "orbitWx",
+    event: "NASA Space Apps Challenge 2025",
+    date: "Oct 2025",
+    tagline:
+      "NASA-data weather-probability platform — the historical odds of very hot, cold, windy, wet or uncomfortable conditions for any location and date on Earth.",
+    description:
+      "Built for the NASA Space Apps Challenge 2025 \"Will It Rain On My Parade?\" — forecasts only reach ~10 days, but events are planned months ahead. orbitWx answers a different question: what are the historical odds of extreme conditions at this exact location on this exact calendar date? A FastAPI backend pulls 30 years (1996–2025) of NASA POWER (MERRA-2) daily observations for any point on Earth and computes empirical exceedance probabilities over a ±7-day day-of-year window (~450 samples/query) — percentiles, distribution histograms, NOAA heat index, and a decade-vs-decade climate-trend analysis. A Smart Date Finder scans a whole month and ranks every day by combined weather risk. The 30-year dataset is fetched in three concurrent decade chunks and cached by 0.5° grid cell, so repeat queries resolve instantly. Next.js 15 dashboard with map search, probability gauges and charts; CSV/JSON export with full NASA attribution. No API key — pure open data.",
+    stack: [
+      "FastAPI",
+      "Python",
+      "NumPy",
+      "Next.js 15",
+      "TypeScript",
+      "TanStack Query",
+      "Recharts",
+      "Leaflet",
+      "NASA POWER",
+    ],
+    liveUrl: "https://orbitwx.vercel.app/",
+    repoUrl: "https://github.com/Het161/orbitwx",
+    certSlug: "nasa-space-apps-2025",
+    result: { label: "Space Apps 2025", status: "neutral" },
+    accent: "#f97316",
+    media: {
+      cover: hkMedia("nasa", "nasa", 800),
+      deck: "/hackathon/NASA/orbitwx-deck.pptx",
+    },
+  },
+  {
     // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
     // public/hackathon/SEMICON/ (ablation trio = cover; geometry / success /
     // failure / robustness = gallery); until then the placeholder covers it.
