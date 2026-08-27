@@ -838,6 +838,85 @@ export const HACKATHONS = [
     },
   },
   {
+    // Imagery TODO(Het): drop a cover into public/hackathon/GLOBETROTTER/.
+    slug: "globetrotter",
+    project: "GlobeTrotter",
+    event: "Odoo × LDCE Ahmedabad Hackathon '26",
+    date: "Oct 2026",
+    tagline:
+      "A multi-city travel planner with a 3D route globe, drag-and-drop itinerary builder, and an automatic budget engine — built in 8 hours.",
+    description:
+      "GlobeTrotter is an end-to-end travel-planning platform built in a single 8-hour sprint — and it took the team to the finale of Odoo × LDCE Ahmedabad Hackathon '26. Users plan multi-city trips on an interactive 3D globe that draws their route, build day-wise itineraries with drag-and-drop stops and activities, and get an automatic budget engine with category breakdowns, per-day spend, and over-budget alerts. Trips publish as shareable public pages with QR codes and one-click \"copy this trip,\" while an admin dashboard tracks platform analytics. All 13 screens are fully functional, styled with a custom \"Night Atlas\" design system.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Prisma",
+      "Tailwind CSS",
+      "JWT auth",
+      "three.js",
+    ],
+    liveUrl: "https://lnkd.in/dvvZhr9K",
+    repoUrl: "https://lnkd.in/dKCWUGKJ",
+    postUrl: "https://lnkd.in/p/deUE6PmK",
+    team: "Team of 4 — Het Patel: full-stack development & architecture",
+    result: { label: "Finalist", status: "highlight" },
+    accent: "#4f8cff",
+  },
+  {
+    // Imagery TODO(Het): drop a cover into public/hackathon/ANVESHAN/.
+    slug: "anveshan",
+    project: "Anveshan",
+    event: "Gujarat Police Innovation Challenge 2026 — Sentinel",
+    date: "2026",
+    tagline:
+      "Real-time CCTV intelligence over 30 live government camera feeds — RTSP ingestion, cross-camera route reconstruction, and a forensic-grade evidence registry, fully offline-deployable.",
+    description:
+      "Anveshan (deployed as DrishtiNet) is a unified CCTV-intelligence platform built for the Gujarat Police Innovation Challenge 2026, running against the state's Sentinel sandbox — 30 real government cameras streamed live across 9 districts. A protocol-agnostic adapter layer proved itself mid-competition: when organisers switched delivery from progressive MP4 to live RTSP overnight, the system absorbed it with configuration, not code. A 29-test conformance suite guards PTS-driven timing, reconnect backoff, mixed H.264/H.265 codecs and loop recovery; a decoded simulated-time model with per-camera drift correction holds forensic timestamps within ±5 s across cameras 400 km apart. Every alert carries a SHA-256 evidence clip cut from a rolling ring buffer plus a database-enforced append-only audit trail (UPDATE/DELETE/TRUNCATE rejected), and a sub-second WebRTC video wall subscribes per-tile with classified failure reasons. The documented architecture scales to all 80,000 cameras on Gujarat's GSWAN/GSDC infrastructure — 160 Gbps aggregate, 1.73 PB/day.",
+    stack: [
+      "Next.js 15",
+      "TypeScript",
+      "MapLibre GL",
+      "WebRTC / WHEP",
+      "MediaMTX",
+      "FastAPI",
+      "YOLO11 + ByteTrack",
+      "PostgreSQL + PostGIS",
+      "Redis Streams",
+      "Docker",
+    ],
+    liveUrl: "https://drishtinet.netlify.app/",
+    repoUrl: "https://github.com/Het161/DrishtiNet",
+    result: { label: "", status: "neutral" },
+    accent: "#e05252",
+  },
+  {
+    // Imagery TODO(Het): drop a cover into public/hackathon/ANNASETU/.
+    slug: "annasetu",
+    project: "AnnaSetu",
+    event: "Smart India Hackathon 2026 — PS 26032, Ministry of Consumer Affairs",
+    date: "2026",
+    tagline:
+      "A real-time mandi-procurement platform for 1.84 crore farmers — live Agmarknet rates, a live auction queue, transparent settlement, and three AI models.",
+    description:
+      "AnnaSetu addresses the long waits, missing price information, and payment uncertainty farmers face at government procurement centres (mandis). A production-grade full-stack platform lets a farmer compare live mandi rates (real Agmarknet government data), plan an arrival, follow a live auction queue, and track procurement through to payment — with a fully transparent settlement showing every deduction. An operator console drives the farmer's live experience in real time (gate entry, auction, weighing, settlement), and three AI models handle wait-time prediction, fair-price insights vs MSP, and fraud/anomaly detection. The platform is channel-agnostic (email/SMS/IVR-ready for low-literacy farmers) and architected for all 22 official Indian languages with locale-correct currency. Grounded in field research with a real APMC officer. Built for Smart India Hackathon 2026 · PS 26032, Ministry of Consumer Affairs.",
+    stack: [
+      "Next.js 14",
+      "TypeScript",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "Prisma",
+      "Redis",
+      "FastAPI",
+      "scikit-learn",
+      "Framer Motion",
+      "Agmarknet API",
+    ],
+    repoUrl: "https://github.com/Het161/AnnaSetu",
+    result: { label: "", status: "neutral" },
+    accent: "#3fae6a",
+  },
+  {
     // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
     // public/hackathon/SEMICON/ (ablation trio = cover; geometry / success /
     // failure / robustness = gallery); until then the placeholder covers it.
