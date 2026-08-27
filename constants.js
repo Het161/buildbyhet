@@ -917,6 +917,31 @@ export const HACKATHONS = [
     accent: "#3fae6a",
   },
   {
+    // Imagery TODO(Het): drop a cover into public/hackathon/BATON/.
+    slug: "baton",
+    project: "BATON",
+    event: "iQOO Hackathon 2026 — Chennai Battle 03",
+    date: "2026",
+    tagline:
+      "Turns the dead capture on your phone — voice notes, whiteboard photos, screenshots — into finished work before you reach your desk. Fully on-device, zero bytes to any server.",
+    description:
+      "BATON runs a local model entirely on-device (LiteRT-LM, Gemma 3n E2B, NPU-accelerated, int4) to transcribe voice notes, extract action items, and draft replies — with zero bytes sent to any server. Output is shaped to travel over Office Kit's clipboard sync and file drop, landing organised in a desktop inbox. Built for the iQOO Hackathon 2026 (Chennai Battle 03) around the iQOO 15's NPU and vapor-chamber cooling — bursty inference designed for thermal headroom. The pitch site itself proves the thesis: a real instruct model streams tokens inside the visitor's browser over WebGPU, with a live \"bytes sent: 0\" counter.",
+    stack: [
+      "On-Device AI",
+      "LiteRT-LM",
+      "Gemma 3n",
+      "WebLLM",
+      "WebGPU",
+      "Next.js",
+      "Three.js",
+      "Android",
+    ],
+    liveUrl: "https://baton-delta-one.vercel.app/",
+    repoUrl: "https://github.com/Het161/baton",
+    result: { label: "", status: "neutral" },
+    accent: "#4cc9f0",
+  },
+  {
     // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
     // public/hackathon/SEMICON/ (ablation trio = cover; geometry / success /
     // failure / robustness = gallery); until then the placeholder covers it.
