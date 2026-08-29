@@ -915,6 +915,7 @@ export const HACKATHONS = [
     repoUrl: "https://github.com/Het161/AnnaSetu",
     result: { label: "", status: "neutral" },
     accent: "#3fae6a",
+    media: { deck: "/hackathon/SIH2026/AnnaSetu-TechnoVerse-SIH2026.pdf" },
   },
   {
     // Imagery TODO(Het): drop a cover into public/hackathon/BATON/.
