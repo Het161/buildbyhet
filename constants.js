@@ -541,7 +541,7 @@ export const HACKATHONS = [
   {
     slug: "transitops",
     project: "TransitOps",
-    event: "Odoo × Adani University Hackathon '26",
+    event: "Odoo",
     date: "",
     tagline: "Fleet dispatch platform — single dispatch engine, API-first",
     stack: ["Next.js 14", "TypeScript", "Prisma", "PostgreSQL"],
