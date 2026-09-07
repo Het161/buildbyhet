@@ -870,19 +870,22 @@ export const HACKATHONS = [
     event: "Gujarat Police Innovation Challenge 2026 — Sentinel",
     date: "2026",
     tagline:
-      "Real-time CCTV intelligence over 30 live government camera feeds — RTSP ingestion, cross-camera route reconstruction, and a forensic-grade evidence registry, fully offline-deployable.",
+      "Consumes 30 live government camera feeds over RTSP/WebRTC, tracks vehicles across cameras by visual signature, fires watchlist alerts in 3–46 ms, and exports SHA-256 evidence with chain of custody — fully offline, on a registry honest enough to show what it doesn't know.",
     description:
       "Anveshan (deployed as DrishtiNet) is a unified CCTV-intelligence platform built for the Gujarat Police Innovation Challenge 2026, running against the state's Sentinel sandbox — 30 real government cameras streamed live across 9 districts. A protocol-agnostic adapter layer proved itself mid-competition: when organisers switched delivery from progressive MP4 to live RTSP overnight, the system absorbed it with configuration, not code. A 29-test conformance suite guards PTS-driven timing, reconnect backoff, mixed H.264/H.265 codecs and loop recovery; a decoded simulated-time model with per-camera drift correction holds forensic timestamps within ±5 s across cameras 400 km apart. Every alert carries a SHA-256 evidence clip cut from a rolling ring buffer plus a database-enforced append-only audit trail (UPDATE/DELETE/TRUNCATE rejected), and a sub-second WebRTC video wall subscribes per-tile with classified failure reasons. The documented architecture scales to all 80,000 cameras on Gujarat's GSWAN/GSDC infrastructure — 160 Gbps aggregate, 1.73 PB/day.",
     stack: [
-      "Next.js 15",
+      "Next.js",
       "TypeScript",
       "MapLibre GL",
-      "WebRTC / WHEP",
       "MediaMTX",
+      "WebRTC",
+      "FFmpeg",
+      "Python",
       "FastAPI",
-      "YOLO11 + ByteTrack",
+      "YOLO11",
+      "ByteTrack",
       "PostgreSQL + PostGIS",
-      "Redis Streams",
+      "Redis",
       "Docker",
     ],
     liveUrl: "https://drishtinet.netlify.app/",
@@ -941,6 +944,34 @@ export const HACKATHONS = [
     repoUrl: "https://github.com/Het161/baton",
     result: { label: "", status: "neutral" },
     accent: "#4cc9f0",
+  },
+  {
+    // Imagery TODO(Het): drop a cover into public/hackathon/DEALFLOW360/.
+    slug: "dealflow360",
+    project: "DealFlow360",
+    event: "Odoo Hackathon 2026 — Odoo India HQ, Gandhinagar",
+    date: "2026",
+    tagline:
+      "A self-governing quote-to-cash platform — per-line discount ceilings checked live, approvals auto-routed by a revenue-weighted risk score, warehouse splits from real stock, hybrid one-time + subscription billing, and an isolated customer portal with real-time negotiation.",
+    description:
+      "DealFlow360 tackles B2B's most expensive quiet problem — margin leakage. Every quotation line is checked against its own discount ceiling (customer tier × product category) as it's typed, and a revenue-weighted blended risk score decides the approval chain automatically: none, manager, or manager + finance. Orders split across warehouses by live stock with compared, explainable fulfillment plans; one-time and subscription lines bill correctly on a single order with mid-cycle proration and automatic credit notes. Customers negotiate on an isolated portal — counter-offers sync over SSE and re-enter the approval flow automatically when limits are crossed. Every action lands in an append-only audit trail; nothing is hardcoded — all rules live in config, all business math in pure, unit-tested engine functions. Runs fully offline with zero external runtime dependencies. Built in 24 hours at Odoo India HQ: 7 pure-function business engines (16 unit tests), 36 API route handlers on one validate → RBAC → engine → transaction → audit → SSE pipeline, two isolated auth realms, and statistical per-rep discount-anomaly detection.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Prisma",
+      "Tailwind CSS",
+      "JWT (jose)",
+      "Zod",
+      "Server-Sent Events",
+      "bcrypt",
+    ],
+    liveUrl: "https://dealflow360-iota.vercel.app",
+    repoUrl: "https://github.com/EklavyajhaAI07/Team-StackForge-Odoo-HQ-Hack",
+    videoUrl: "https://youtu.be/ylkIJPtoX-8",
+    team: "Team of 4 — Het Patel: system architecture, data model, business-logic engines, quotation builder & risk rail, demo lead",
+    result: { label: "Finalist", status: "highlight" },
+    accent: "#d99a3a",
   },
   {
     // Most recent (Aug 2026). Imagery TODO(Het): drop figures into
