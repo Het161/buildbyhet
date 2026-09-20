@@ -195,6 +195,11 @@ export default class Scene {
     this.curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.5);
     // Station i is active near this scroll progress (intro=0, outro=1).
     this.stationT = this.items.map((_, i) => (i + 1) / (n + 1));
+    // The scroll each end-station owns. Every intro/outro fade is derived from
+    // these rather than hardcoded, so adding hackathons (which shrinks each
+    // station's slot) can never leave an overlay sitting on top of a slab.
+    this.firstT = this.stationT[0] ?? 0.05;
+    this.lastT = this.stationT[n - 1] ?? 0.95;
     // Look targets extend one past the last station to the outro Δ, so the
     // camera turns to face it as the journey ends.
     this.lookAnchors = [...this.anchors, this.outroDeltaPos];
@@ -360,10 +365,18 @@ export default class Scene {
     this.moodColor.lerp(this._moodTarget, 0.03);
     this.scene.fog.color.copy(this.moodColor).multiplyScalar(0.5);
 
-    // Δ intro fades out as we enter; outro resolves near the end.
-    this.introMonolith?.setOpacity(smoothstep(0.12, 0.015, t) * 0.85);
+    // Δ intro fades out as we enter; outro resolves near the end. Both clear
+    // their neighbouring station well before it is centred — the intro Δ sits
+    // in the flight path just past station 0, so a late fade would leave it
+    // hanging over that slab.
+    this.introMonolith?.setOpacity(
+      smoothstep(this.firstT * 0.55, this.firstT * 0.08, t) * 0.85
+    );
     this.introMonolith?.update(time);
-    this.outroMonolith?.setOpacity(smoothstep(0.83, 0.97, t) * 0.9);
+    const tail = 1 - this.lastT;
+    this.outroMonolith?.setOpacity(
+      smoothstep(this.lastT + tail * 0.2, this.lastT + tail * 0.8, t) * 0.9
+    );
     this.outroMonolith?.update(time);
     this.blooms?.forEach((b) => b.update(time));
 

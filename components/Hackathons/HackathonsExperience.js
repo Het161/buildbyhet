@@ -34,6 +34,14 @@ const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
 
   const stationT = (i) => (i + 1) / (items.length + 1);
 
+  // Scroll progress the first and last stations sit at. The intro, outro and
+  // info-panel fades are all derived from these instead of fixed constants —
+  // each station only owns 1/(n+1) of the scroll, so a hardcoded window starts
+  // covering the end stations as soon as enough hackathons are added.
+  const firstT = stationT(0);
+  const lastT = stationT(items.length - 1);
+  const tail = 1 - lastT;
+
   // Aggregate stats computed from the data — never hardcoded.
   const total = items.length;
   const highlights = items
@@ -72,25 +80,29 @@ const HackathonsExperience = ({ items, scrollId, tier3, onContextLost }) => {
       glowRef.current.style.setProperty("--mood", state.mood.join(", "));
     }
 
-    // Intro fades out as the journey begins; outro resolves at the end.
+    // Intro clears before station 0 is centred; outro holds off until the last
+    // station has had its moment.
     const p = state.p ?? 0;
     if (introRef.current) {
-      const o = 1 - smoothstep01(p, 0.015, 0.08);
+      const o = 1 - smoothstep01(p, firstT * 0.1, firstT * 0.6);
       introRef.current.style.opacity = o.toFixed(3);
       introRef.current.style.pointerEvents = o > 0.05 ? "auto" : "none";
     }
     if (outroRef.current) {
-      const o = smoothstep01(p, 0.9, 0.985);
+      const o = smoothstep01(p, lastT + tail * 0.35, lastT + tail * 0.9);
       outroRef.current.style.opacity = o.toFixed(3);
       outroRef.current.style.pointerEvents = o > 0.5 ? "auto" : "none";
     }
-    // Info panel yields to the intro/outro overlays at the extremes.
+    // Info panel yields to the intro/outro overlays at the extremes — but it is
+    // fully up by the time the first station peaks and stays up through the last.
     if (panelRef.current) {
-      const pv =
-        Math.min(smoothstep01(p, 0.04, 0.11), 1 - smoothstep01(p, 0.88, 0.95));
+      const pv = Math.min(
+        smoothstep01(p, firstT * 0.45, firstT * 0.92),
+        1 - smoothstep01(p, lastT + tail * 0.25, lastT + tail * 0.7)
+      );
       panelRef.current.style.opacity = pv.toFixed(3);
     }
-  }, []);
+  }, [firstT, lastT, tail]);
 
   const handleIndex = useCallback((i) => {
     activeRef.current = i;
