@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { Howl } from "howler";
 import SoundBar from "./SoundBar/SoundBar";
 
@@ -9,6 +10,10 @@ const multiPop = new Howl({
 
 const Header = ({ children }) => {
   const inputRef = useRef(null);
+  // A bare "#home" only resolves on the home page — anywhere else it appends a
+  // dead fragment to the current URL and the logo does nothing. Same guard the
+  // menu links use.
+  const isHome = useRouter().pathname === "/";
 
   const handleClick = useCallback((e) => {
     if (e.target.checked) multiPop.play();
@@ -31,7 +36,11 @@ const Header = ({ children }) => {
   return (
     <nav className="w-full fixed top-0 py-8 z-50 select-none bg-gradient-to-b from-black shadow-black transition-all duration-300">
       <div className="flex justify-between section-container">
-        <a href="#home" className="link">
+        <a
+          href={isHome ? "#home" : "/#home"}
+          className="link"
+          aria-label="Het Patel — home"
+        >
           <Image
             src="/logo.svg"
             alt="Logo - Het Patel"
