@@ -700,7 +700,9 @@ export const HACKATHONS = [
     stack: ["Django REST", "Flutter", "Celery", "PostgreSQL", "Docker", "RAG"],
     liveUrl: null,
     image: "/hackathons/agentic-pharma.webp",
-    result: { label: "Result Awaited", status: "pending" },
+    // No outcome was ever communicated by the organisers — not still pending,
+    // so this stays neutral (no pulsing "awaiting" dot).
+    result: { label: "No Result Announced", status: "neutral" },
     accent: "#9f55ff",
     media: {
       deck: "/hackathon/TeamCoders_Pharmaceuticals.pdf",
@@ -831,7 +833,7 @@ export const HACKATHONS = [
     stack: ["FastAPI", "Sarvam Saaras v3", "Model2Vec", "BM25", "HNSW", "Cerebras", "Jina Reranker", "Modal"],
     liveUrl: "https://hetpatelsk--shruti-fastapi-app.modal.run/",
     repoUrl: "https://github.com/Het161/shruti",
-    result: { label: "Task 2 · In Progress", status: "pending" },
+    result: { label: "Not Selected", status: "neutral" },
     accent: "#8b31ff",
     media: { cover: hkMedia("hackerhouse", "task2", 800) },
   },
