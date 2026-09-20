@@ -267,12 +267,15 @@ export const PROJECTS = [
 export const WORK_CONTENTS = {
   FIRSTBOOKIT: [
     {
-      title: "FirstBookit",
+      title: "FirstBookIt",
       description:
-        "FirstBookit (firstbookit.in) is a live sports-venue booking platform where I work as a Full Stack Developer across three codebases — a React web app, a React Native mobile app, and a Node/Prisma backend. Around 450 commits shipping real production features end to end.",
+        "FirstBookIt (firstbookit.in) is a live sports-venue booking platform where I worked as a Software Developer Intern from May to September 2026, building full stack across three codebases — a React web app, a React Native mobile app, and a Node/Prisma backend. Around 450 commits shipping real production features end to end.",
       content: (
         <div className="h-full w-full flex flex-col items-center justify-center text-white px-4 gap-2 text-center">
-          <span>Full Stack Developer</span>
+          <span>Software Developer Intern</span>
+          <span className="text-sm text-gray-light-1">
+            May 2026 — Sep 2026
+          </span>
           <a
             href="https://firstbookit.in"
             target="_blank"
@@ -301,6 +304,24 @@ export const WORK_CONTENTS = {
       content: (
         <div className="h-full w-full flex items-center justify-center text-white px-4 text-center">
           Owner • Manager • Admin • Run-tracker
+        </div>
+      ),
+    },
+    {
+      title: "Letter of Appreciation",
+      description:
+        "On completing the internship, FirstBookIt issued a Letter of Appreciation and Experience recognising ownership of the booking engine, split payments, the Owner/Manager/Admin portals, the tournament and running-club modules, auth and the backend performance work — and crediting that work with taking the platform from prototype to a live product on the web, Google Play and the App Store.",
+      content: (
+        <div className="h-full w-full flex flex-col items-center justify-center text-white px-4 gap-2 text-center">
+          <span>Signed by the Founder, FirstBookIt</span>
+          <a
+            href="/Het-Patel-Appreciation-Letter-FirstBookIt.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link text-[#5170ff]"
+          >
+            Read the letter ↗
+          </a>
         </div>
       ),
     },
@@ -377,6 +398,32 @@ export const WORK_CONTENTS = {
 };
 
 export const CERTIFICATIONS = [
+  {
+    slug: "firstbookit-appreciation-letter",
+    name: "Letter of Appreciation & Experience",
+    issuer: "FirstBookIt (SportsWalla)",
+    date: "September 2026",
+    year: 2026,
+    category: "Experience",
+    highlight: "Internship",
+    description:
+      "Issued on completing a Software Developer Internship (May — September 2026). Recognises ownership of the booking engine, split payments, the Owner/Manager/Admin portals, the tournament and running-club modules, auth and backend performance work — which took the platform from prototype to live on the web, Google Play and the App Store.",
+    image: "/certifications/firstbookit-appreciation-letter.webp",
+    gradient: ["#1E3A8A", "#5170FF"],
+  },
+  {
+    slug: "odoo-hackathon-2026",
+    name: "Odoo Hackathon 2026 — Participant",
+    issuer: "Odoo India HQ, Gandhinagar",
+    date: "September 2026",
+    year: 2026,
+    category: "Hackathon",
+    highlight: "Participant",
+    description:
+      "Certificate of Participation for the Odoo Hackathon 2026, held 5–6 September at Odoo India HQ, Gandhinagar — where Team StackForge built DealFlow360, a self-governing quote-to-cash platform, in 24 hours.",
+    image: "/certifications/odoo-hackathon-2026.webp",
+    gradient: ["#5C1A3A", "#D99A3A"],
+  },
   {
     slug: "abtalks-vicodathon-2026",
     name: "ViCoDathon 2026 — Participant",
@@ -969,6 +1016,8 @@ export const HACKATHONS = [
     liveUrl: "https://dealflow360-iota.vercel.app",
     repoUrl: "https://github.com/EklavyajhaAI07/Team-StackForge-Odoo-HQ-Hack",
     videoUrl: "https://youtu.be/ylkIJPtoX-8",
+    postUrl: "https://lnkd.in/p/dP7Z4he8",
+    certSlug: "odoo-hackathon-2026",
     team: "Team of 4 — Het Patel: system architecture, data model, business-logic engines, quotation builder & risk rail, demo lead",
     result: { label: "Finalist", status: "highlight" },
     accent: "#d99a3a",

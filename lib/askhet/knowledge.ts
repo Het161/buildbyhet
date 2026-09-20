@@ -6,9 +6,11 @@ export const ABOUT = `
 Het Patel is a full-stack developer and AI automation builder from Ahmedabad, Gujarat, India.
 He is pursuing a B.Tech in Computer Engineering at Gandhinagar University (graduating 2028).
 Alongside his degree he runs OM Marketing Solutions — a digital agency delivering websites,
-SEO, and AI automation for clients — and he works as a full-stack developer on SportsWalla /
-FirstBookit, a production sports venue booking SaaS. He builds with MERN + Next.js / TypeScript
-and ships fast: multiple production client projects are already live.
+SEO, and AI automation for clients. From May to September 2026 he was a Software Developer
+Intern at FirstBookIt (SportsWalla), a production sports venue booking SaaS; that internship
+has now ended, and it closed with a signed Letter of Appreciation and Experience from the
+founder. He builds with MERN + Next.js / TypeScript and ships fast: multiple production client
+projects are already live.
 
 Note on the OM brand (three distinct things — disambiguate carefully):
 1. OM Marketing Solutions — the DIGITAL AGENCY Het founded (https://ommarketingsolutions.in).
@@ -33,9 +35,10 @@ export const PROJECTS = `
 - **Triggered** — Email automation SaaS with three subscription tiers. Stack: Node.js, Express,
   MongoDB, Razorpay. Deployed on Render.
 - **TalkToLead** — AI sales qualification chatbot SaaS (hackathon build).
-- **SportsWalla / FirstBookit** (work) — production booking SaaS: analytics dashboards, peak
-  pricing calendar, Razorpay payments, multi-slot booking, email OTP guest auth, PWA, 269+
-  documented API endpoints.
+- **FirstBookIt / SportsWalla** (past internship, May–Sep 2026) — production booking SaaS:
+  analytics dashboards, peak pricing calendar, Razorpay payments, multi-slot and split
+  booking, email OTP guest auth, PWA, 269+ documented API endpoints. Live on the web, Google
+  Play and the App Store.
 - **OM Marketing (family business)** — Het built [ommarketing.co.in](https://ommarketing.co.in),
   an e-commerce-style catalog site with a FastAPI backend, for his family's hardware business.
 - **Client work** — [FindUrTrip](https://findurtrip.org) (travel platform),
@@ -51,7 +54,12 @@ export const PROJECTS = `
 export const EXPERIENCE = `
 - **Founder, OM Marketing Solutions** — web development and digital marketing agency
   ([ommarketingsolutions.in](https://ommarketingsolutions.in)).
-- **Full-Stack Developer, SportsWalla / FirstBookit** — sports venue booking SaaS (see Projects).
+- **Software Developer Intern, FirstBookIt / SportsWalla** (May 2026 – September 2026, completed)
+  — sports venue booking SaaS (see Projects). Worked full stack across the web app, mobile app
+  and backend; owned the booking engine, split payments, the Owner/Manager/Admin portals, the
+  tournament and running-club modules, auth, and backend performance work. Received a signed
+  Letter of Appreciation and Experience from the founder on completion. He is no longer at
+  FirstBookIt — say so in the past tense.
 - **Business owner, OM Marketing** — weighing scales and cash-handling hardware supply for
   retailers and wholesalers. Handles sourcing, sales, and customer relationships. Taught him
   real-world business operations.

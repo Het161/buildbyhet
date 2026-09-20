@@ -76,8 +76,8 @@ const Certifications = () => {
           Certifications
         </h1>
         <h2 className="text-[1.65rem] font-medium md:max-w-lg max-w-sm mt-2 staggered-reveal">
-          Hackathons, bootcamps and AI challenges — the rooms where I learned to
-          build fast.
+          Internships, hackathons, bootcamps and AI challenges — the rooms where
+          I learned to build fast.
         </h2>
 
         <div className={`${styles.filterRow} mt-10 staggered-reveal`}>

@@ -38,7 +38,19 @@ const JsonLd = () => {
         name: "OM Marketing Solutions",
         url: "https://ommarketingsolutions.in",
       },
-      { "@type": "Organization", name: "FirstBookit (SportsWalla)" },
+      // Past role — an OrganizationRole wrapper carries the end date, so this
+      // reads as a completed internship rather than current employment.
+      {
+        "@type": "OrganizationRole",
+        roleName: "Software Developer Intern",
+        startDate: "2026-05",
+        endDate: "2026-09",
+        worksFor: {
+          "@type": "Organization",
+          name: "FirstBookIt (SportsWalla)",
+          url: "https://firstbookit.in",
+        },
+      },
     ],
     alumniOf: {
       "@type": "CollegeOrUniversity",
